@@ -1,0 +1,20 @@
+// components/Progress/Progress.css
+.progress-container {
+  margin: 1rem 0;
+  padding: 1rem;
+  background: var(--light, #f3f4f6);
+  border-radius: 0.5rem;
+  border: 1px solid var(--light-dark, #e5e7eb);
+}
+.progress-bar {
+  background: var(--light-dark, #e5e7eb);
+  border-radius: 0.25rem;
+  height: 8px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+.progress-fill {
+  background: var(--blue, #2c5aa0);
+  height: 100%;
+  transition: width 0.3s ease;
+}

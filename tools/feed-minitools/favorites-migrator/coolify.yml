@@ -1,0 +1,10 @@
+type: nodejs
+build:
+  command: npm install
+  directory: .
+port: 3000
+start: npm start
+env:
+  - NODE_ENV=production
+  - PORT=3000
+

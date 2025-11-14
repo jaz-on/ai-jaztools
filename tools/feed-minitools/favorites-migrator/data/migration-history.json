@@ -1,0 +1,3242 @@
+{
+  "migrations": [
+    {
+      "id": "md55vkz43gjy5s0ffiu",
+      "timestamp": "2025-07-15T23:26:22.960Z",
+      "user": "jason.rouet@protonmail.com",
+      "results": {
+        "total": 1552,
+        "starred": 1538,
+        "successRate": 99,
+        "sourcesCount": 320,
+        "duration": 2628555
+      },
+      "sources": {
+        "Chris Lema": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Justin Tadlock": {
+          "total": 7,
+          "starred": 7,
+          "found": 7
+        },
+        "Matt Mullenweg": {
+          "total": 17,
+          "starred": 17,
+          "found": 17
+        },
+        "Hari Shanker R": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Daniel Roch": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Syed Balkhi": {
+          "total": 9,
+          "starred": 9,
+          "found": 9
+        },
+        "Ashar Irfan": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Brett Shumaker": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Gary Jones": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Blog – Anybodesign": {
+          "total": 8,
+          "starred": 8,
+          "found": 8
+        },
+        "Remi's blog": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Camille Roux": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Andy Peatling": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Tom Hirst": {
+          "total": 11,
+          "starred": 11,
+          "found": 11
+        },
+        "Marc Littlemore - latest articles": {
+          "total": 21,
+          "starred": 21,
+          "found": 21
+        },
+        "Sandhills Development, LLC": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Marieke van de Rakt": {
+          "total": 7,
+          "starred": 7,
+          "found": 7
+        },
+        "Pixellibre.net": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "ryelle codes": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Mel Choyce": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Jenny Beaumont": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "The Man in the Arena": {
+          "total": 7,
+          "starred": 7,
+          "found": 7
+        },
+        "WordPress Foundation": {
+          "total": 6,
+          "starred": 6,
+          "found": 6
+        },
+        "Marco.org": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Jeffikus": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Eric Bailey": {
+          "total": 7,
+          "starred": 7,
+          "found": 7
+        },
+        "Brian Gardner": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Choblab": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Le flux RSS de l'AFUP": {
+          "total": 23,
+          "starred": 23,
+          "found": 23
+        },
+        "Kau-Boys": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Alex Kirk": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "joost.blog": {
+          "total": 11,
+          "starred": 11,
+          "found": 11
+        },
+        "10up": {
+          "total": 11,
+          "starred": 11,
+          "found": 11
+        },
+        "Anders Norén": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Agence WordPress Whodunit": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "FDN": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Wikimédia France": {
+          "total": 10,
+          "starred": 10,
+          "found": 10
+        },
+        "Writing": {
+          "total": 11,
+          "starred": 0,
+          "found": 0
+        },
+        "Résistance à l'Agression Publicitaire": {
+          "total": 17,
+          "starred": 17,
+          "found": 17
+        },
+        "Buzut": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "BeApi": {
+          "total": 7,
+          "starred": 7,
+          "found": 7
+        },
+        "Ploum.net": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Paris Web": {
+          "total": 10,
+          "starred": 10,
+          "found": 10
+        },
+        "artiss.blog": {
+          "total": 12,
+          "starred": 12,
+          "found": 12
+        },
+        "noyb.eu - My Privacy is None of Your Business": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Miriam Suzanne": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Andy Bell": {
+          "total": 10,
+          "starred": 10,
+          "found": 10
+        },
+        "superchlorine » Posts Feed": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Mike Little": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Made with Fuel": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Andy Serong": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "naxoc.net": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Jean-Baptiste Audras": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Le Blog WordPress des développeurs • Capitaine WP": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Rocío Valdivia": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Guide du Parent Galactique": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Level Level Blog - Updates, articles, event recaps and much more!": {
+          "total": 7,
+          "starred": 7,
+          "found": 7
+        },
+        "Guillaume Verstraete": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "imath": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Blog Alsace Réseau Neutre": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "required": {
+          "total": 10,
+          "starred": 10,
+          "found": 10
+        },
+        "La Contre-Voie - Actualités": {
+          "total": 9,
+          "starred": 9,
+          "found": 9
+        },
+        "Pippin Williamson": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Syde": {
+          "total": 10,
+          "starred": 10,
+          "found": 10
+        },
+        "Page dactualités – Globalis media systems": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Human Made Blog": {
+          "total": 13,
+          "starred": 13,
+          "found": 13
+        },
+        "L'appel on ✊ onestla.tech": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "France Tiers-lieux": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "WebDevStudios": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Automattic Design": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Flupa": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Next - Articles gratuits": {
+          "total": 69,
+          "starred": 69,
+          "found": 69
+        },
+        "WP Tavern": {
+          "total": 29,
+          "starred": 29,
+          "found": 29
+        },
+        "TYPO3.com Blog Feed": {
+          "total": 12,
+          "starred": 12,
+          "found": 12
+        },
+        "It's FOSS News": {
+          "total": 13,
+          "starred": 13,
+          "found": 13
+        },
+        "WP Engine": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Green IT": {
+          "total": 10,
+          "starred": 10,
+          "found": 10
+        },
+        "LinuxFr.org : les journaux": {
+          "total": 25,
+          "starred": 25,
+          "found": 25
+        },
+        "Andrew Nacin": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Actualités du CNLL": {
+          "total": 7,
+          "starred": 7,
+          "found": 7
+        },
+        "LinuxFr.org : les dépêches": {
+          "total": 18,
+          "starred": 18,
+          "found": 18
+        },
+        "Kev Quirk": {
+          "total": 15,
+          "starred": 15,
+          "found": 15
+        },
+        "Magento association": {
+          "total": 15,
+          "starred": 15,
+          "found": 15
+        },
+        "Le Weblog de Frederic Bezies": {
+          "total": 10,
+          "starred": 10,
+          "found": 10
+        },
+        "Quaff Magazine": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Dans les algorithmes": {
+          "total": 8,
+          "starred": 8,
+          "found": 8
+        },
+        "La Quadrature du Net": {
+          "total": 7,
+          "starred": 7,
+          "found": 7
+        },
+        "April": {
+          "total": 31,
+          "starred": 31,
+          "found": 31
+        },
+        "Framablog": {
+          "total": 21,
+          "starred": 21,
+          "found": 21
+        },
+        "Copie Publique": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Sakas &amp; Company": {
+          "total": 6,
+          "starred": 6,
+          "found": 6
+        },
+        "John O'Nolan": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Mage-OS": {
+          "total": 10,
+          "starred": 10,
+          "found": 10
+        },
+        "FSFE News": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Paul Boag - User Experience Advice": {
+          "total": 15,
+          "starred": 15,
+          "found": 15
+        },
+        "Matrix.org": {
+          "total": 10,
+          "starred": 10,
+          "found": 10
+        },
+        "SeoMix": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Standblog": {
+          "total": 6,
+          "starred": 6,
+          "found": 6
+        },
+        "Mario Peshev": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Tom McFarlin": {
+          "total": 6,
+          "starred": 6,
+          "found": 6
+        },
+        "Christophe BENOIT": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "le hollandais volant": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Delicious Brains": {
+          "total": 7,
+          "starred": 7,
+          "found": 7
+        },
+        "KrautPress": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "XWP": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Blog – Akismet": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Chris Coyier": {
+          "total": 9,
+          "starred": 9,
+          "found": 9
+        },
+        "OCTO Talks !": {
+          "total": 17,
+          "starred": 17,
+          "found": 17
+        },
+        "Dan Mall Teaches Design Systems, Design Process, and Design Leadership": {
+          "total": 13,
+          "starred": 13,
+          "found": 13
+        },
+        "Morceaux Choisis": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Max Böck": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Alexandru Nedelcu - Blog": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Blog: Web Accessibility tips &amp; tricks - The A11Y Collective": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Creative Juiz": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Dries Buytaert": {
+          "total": 13,
+          "starred": 13,
+          "found": 13
+        },
+        "Le blog de Genma": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Surgical Diversions": {
+          "total": 6,
+          "starred": 6,
+          "found": 6
+        },
+        "Daring Fireball": {
+          "total": 14,
+          "starred": 14,
+          "found": 14
+        },
+        "James Giroux": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Christopher Kurth": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "LunaWeb": {
+          "total": 8,
+          "starred": 8,
+          "found": 8
+        },
+        "Sarah Savage": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "passo.uno": {
+          "total": 21,
+          "starred": 21,
+          "found": 21
+        },
+        "We Distribute": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Freelancer Magazine": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Mike Street's Blog": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "chriskirknielsen": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "brycewray.com": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Zach Leatherman": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Mike Aparicio": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Aleksandr Hovhannisyan": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Fabien Lasserre – Développeur web full stack": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Richard MacManus": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "falldowngoboone": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Blog - Sandro Roth": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Robb Knight • Posts • RSS Feed": {
+          "total": 23,
+          "starred": 23,
+          "found": 23
+        },
+        "Codista Blogposts": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "ᕕ( ᐛ )ᕗ Herman's blog": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Hey, it's Jason!": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Riad Benguella": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Jason Rouet | WordPress, Open Web, Open Source, contributions &amp; geekeries diverses.": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Una Kravets Online": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Sia Karamalegos | Blog": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Ahmad Shadeed": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Beer Blog": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Craig Rowe | Cargowire Ramblings": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Stephen Hay | The Haystack": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Allen Wirfs": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Steve Marshall": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Erin Kissane | Incisive.nu": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Andreas Gal": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Rachel Nabors": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Dan(iel) Ritz(enthaler)": {
+          "total": 1,
+          "starred": 0,
+          "found": 0
+        },
+        "Sophie Alpert": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Oliver Schöndorfer | Zeichenschatz": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Thomas Kräftner": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Andy Davies": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Amber Wilson": {
+          "total": 6,
+          "starred": 6,
+          "found": 6
+        },
+        "Luke Bonaccorsi": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Bernard Nijenhuis | The notes of bnijenhuis": {
+          "total": 6,
+          "starred": 6,
+          "found": 6
+        },
+        "Amy Hoy": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Erik Runyon": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Cory Etzkorn": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Scott Mathson, Maker": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Evelyn Woods | fuzzy notepad": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Holger Bartel | foobartel.com": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Marco Heine | Blog": {
+          "total": 6,
+          "starred": 6,
+          "found": 6
+        },
+        "Articles - Amy Hupe": {
+          "total": 6,
+          "starred": 6,
+          "found": 6
+        },
+        "Ricard Torres dev": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Matthew Ström": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Sebastian Greger": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Matthias Ott": {
+          "total": 14,
+          "starred": 14,
+          "found": 14
+        },
+        "Frank Fuchs": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Kent C. Dodds Blog": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Aaron Gustafson: Latest Posts": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Darek Kay": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Hans Christian Reinl | drublic": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Ben Myers": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Mark Otto | @mdo": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Addy Osmani": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Dana Byerly": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Andy Croll": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "André Bering": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Rob Weychert": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Daniel Wentsch": {
+          "total": 9,
+          "starred": 9,
+          "found": 9
+        },
+        "David Darnes": {
+          "total": 6,
+          "starred": 6,
+          "found": 6
+        },
+        "Tyler Robertson": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Marius Hauken": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Stephanie Stimac": {
+          "total": 7,
+          "starred": 7,
+          "found": 7
+        },
+        "remy sharp's b:log": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Anil Dash": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Jeffrey Zeldman": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Juha-Matti Santala": {
+          "total": 10,
+          "starred": 10,
+          "found": 10
+        },
+        "Jeff Gothelf": {
+          "total": 7,
+          "starred": 7,
+          "found": 7
+        },
+        "Jens Oliver Meiert": {
+          "total": 10,
+          "starred": 10,
+          "found": 10
+        },
+        "Jonathan Snook | Snook.ca": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Salma Alam-Naylor – whitep4nth3r.com": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Tyler Sticka": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Heather Burns": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Simon Collison": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Hidde de Vries": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Matt Webb | Interconnected": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Kitty Giraudel": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Francesco Improta": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Marijke Luttekes blog": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Rachel Andrew": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Divya Sasidharan": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Paul Robert Lloyd": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Jeremy Keith | Adactio: Journal": {
+          "total": 7,
+          "starred": 7,
+          "found": 7
+        },
+        "Declan Byrd's Personal Site": {
+          "total": 12,
+          "starred": 12,
+          "found": 12
+        },
+        "Tantek Çelik": {
+          "total": 6,
+          "starred": 6,
+          "found": 6
+        },
+        "Josh Clark": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Cory Doctorow's craphound.com": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Chris Ferdinandi | Go Make Things": {
+          "total": 22,
+          "starred": 22,
+          "found": 22
+        },
+        "Veerle Pieters": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Paweł Grzybek": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Bryan Robinson": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Carie Fisher": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Ferdinand Vogler": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Nicolas Hoizey": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Adactio: Articles": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Chen Hui Jing": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Sara Joy": {
+          "total": 6,
+          "starred": 6,
+          "found": 6
+        },
+        "Nathan Smith | SonSpring": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Shawn Hooper": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Fred Rocha": {
+          "total": 6,
+          "starred": 6,
+          "found": 6
+        },
+        "Josh Comeau": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Jan Boddez: All Items": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Justin Jackson": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Interdependent Thoughts": {
+          "total": 13,
+          "starred": 13,
+          "found": 13
+        },
+        "Rach Smith": {
+          "total": 7,
+          "starred": 7,
+          "found": 7
+        },
+        "Maggie Appleton": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Adam Argyle": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Grise Bouille": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Blog Archives - Référencement, création de sites internet sur Poitiers": {
+          "total": 12,
+          "starred": 12,
+          "found": 12
+        },
+        "Stan's blog": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Jim Nielsen": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Harry Roberts | CSS Wizardry": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Stefan Judis": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Luke Harris": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Ben Frain": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Graphisme et interactivité": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "PhpStorm : The IDE that empowers PHP developers | The JetBrains Blog": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Brad Frost": {
+          "total": 9,
+          "starred": 9,
+          "found": 9
+        },
+        "Blog | Alex Standiford": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Ethan Marcotte": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Doug Belshaw | Open Thinkering": {
+          "total": 8,
+          "starred": 8,
+          "found": 8
+        },
+        "Les idées de Mon Oncle": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Polylogue": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "FreshRSS releases": {
+          "total": 1,
+          "starred": 0,
+          "found": 0
+        },
+        "Keith Wagner - Notes": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Ana Rodrigues": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Le bloc-notes, UX &amp; Design d'expérience utilisateur": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Pamela Fox": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Troy Hunt's Blog": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Bruce Lawson": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Brendan Dawes": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Colin Devroe": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Adrian Roselli": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Manuel Matuzović": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Dave Rupert LLC": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Actualités – WPFR": {
+          "total": 10,
+          "starred": 10,
+          "found": 10
+        },
+        "Lisa Sabin-Wilson": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Tom Arnold | Webrocker": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Andrew Betts": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Dan H": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Gift Egwuenu": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "✍️ Posts": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Tangible Life": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Claudio Rimann": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Elliot Jay Stocks": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "(not) my ideas": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Paul Stamatiou": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Marc Thiele's Journal": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "https://scottchacon.com/atom.xml": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Jason Rodriguez": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Jeremy Herve": {
+          "total": 9,
+          "starred": 9,
+          "found": 9
+        },
+        "Richard Rutter | Clagnut": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Jeff Atwood": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Terence Eden’s Blog": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Nicolas Fränkel – A Java geek": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Les Communs d'Abord": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Note(s)": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "affordance.info": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Akiani : le blog centré usages": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Bret Phillips": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "On my Om": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Blog - Users Know": {
+          "total": 8,
+          "starred": 8,
+          "found": 8
+        },
+        "Les-Tilleuls.coop": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Le blogue à Steph!": {
+          "total": 7,
+          "starred": 7,
+          "found": 7
+        },
+        "Josh Betz": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "🌐 Justin's Blog": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "The Thing With The Stuff": {
+          "total": 8,
+          "starred": 8,
+          "found": 8
+        },
+        "notizBlog": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Pre-Thought Listen": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Roy Tanck": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "The Jolly Teapot": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Two Ells": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Ryan Mulligan": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Alsacreations.com - Actualités": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Chris Enns | Faraway, So Close": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Balsamiq Company News": {
+          "total": 1,
+          "starred": 0,
+          "found": 0
+        },
+        "Eric Meyer | meyerweb.com": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Digging for Fire": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Christian Heilmann": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Luke Wroblewski | LukeW": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "John Maeda’s Blog": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Viljami Salminen": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Gaël Duval (blog, mandrake linux, /e/OS my data is my data, Murena…)": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Boris Schapira (Articles en français)": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Heydon Pickering | HeydonWorks": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "The Cloudflare Blog": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Léonie Watson - Tink": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Lea Verou": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Jake Archibald": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Ingo Steinke | Open Mind Culture": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Alvaro Montoro's website": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Alex": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Mastodon Blog": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Melanie Richards": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        }
+      },
+      "unmigratedCount": 14,
+      "exportGenerated": false
+    },
+    {
+      "id": "md523qq7tiqff7jtj5",
+      "timestamp": "2025-07-15T21:40:45.199Z",
+      "user": "jason.rouet@protonmail.com",
+      "results": {
+        "total": 1552,
+        "starred": 1538,
+        "successRate": 99,
+        "sourcesCount": 320,
+        "duration": 3008213
+      },
+      "sources": {
+        "Chris Lema": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Justin Tadlock": {
+          "total": 7,
+          "starred": 7,
+          "found": 7
+        },
+        "Matt Mullenweg": {
+          "total": 17,
+          "starred": 17,
+          "found": 17
+        },
+        "Hari Shanker R": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Daniel Roch": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Syed Balkhi": {
+          "total": 9,
+          "starred": 9,
+          "found": 9
+        },
+        "Ashar Irfan": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Brett Shumaker": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Gary Jones": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Blog – Anybodesign": {
+          "total": 8,
+          "starred": 8,
+          "found": 8
+        },
+        "Remi's blog": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Camille Roux": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Andy Peatling": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Tom Hirst": {
+          "total": 11,
+          "starred": 11,
+          "found": 11
+        },
+        "Marc Littlemore - latest articles": {
+          "total": 21,
+          "starred": 21,
+          "found": 21
+        },
+        "Sandhills Development, LLC": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Marieke van de Rakt": {
+          "total": 7,
+          "starred": 7,
+          "found": 7
+        },
+        "Pixellibre.net": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "ryelle codes": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Mel Choyce": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Jenny Beaumont": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "The Man in the Arena": {
+          "total": 7,
+          "starred": 7,
+          "found": 7
+        },
+        "WordPress Foundation": {
+          "total": 6,
+          "starred": 6,
+          "found": 6
+        },
+        "Marco.org": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Jeffikus": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Eric Bailey": {
+          "total": 7,
+          "starred": 7,
+          "found": 7
+        },
+        "Brian Gardner": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Choblab": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Le flux RSS de l'AFUP": {
+          "total": 23,
+          "starred": 23,
+          "found": 23
+        },
+        "Kau-Boys": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Alex Kirk": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "joost.blog": {
+          "total": 11,
+          "starred": 11,
+          "found": 11
+        },
+        "10up": {
+          "total": 11,
+          "starred": 11,
+          "found": 11
+        },
+        "Anders Norén": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Agence WordPress Whodunit": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "FDN": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Wikimédia France": {
+          "total": 10,
+          "starred": 10,
+          "found": 10
+        },
+        "Writing": {
+          "total": 11,
+          "starred": 0,
+          "found": 0
+        },
+        "Résistance à l'Agression Publicitaire": {
+          "total": 17,
+          "starred": 17,
+          "found": 17
+        },
+        "Buzut": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "BeApi": {
+          "total": 7,
+          "starred": 7,
+          "found": 7
+        },
+        "Ploum.net": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Paris Web": {
+          "total": 10,
+          "starred": 10,
+          "found": 10
+        },
+        "artiss.blog": {
+          "total": 12,
+          "starred": 12,
+          "found": 12
+        },
+        "noyb.eu - My Privacy is None of Your Business": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Miriam Suzanne": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Andy Bell": {
+          "total": 10,
+          "starred": 10,
+          "found": 10
+        },
+        "superchlorine » Posts Feed": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Mike Little": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Made with Fuel": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Andy Serong": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "naxoc.net": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Jean-Baptiste Audras": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Le Blog WordPress des développeurs • Capitaine WP": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Rocío Valdivia": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Guide du Parent Galactique": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Level Level Blog - Updates, articles, event recaps and much more!": {
+          "total": 7,
+          "starred": 7,
+          "found": 7
+        },
+        "Guillaume Verstraete": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "imath": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Blog Alsace Réseau Neutre": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "required": {
+          "total": 10,
+          "starred": 10,
+          "found": 10
+        },
+        "La Contre-Voie - Actualités": {
+          "total": 9,
+          "starred": 9,
+          "found": 9
+        },
+        "Pippin Williamson": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Syde": {
+          "total": 10,
+          "starred": 10,
+          "found": 10
+        },
+        "Page dactualités – Globalis media systems": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Human Made Blog": {
+          "total": 13,
+          "starred": 13,
+          "found": 13
+        },
+        "L'appel on ✊ onestla.tech": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "France Tiers-lieux": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "WebDevStudios": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Automattic Design": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Flupa": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Next - Articles gratuits": {
+          "total": 69,
+          "starred": 69,
+          "found": 69
+        },
+        "WP Tavern": {
+          "total": 29,
+          "starred": 29,
+          "found": 29
+        },
+        "TYPO3.com Blog Feed": {
+          "total": 12,
+          "starred": 12,
+          "found": 12
+        },
+        "It's FOSS News": {
+          "total": 13,
+          "starred": 13,
+          "found": 13
+        },
+        "WP Engine": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Green IT": {
+          "total": 10,
+          "starred": 10,
+          "found": 10
+        },
+        "LinuxFr.org : les journaux": {
+          "total": 25,
+          "starred": 25,
+          "found": 25
+        },
+        "Andrew Nacin": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Actualités du CNLL": {
+          "total": 7,
+          "starred": 7,
+          "found": 7
+        },
+        "LinuxFr.org : les dépêches": {
+          "total": 18,
+          "starred": 18,
+          "found": 18
+        },
+        "Kev Quirk": {
+          "total": 15,
+          "starred": 15,
+          "found": 15
+        },
+        "Magento association": {
+          "total": 15,
+          "starred": 15,
+          "found": 15
+        },
+        "Le Weblog de Frederic Bezies": {
+          "total": 10,
+          "starred": 10,
+          "found": 10
+        },
+        "Quaff Magazine": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Dans les algorithmes": {
+          "total": 8,
+          "starred": 8,
+          "found": 8
+        },
+        "La Quadrature du Net": {
+          "total": 7,
+          "starred": 7,
+          "found": 7
+        },
+        "April": {
+          "total": 31,
+          "starred": 31,
+          "found": 31
+        },
+        "Framablog": {
+          "total": 21,
+          "starred": 21,
+          "found": 21
+        },
+        "Copie Publique": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Sakas &amp; Company": {
+          "total": 6,
+          "starred": 6,
+          "found": 6
+        },
+        "John O'Nolan": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Mage-OS": {
+          "total": 10,
+          "starred": 10,
+          "found": 10
+        },
+        "FSFE News": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Paul Boag - User Experience Advice": {
+          "total": 15,
+          "starred": 15,
+          "found": 15
+        },
+        "Matrix.org": {
+          "total": 10,
+          "starred": 10,
+          "found": 10
+        },
+        "SeoMix": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Standblog": {
+          "total": 6,
+          "starred": 6,
+          "found": 6
+        },
+        "Mario Peshev": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Tom McFarlin": {
+          "total": 6,
+          "starred": 6,
+          "found": 6
+        },
+        "Christophe BENOIT": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "le hollandais volant": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Delicious Brains": {
+          "total": 7,
+          "starred": 7,
+          "found": 7
+        },
+        "KrautPress": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "XWP": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Blog – Akismet": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Chris Coyier": {
+          "total": 9,
+          "starred": 9,
+          "found": 9
+        },
+        "OCTO Talks !": {
+          "total": 17,
+          "starred": 17,
+          "found": 17
+        },
+        "Dan Mall Teaches Design Systems, Design Process, and Design Leadership": {
+          "total": 13,
+          "starred": 13,
+          "found": 13
+        },
+        "Morceaux Choisis": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Max Böck": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Alexandru Nedelcu - Blog": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Blog: Web Accessibility tips &amp; tricks - The A11Y Collective": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Creative Juiz": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Dries Buytaert": {
+          "total": 13,
+          "starred": 13,
+          "found": 13
+        },
+        "Le blog de Genma": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Surgical Diversions": {
+          "total": 6,
+          "starred": 6,
+          "found": 6
+        },
+        "Daring Fireball": {
+          "total": 14,
+          "starred": 14,
+          "found": 14
+        },
+        "James Giroux": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Christopher Kurth": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "LunaWeb": {
+          "total": 8,
+          "starred": 8,
+          "found": 8
+        },
+        "Sarah Savage": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "passo.uno": {
+          "total": 21,
+          "starred": 21,
+          "found": 21
+        },
+        "We Distribute": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Freelancer Magazine": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Mike Street's Blog": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "chriskirknielsen": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "brycewray.com": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Zach Leatherman": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Mike Aparicio": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Aleksandr Hovhannisyan": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Fabien Lasserre – Développeur web full stack": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Richard MacManus": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "falldowngoboone": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Blog - Sandro Roth": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Robb Knight • Posts • RSS Feed": {
+          "total": 23,
+          "starred": 23,
+          "found": 23
+        },
+        "Codista Blogposts": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "ᕕ( ᐛ )ᕗ Herman's blog": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Hey, it's Jason!": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Riad Benguella": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Jason Rouet | WordPress, Open Web, Open Source, contributions &amp; geekeries diverses.": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Una Kravets Online": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Sia Karamalegos | Blog": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Ahmad Shadeed": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Beer Blog": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Craig Rowe | Cargowire Ramblings": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Stephen Hay | The Haystack": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Allen Wirfs": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Steve Marshall": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Erin Kissane | Incisive.nu": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Andreas Gal": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Rachel Nabors": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Dan(iel) Ritz(enthaler)": {
+          "total": 1,
+          "starred": 0,
+          "found": 0
+        },
+        "Sophie Alpert": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Oliver Schöndorfer | Zeichenschatz": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Thomas Kräftner": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Andy Davies": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Amber Wilson": {
+          "total": 6,
+          "starred": 6,
+          "found": 6
+        },
+        "Luke Bonaccorsi": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Bernard Nijenhuis | The notes of bnijenhuis": {
+          "total": 6,
+          "starred": 6,
+          "found": 6
+        },
+        "Amy Hoy": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Erik Runyon": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Cory Etzkorn": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Scott Mathson, Maker": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Evelyn Woods | fuzzy notepad": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Holger Bartel | foobartel.com": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Marco Heine | Blog": {
+          "total": 6,
+          "starred": 6,
+          "found": 6
+        },
+        "Articles - Amy Hupe": {
+          "total": 6,
+          "starred": 6,
+          "found": 6
+        },
+        "Ricard Torres dev": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Matthew Ström": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Sebastian Greger": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Matthias Ott": {
+          "total": 14,
+          "starred": 14,
+          "found": 14
+        },
+        "Frank Fuchs": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Kent C. Dodds Blog": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Aaron Gustafson: Latest Posts": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Darek Kay": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Hans Christian Reinl | drublic": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Ben Myers": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Mark Otto | @mdo": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Addy Osmani": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Dana Byerly": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Andy Croll": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "André Bering": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Rob Weychert": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Daniel Wentsch": {
+          "total": 9,
+          "starred": 9,
+          "found": 9
+        },
+        "David Darnes": {
+          "total": 6,
+          "starred": 6,
+          "found": 6
+        },
+        "Tyler Robertson": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Marius Hauken": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Stephanie Stimac": {
+          "total": 7,
+          "starred": 7,
+          "found": 7
+        },
+        "remy sharp's b:log": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Anil Dash": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Jeffrey Zeldman": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Juha-Matti Santala": {
+          "total": 10,
+          "starred": 10,
+          "found": 10
+        },
+        "Jeff Gothelf": {
+          "total": 7,
+          "starred": 7,
+          "found": 7
+        },
+        "Jens Oliver Meiert": {
+          "total": 10,
+          "starred": 10,
+          "found": 10
+        },
+        "Jonathan Snook | Snook.ca": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Salma Alam-Naylor – whitep4nth3r.com": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Tyler Sticka": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Heather Burns": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Simon Collison": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Hidde de Vries": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Matt Webb | Interconnected": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Kitty Giraudel": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Francesco Improta": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Marijke Luttekes blog": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Rachel Andrew": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Divya Sasidharan": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Paul Robert Lloyd": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Jeremy Keith | Adactio: Journal": {
+          "total": 7,
+          "starred": 7,
+          "found": 7
+        },
+        "Declan Byrd's Personal Site": {
+          "total": 12,
+          "starred": 12,
+          "found": 12
+        },
+        "Tantek Çelik": {
+          "total": 6,
+          "starred": 6,
+          "found": 6
+        },
+        "Josh Clark": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Cory Doctorow's craphound.com": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Chris Ferdinandi | Go Make Things": {
+          "total": 22,
+          "starred": 22,
+          "found": 22
+        },
+        "Veerle Pieters": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Paweł Grzybek": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Bryan Robinson": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Carie Fisher": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Ferdinand Vogler": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Nicolas Hoizey": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Adactio: Articles": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Chen Hui Jing": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Sara Joy": {
+          "total": 6,
+          "starred": 6,
+          "found": 6
+        },
+        "Nathan Smith | SonSpring": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Shawn Hooper": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Fred Rocha": {
+          "total": 6,
+          "starred": 6,
+          "found": 6
+        },
+        "Josh Comeau": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Jan Boddez: All Items": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Justin Jackson": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Interdependent Thoughts": {
+          "total": 13,
+          "starred": 13,
+          "found": 13
+        },
+        "Rach Smith": {
+          "total": 7,
+          "starred": 7,
+          "found": 7
+        },
+        "Maggie Appleton": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Adam Argyle": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Grise Bouille": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Blog Archives - Référencement, création de sites internet sur Poitiers": {
+          "total": 12,
+          "starred": 12,
+          "found": 12
+        },
+        "Stan's blog": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Jim Nielsen": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Harry Roberts | CSS Wizardry": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Stefan Judis": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Luke Harris": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Ben Frain": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Graphisme et interactivité": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "PhpStorm : The IDE that empowers PHP developers | The JetBrains Blog": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Brad Frost": {
+          "total": 9,
+          "starred": 9,
+          "found": 9
+        },
+        "Blog | Alex Standiford": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Ethan Marcotte": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Doug Belshaw | Open Thinkering": {
+          "total": 8,
+          "starred": 8,
+          "found": 8
+        },
+        "Les idées de Mon Oncle": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Polylogue": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "FreshRSS releases": {
+          "total": 1,
+          "starred": 0,
+          "found": 0
+        },
+        "Keith Wagner - Notes": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Ana Rodrigues": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Le bloc-notes, UX &amp; Design d'expérience utilisateur": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Pamela Fox": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Troy Hunt's Blog": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Bruce Lawson": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Brendan Dawes": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Colin Devroe": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Adrian Roselli": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Manuel Matuzović": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Dave Rupert LLC": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Actualités – WPFR": {
+          "total": 10,
+          "starred": 10,
+          "found": 10
+        },
+        "Lisa Sabin-Wilson": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Tom Arnold | Webrocker": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Andrew Betts": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Dan H": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Gift Egwuenu": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "✍️ Posts": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Tangible Life": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Claudio Rimann": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Elliot Jay Stocks": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "(not) my ideas": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Paul Stamatiou": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Marc Thiele's Journal": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "https://scottchacon.com/atom.xml": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Jason Rodriguez": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Jeremy Herve": {
+          "total": 9,
+          "starred": 9,
+          "found": 9
+        },
+        "Richard Rutter | Clagnut": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Jeff Atwood": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Terence Eden’s Blog": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Nicolas Fränkel – A Java geek": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Les Communs d'Abord": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Note(s)": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "affordance.info": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Akiani : le blog centré usages": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Bret Phillips": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "On my Om": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Blog - Users Know": {
+          "total": 8,
+          "starred": 8,
+          "found": 8
+        },
+        "Les-Tilleuls.coop": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Le blogue à Steph!": {
+          "total": 7,
+          "starred": 7,
+          "found": 7
+        },
+        "Josh Betz": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "🌐 Justin's Blog": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "The Thing With The Stuff": {
+          "total": 8,
+          "starred": 8,
+          "found": 8
+        },
+        "notizBlog": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Pre-Thought Listen": {
+          "total": 4,
+          "starred": 4,
+          "found": 4
+        },
+        "Roy Tanck": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "The Jolly Teapot": {
+          "total": 5,
+          "starred": 5,
+          "found": 5
+        },
+        "Two Ells": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Ryan Mulligan": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Alsacreations.com - Actualités": {
+          "total": 3,
+          "starred": 3,
+          "found": 3
+        },
+        "Chris Enns | Faraway, So Close": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Balsamiq Company News": {
+          "total": 1,
+          "starred": 0,
+          "found": 0
+        },
+        "Eric Meyer | meyerweb.com": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Digging for Fire": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Christian Heilmann": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Luke Wroblewski | LukeW": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "John Maeda’s Blog": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Viljami Salminen": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Gaël Duval (blog, mandrake linux, /e/OS my data is my data, Murena…)": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Boris Schapira (Articles en français)": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Heydon Pickering | HeydonWorks": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "The Cloudflare Blog": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Léonie Watson - Tink": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Lea Verou": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Jake Archibald": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Ingo Steinke | Open Mind Culture": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Alvaro Montoro's website": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Alex": {
+          "total": 1,
+          "starred": 1,
+          "found": 1
+        },
+        "Mastodon Blog": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        },
+        "Melanie Richards": {
+          "total": 2,
+          "starred": 2,
+          "found": 2
+        }
+      },
+      "unmigratedCount": 14,
+      "exportGenerated": false
+    }
+  ],
+  "statistics": {
+    "totalMigrations": 2,
+    "totalItems": 3104,
+    "totalStarred": 3076,
+    "averageSuccessRate": 99
+  }
+}

@@ -1,0 +1,231 @@
+/* Layout styles - Container, grid, and structural components */
+
+/* Container */
+.container {
+    max-width: 56.25rem;
+    margin: 0 auto;
+    padding: 1.25rem;
+    padding-top: 5rem; /* Reduced space for menu */
+}
+
+/* Cards - now using .card-base from base.css */
+
+/* Header */
+.header {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 2.5rem;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+    font-weight: 300;
+}
+
+.header h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    opacity: 0.9;
+}
+
+.header p {
+    opacity: 0.9;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Sections */
+.section {
+    padding: 2rem;
+    scroll-margin-top: 5rem;
+}
+
+.process-section {
+    background: var(--gray-50);
+    border-left: 0.25rem solid var(--accent-color);
+}
+
+.context-section {
+    background: var(--gray-50);
+    border-left: 0.25rem solid var(--primary-color);
+}
+
+.legend-section {
+    background: var(--gray-50);
+    border-left: 0.25rem solid var(--warning-color);
+}
+
+.next-steps-section {
+    background: var(--gray-50);
+    border-left: 0.25rem solid var(--accent-color);
+}
+
+.technical-section {
+    background: var(--gray-50);
+    border-left: 0.25rem solid var(--gray-300);
+}
+
+.sources-section {
+    background: var(--gray-50);
+    border-left: 0.25rem solid var(--accent-color);
+}
+
+/* Grid layouts */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.platform-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.resources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.option-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+/* Footer */
+.app-footer {
+    background: var(--background-white);
+    color: var(--text-primary);
+    margin-top: 3rem;
+    padding: 2rem 0;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 120px;
+}
+
+.app-footer p {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+.app-footer p:first-child {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.app-footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-weight: 600;
+}
+
+.app-footer a:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+/* Footer container without top padding */
+.footer-container {
+    padding: 0 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100%;
+}
+
+/* Responsive design */
+@media (max-width: 48rem) {
+    .container {
+        padding: 1rem;
+        padding-top: 4rem;
+    }
+    
+    .section {
+        padding: 1.5rem;
+    }
+
+    .header {
+        padding: 2rem 1.5rem;
+    }
+
+    .header h1 {
+        font-size: 2rem;
+    }
+
+    .header h2 {
+        font-size: 1.25rem;
+    }
+
+    .platform-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .resources-grid,
+    .option-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Footer responsive */
+    .app-footer {
+        padding: 1.5rem 0;
+        min-height: 100px;
+    }
+
+    .app-footer p {
+        font-size: 0.9rem;
+    }
+
+    .app-footer p:first-child {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 30rem) {
+    .container {
+        padding: 0.75rem;
+    }
+
+    .section {
+        padding: 1rem;
+    }
+
+    .header {
+        padding: 1.5rem 1rem;
+    }
+
+    .header h1 {
+        font-size: 1.75rem;
+    }
+
+    /* Footer responsive */
+    .app-footer {
+        padding: 1.5rem 0;
+        min-height: 100px;
+    }
+
+    .app-footer p {
+        font-size: 0.9rem;
+    }
+
+    .app-footer p:first-child {
+        font-size: 0.95rem;
+    }
+} 

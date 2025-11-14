@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outil simple de migration de favoris FreshRSS vers Feedbin</title>
+    <link rel="icon" type="image/svg+xml" href="../../../shared/assets/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="../../../shared/assets/favicon.ico">
+    <link rel="stylesheet" href="../../../shared/design-system/variables.css">
+    <link rel="stylesheet" href="../../../shared/design-system/base.css">
+    <link rel="stylesheet" href="../../../shared/design-system/components.css">
+    <link rel="stylesheet" href="../../../shared/design-system/utilities.css">
+    <link rel="stylesheet" href="../../../shared/components/Button/Button.css">
+</head>
+<body>
+    <!-- Page de chargement -->
+    <div id="loading" class="loading hidden">
+        <div class="spinner"></div>
+        <p>Connexion en cours...</p>
+    </div>
+
+    <!-- Formulaire d'authentification -->
+    <div id="login-container" class="login-container">
+        <div class="login-card">
+            <!-- Header avec logos et flèche de migration -->
+            <div class="migration-header">
+                <div class="logo-container">
+                    <div class="logo-item">
+                        <img src="https://freshrss.org/images/icon.svg" alt="FreshRSS" class="service-logo">
+                        <span class="service-name">FreshRSS</span>
+                    </div>
+                    <div class="migration-arrow">
+                        <span class="arrow-simple">→</span>
+                    </div>
+                    <div class="logo-item">
+                        <img src="https://assets.feedbin.com/assets-site/images/icon-manifest.png" alt="Feedbin" class="service-logo">
+                        <span class="service-name">Feedbin</span>
+                    </div>
+                </div>
+                <h1>Outil de migration FreshRSS vers Feedbin</h1>
+                <p class="subtitle">Transférez simplement vos articles favoris de FreshRSS vers Feedbin par étapes grace à l'API Feedbin.</p>
+            </div>
+
+            <div id="error-message" class="message error hidden"></div>
+            <div id="success-message" class="message success hidden"></div>
+
+            <!-- Instructions améliorées -->
+            <div class="instructions">
+                <h3>📋 Comment procéder :</h3>
+                <ol>
+                    <li><strong>Connectez-vous</strong> avec vos identifiants Feedbin</li>
+                    <li><strong>Exportez vos favoris</strong> depuis FreshRSS (fichier <code>starred_entries.json</code>) - <a href="https://freshrss.github.io/FreshRSS/en/users/04_Subscriptions.html#import--export" target="_blank" rel="noopener">📖 Doc officielle de FreshRSS</a></li>
+                    <li><strong>Uploadez le fichier</strong> dans l'interface de l'app</li>
+                    <li><strong>Lancez la migration</strong> automatique vers Feedbin</li>
+                </ol>
+                
+                <div class="help-links">
+                    <a href="https://github.com/jaz-on/ai-jaztools" target="_blank" class="github-link">
+                        ℹ️ Plus d'informations sur le dépôt Github
+                    </a>
+                </div>
+            </div>
+
+            <form id="login-form" class="login-form">
+                <div class="input-group">
+                    <label for="email">📧 Email Feedbin</label>
+                    <input type="email" id="email" name="email" required 
+                           placeholder="votre-email@example.com" autocomplete="username">
+                </div>
+
+                <div class="input-group">
+                    <label for="password">🔑 Mot de passe Feedbin</label>
+                    <input type="password" id="password" name="password" required 
+                           placeholder="Votre mot de passe Feedbin" autocomplete="current-password">
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <span class="btn-text">🚀 Commencer la migration</span>
+                    <span class="btn-loading hidden">Connexion...</span>
+                </button>
+            </form>
+
+            <div class="security-info">
+                <h3>🔒 Sécurité garantie</h3>
+                <ul>
+                    <li>✅ Vos identifiants ne sont <strong>jamais stockés</strong></li>
+                    <li>✅ Communication <strong>directe</strong> avec l'API Feedbin</li>
+                    <li>✅ Session <strong>locale uniquement</strong></li>
+                    <li>✅ Code source <strong>auditable</strong> sur GitHub</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>
+                Un mini-projet de <a href="https://jasonrouet.com" target="_blank" rel="noopener">Jason Rouet</a>
+            </p>
+        </footer>
+    </div>
+
+    <!-- Dashboard principal -->
+    <div id="dashboard" class="dashboard hidden">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-content">
+                    <div class="nav-brand">
+                        <div class="nav-logo">
+                            <img src="https://freshrss.org/images/icon.svg" alt="FreshRSS" class="nav-service-logo">
+                            <span class="nav-arrow">→</span>
+                            <img src="https://assets.feedbin.com/assets-site/images/icon-manifest.png" alt="Feedbin" class="nav-service-logo">
+                        </div>
+                        <h1>Migration FreshRSS → Feedbin</h1>
+                    </div>
+                    <div class="nav-actions">
+                        <span id="user-email" class="user-info"></span>
+                        <button id="logout-btn" class="btn btn-secondary">Déconnexion</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Navigation par onglets -->
+        <div class="tab-navigation">
+            <div class="container">
+                <button class="tab-btn active" data-tab="migration">
+                    🚀 Migration
+                </button>
+                <button class="tab-btn" data-tab="activity">
+                    📊 Mon activité
+                </button>
+                <button class="tab-btn" data-tab="preferences">
+                    ⚙️ Mes préférences
+                </button>
+                <button class="tab-btn admin-only" data-tab="admin" style="display: none;">
+                    🔧 Administration
+                </button>
+            </div>
+        </div>
+
+        <!-- Contenu principal -->
+        <main class="main-content">
+            <div class="container">
+            <!-- Onglet Migration -->
+            <section id="migration" class="tab-content active">
+                <div class="steps-container">
+                    <div class="step" id="step-1">
+                        <div class="step-header">
+                            <div class="step-number">1</div>
+                            <h2>📁 Charger les données FreshRSS</h2>
+                        </div>
+                        <div class="step-content">
+                            <p>Sélectionnez votre fichier <code>starred_entries.json</code> exporté depuis FreshRSS.</p>
+                            
+                            <div class="file-upload">
+                                <input type="file" id="freshrss-file" accept=".json" class="file-input">
+                                <label for="freshrss-file" class="file-label">
+                                    📄 Choisir le fichier JSON
+                                </label>
+                                <div id="file-info" class="file-info hidden"></div>
+                            </div>
+
+                            <div id="freshrss-analysis" class="analysis-results hidden"></div>
+                        </div>
+                    </div>
+
+                    <div class="step" id="step-2">
+                        <div class="step-header">
+                            <div class="step-number">2</div>
+                            <h2>🔍 Analyser les abonnements Feedbin</h2>
+                        </div>
+                        <div class="step-content">
+                            <p>Récupération de vos abonnements Feedbin pour préparer la migration.</p>
+                            
+                            <button id="analyze-feedbin" class="btn btn-primary" disabled>
+                                🔍 Analyser Feedbin
+                            </button>
+
+                            <div id="cache-stats"></div>
+                            <div id="feedbin-analysis" class="analysis-results hidden"></div>
+                        </div>
+                    </div>
+
+                    <div class="step" id="step-3">
+                        <div class="step-header">
+                            <div class="step-number">3</div>
+                            <h2>🚀 Lancer la migration</h2>
+                        </div>
+                        <div class="step-content">
+                            <p>Migration automatique de vos favoris vers Feedbin.</p>
+                            
+                            <button id="start-migration" class="btn btn-success" disabled>
+                                🚀 Démarrer la migration
+                            </button>
+
+                            <div id="migration-progress" class="progress-container hidden">
+                                <div class="progress-bar">
+                                    <div id="progress-fill" class="progress-fill"></div>
+                                </div>
+                                <div id="progress-text" class="progress-text">0%</div>
+                            </div>
+
+                            <div id="migration-results" class="results-container hidden"></div>
+                        </div>
+                    </div>
+
+                    <div class="step" id="step-4">
+                        <div class="step-header">
+                            <div class="step-number">4</div>
+                            <h2>📊 Résultats et actions</h2>
+                        </div>
+                        <div class="step-content">
+                            <p>Analyse des résultats et gestion des éventuels échecs.</p>
+                            
+                            <div id="final-results" class="final-results hidden"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Onglet Activité (fusion statistiques + historique) -->
+            <section id="activity" class="tab-content">
+                <div class="activity-container">
+                    <h2>📊 Mon activité</h2>
+                    
+                    <!-- Section Statistiques -->
+                    <div class="stats-section">
+                        <h3>📈 Vue d'ensemble</h3>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <span class="stat-number" id="total-migrations">0</span>
+                                <span class="stat-label">Migrations effectuées</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-number" id="total-favorites">0</span>
+                                <span class="stat-label">Favoris migrés</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-number" id="success-rate">0%</span>
+                                <span class="stat-label">Taux de réussite</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-number" id="last-migration">-</span>
+                                <span class="stat-label">Dernière migration</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section Historique -->
+                    <div class="history-section">
+                        <div class="history-header">
+                            <h3>📋 Historique détaillé</h3>
+                            <div class="history-controls">
+                                <select id="activity-date-filter" class="form-select">
+                                    <option value="7">7 derniers jours</option>
+                                    <option value="30" selected>30 derniers jours</option>
+                                    <option value="90">90 derniers jours</option>
+                                    <option value="all">Tout l'historique</option>
+                                </select>
+                                <button id="refresh-activity" class="btn btn-primary">🔄 Actualiser</button>
+                                <button id="export-activity" class="btn btn-secondary">📄 Exporter</button>
+                            </div>
+                        </div>
+                        <div id="activity-list" class="activity-list">
+                            <p class="no-data">Aucune activité disponible</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Onglet Préférences -->
+            <section id="preferences" class="tab-content">
+                <div class="preferences-container">
+                    <h2>⚙️ Mes préférences</h2>
+                    <br class="preferences-intro">
+                        Personnalisez le comportement de la migration selon vos besoins.</br>
+                        Chaque option ci-dessous influence la façon dont vos favoris sont transférés vers Feedbin.
+                    </p>
+                    <div class="settings-grid">
+                        <div class="settings-card">
+                            <h3>🔄 Configuration migration</h3>
+                            <form id="my-migration-config" class="settings-form">
+                                <div class="form-group">
+                                    <label for="my-max-retries">Tentatives max :</label>
+                                    <input type="number" id="my-max-retries" name="retry.maxAttempts" min="1" max="10" value="3">
+                                    <span class="option-desc">Nombre maximum de tentatives en cas d'échec lors de la migration d'un favori. Plus la valeur est élevée, plus l'outil essaiera de réessayer en cas d'erreur réseau ou API.</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="my-batch-size">Taille des lots :</label>
+                                    <input type="number" id="my-batch-size" name="batchSize" min="1" max="50" value="10">
+                                    <span class="option-desc">Nombre d'articles favoris migrés en une seule requête. Une valeur plus élevée accélère la migration mais peut augmenter le risque d'erreur si la connexion est instable.</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="my-fuzzy-threshold">Seuil de correspondance floue :</label>
+                                    <input type="range" id="my-fuzzy-threshold" name="matching.fuzzyThreshold" min="0.5" max="1" step="0.1" value="0.8">
+                                    <span id="my-fuzzy-value">0.8</span>
+                                    <span class="option-desc">Détermine la tolérance lors de la recherche de correspondance entre les flux FreshRSS et Feedbin. Plus la valeur est proche de 1, plus la correspondance doit être exacte.</span>
+                                </div>
+                                <button type="submit" class="btn btn-primary">💾 Sauvegarder</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Onglet Administration -->
+            <section id="admin" class="tab-content">
+                <div class="admin-container">
+                    <h2>🔧 Administration</h2>
+                    <div class="admin-stats-grid">
+                        <div class="stat-card">
+                            <span class="stat-number" id="admin-total-users">0</span>
+                            <span class="stat-label">Utilisateurs actifs</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number" id="admin-total-migrations">0</span>
+                            <span class="stat-label">Migrations totales</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number" id="admin-success-rate">0%</span>
+                            <span class="stat-label">Taux de réussite global</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number" id="admin-avg-duration">0s</span>
+                            <span class="stat-label">Durée moyenne</span>
+                        </div>
+                    </div>
+
+                    <div class="admin-controls">
+                        <button id="refresh-admin-stats" class="btn btn-primary">🔄 Actualiser</button>
+                        <button id="export-admin-data" class="btn btn-secondary">📄 Exporter données</button>
+                        <button id="clear-logs" class="btn btn-danger">🗑️ Effacer logs</button>
+                    </div>
+                </div>
+            </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <!-- Load modular JavaScript files (api.js first as it's used by other modules) -->
+    <script src="modules/api.js"></script>
+    <script type="module" src="modules/auth.js"></script>
+    <script type="module" src="modules/migration.js"></script>
+    <script type="module" src="modules/ui.js"></script>
+    <script type="module" src="modules/validation.js"></script>
+    <script type="module" src="app.js"></script>
+    <script type="module">
+      import Card from '../../../../shared/components/Card/Card.js';
+      import { FormGroup, FormInput, FormLabel, FormError } from '../../../../shared/components/Form/index.js';
+      import Button from '../../../../shared/components/Button/Button.js';
+      import Message from '../../../../shared/components/Message/Message.js';
+      import Loader from '../../../../shared/components/Loader/Loader.js';
+      import Header from '../../../../shared/components/Header/Header.js';
+      import Footer from '../../../../shared/components/Footer/Footer.js';
+      import Grid from '../../../../shared/components/Grid/Grid.js';
+      import { Tabs, Tab } from '../../../../shared/components/Tabs/index.js';
+      import { List, ListItem } from '../../../../shared/components/List/index.js';
+      import Badge from '../../../../shared/components/Badge/Badge.js';
+      import { ProgressBar, ProgressContainer } from '../../../../shared/components/Progress/index.js';
+
+      // Génération dynamique du dashboard avec composants mutualisés
+      document.addEventListener('DOMContentLoaded', () => {
+        const dashboard = document.getElementById('dashboard');
+        if (!dashboard) return;
+        dashboard.style.display = 'none'; // Masquer le dashboard natif
+
+        // --- Onglet Migration (factorisé) ---
+        const step1 = Card({
+          children: [
+            Header({ title: '📁 Charger les données FreshRSS', subtitle: '' }),
+            'Sélectionnez votre fichier ',
+            document.createElement('code').appendChild(document.createTextNode('starred_entries.json')),
+            ' exporté depuis FreshRSS.',
+            // TODO: Uploader mutualisé
+          ]
+        });
+        const step2 = Card({
+          children: [
+            Header({ title: '🔍 Analyser les abonnements Feedbin', subtitle: '' }),
+            'Récupération de vos abonnements Feedbin pour préparer la migration.',
+            Button({ variant: 'primary', children: '🔍 Analyser Feedbin', disabled: true }),
+            // TODO: Stats, analyses, etc.
+          ]
+        });
+        const step3 = Card({
+          children: [
+            Header({ title: '🚀 Lancer la migration', subtitle: '' }),
+            'Migration automatique de vos favoris vers Feedbin.',
+            Button({ variant: 'success', children: '🚀 Démarrer la migration', disabled: true }),
+            ProgressContainer({
+              children: [
+                ProgressBar({ value: 0, max: 100 }),
+                '0%'
+              ]
+            }),
+            // TODO: Résultats, messages, etc.
+          ]
+        });
+        const step4 = Card({
+          children: [
+            Header({ title: '📊 Résultats et actions', subtitle: '' }),
+            'Analyse des résultats et gestion des éventuels échecs.',
+            // TODO: Résultats détaillés
+          ]
+        });
+        const migrationSteps = Grid({ columns: 1, children: [step1, step2, step3, step4] });
+
+        // --- Tabs ---
+        const migrationTab = Tab({ label: '🚀 Migration', children: migrationSteps });
+
+        // --- Onglet Activité (factorisé) ---
+        const statsCards = [
+          Card({
+            children: [
+              Badge({ variant: 'primary', children: '0' }),
+              'Migrations effectuées'
+            ]
+          }),
+          Card({
+            children: [
+              Badge({ variant: 'success', children: '0' }),
+              'Favoris migrés'
+            ]
+          }),
+          Card({
+            children: [
+              Badge({ variant: 'info', children: '0%' }),
+              'Taux de réussite'
+            ]
+          }),
+          Card({
+            children: [
+              Badge({ variant: 'gray', children: '-' }),
+              'Dernière migration'
+            ]
+          })
+        ];
+        const statsSection = Card({
+          children: [
+            Header({ title: '📈 Vue d\'ensemble', subtitle: '' }),
+            Grid({ columns: 4, children: statsCards })
+          ]
+        });
+
+        // Section historique
+        const historyControls = FormGroup({
+          children: [
+            FormLabel({ htmlFor: 'activity-date-filter', children: 'Période :' }),
+            FormInput({
+              id: 'activity-date-filter',
+              type: 'select',
+              children: [
+                { value: '7', text: '7 derniers jours' },
+                { value: '30', text: '30 derniers jours', selected: true },
+                { value: '90', text: '90 derniers jours' },
+                { value: 'all', text: 'Tout l\'historique' }
+              ]
+            }),
+            Button({ variant: 'primary', children: '🔄 Actualiser' }),
+            Button({ variant: 'secondary', children: '📄 Exporter' })
+          ]
+        });
+
+        const historyList = List({
+          children: [
+            ListItem({ children: 'Aucune activité disponible' })
+          ]
+        });
+
+        const historySection = Card({
+          children: [
+            Header({ title: '📋 Historique détaillé', subtitle: '' }),
+            historyControls,
+            historyList
+          ]
+        });
+
+        // Assemblage de l'onglet Activité
+        const activityContent = Grid({
+          columns: 1,
+          children: [
+            statsSection,
+            historySection
+          ]
+        });
+
+        // Mise à jour des onglets
+        const activityTab = Tab({ label: '📊 Mon activité', children: activityContent });
+
+        // --- Onglet Préférences (factorisé) ---
+        const preferencesForm = FormGroup({
+          children: [
+            FormGroup({
+              children: [
+                FormLabel({ htmlFor: 'my-max-retries', children: '🔄 Tentatives max :' }),
+                FormInput({
+                  id: 'my-max-retries',
+                  type: 'number',
+                  min: '1',
+                  max: '10',
+                  value: '3'
+                }),
+                'Nombre maximum de tentatives en cas d\'échec lors de la migration d\'un favori.'
+              ]
+            }),
+            FormGroup({
+              children: [
+                FormLabel({ htmlFor: 'my-batch-size', children: '📦 Taille des lots :' }),
+                FormInput({
+                  id: 'my-batch-size',
+                  type: 'number',
+                  min: '1',
+                  max: '50',
+                  value: '10'
+                }),
+                'Nombre d\'articles favoris migrés en une seule requête.'
+              ]
+            }),
+            FormGroup({
+              children: [
+                FormLabel({ htmlFor: 'my-fuzzy-threshold', children: '🎯 Seuil de correspondance floue :' }),
+                FormInput({
+                  id: 'my-fuzzy-threshold',
+                  type: 'range',
+                  min: '0.5',
+                  max: '1',
+                  step: '0.1',
+                  value: '0.8'
+                }),
+                'Détermine la tolérance lors de la recherche de correspondance entre les flux.'
+              ]
+            }),
+            Button({ variant: 'primary', children: '💾 Sauvegarder' })
+          ]
+        });
+
+        const preferencesCard = Card({
+          children: [
+            Header({ title: '⚙️ Configuration migration', subtitle: 'Personnalisez le comportement de la migration selon vos besoins.' }),
+            preferencesForm
+          ]
+        });
+
+        // Assemblage de l'onglet Préférences
+        const preferencesContent = Grid({
+          columns: 1,
+          children: [preferencesCard]
+        });
+
+        // Mise à jour des onglets
+        const preferencesTab = Tab({ label: '⚙️ Mes préférences', children: preferencesContent });
+
+        // --- Onglet Administration (factorisé) ---
+        const adminStatsCards = [
+          Card({
+            children: [
+              Badge({ variant: 'primary', children: '0' }),
+              'Utilisateurs actifs'
+            ]
+          }),
+          Card({
+            children: [
+              Badge({ variant: 'success', children: '0' }),
+              'Migrations totales'
+            ]
+          }),
+          Card({
+            children: [
+              Badge({ variant: 'info', children: '0%' }),
+              'Taux de réussite global'
+            ]
+          }),
+          Card({
+            children: [
+              Badge({ variant: 'gray', children: '0s' }),
+              'Durée moyenne'
+            ]
+          })
+        ];
+
+        const adminControls = FormGroup({
+          children: [
+            Button({ variant: 'primary', children: '🔄 Actualiser' }),
+            Button({ variant: 'secondary', children: '📄 Exporter données' }),
+            Button({ variant: 'error', children: '🗑️ Effacer logs' })
+          ]
+        });
+
+        const adminCard = Card({
+          children: [
+            Header({ title: '🔧 Administration', subtitle: 'Gestion globale du système' }),
+            Grid({ columns: 4, children: adminStatsCards }),
+            adminControls
+          ]
+        });
+
+        // Assemblage de l'onglet Administration
+        const adminContent = Grid({
+          columns: 1,
+          children: [adminCard]
+        });
+
+        // Mise à jour des onglets
+        const adminTab = Tab({ label: '🔧 Administration', children: adminContent });
+        const tabs = Tabs({ children: [migrationTab, activityTab, preferencesTab, adminTab] });
+
+        // Carte principale du dashboard
+        const dashboardCard = Card({
+          children: [
+            Header({ title: 'Migration FreshRSS → Feedbin', subtitle: '' }),
+            tabs
+          ]
+        });
+
+        // Insertion progressive
+        let dashboardMount = document.getElementById('dashboard-mount');
+        if (!dashboardMount) {
+          dashboardMount = document.createElement('div');
+          dashboardMount.id = 'dashboard-mount';
+          document.body.appendChild(dashboardMount);
+        }
+        dashboardMount.innerHTML = '';
+        dashboardMount.appendChild(dashboardCard);
+
+        // Masquer l'ancien contenu
+        const oldDashboard = document.getElementById('dashboard');
+        const oldActivity = document.getElementById('activity');
+        const oldPreferences = document.getElementById('preferences');
+        const oldAdmin = document.getElementById('admin');
+        [oldDashboard, oldActivity, oldPreferences, oldAdmin].forEach(el => {
+          if (el) el.style.display = 'none';
+        });
+      });
+      // TODO: Remplacer le contenu de chaque onglet par la structure factorisée (étapes, grilles, listes, etc.)
+    </script>
+</body>
+</html> 

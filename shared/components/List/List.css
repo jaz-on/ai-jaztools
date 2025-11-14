@@ -1,0 +1,17 @@
+// components/List/List.css
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.list-item {
+  padding: 1rem;
+  border-bottom: 1px solid var(--light, #f3f4f6);
+  transition: background 0.2s;
+}
+.list-item:hover {
+  background: var(--light, #f3f4f6);
+}
+.list-item:last-child {
+  border-bottom: none;
+}

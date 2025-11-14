@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InstaFed | Instagram to Pixelfed Migration Tool</title>
+    <meta name="description" content="Outil gratuit pour migrer vos photos Instagram vers Pixelfed. Conversion automatique et respect de la vie privée.">
+    <meta name="keywords" content="instagram, pixelfed, migration, fediverse, archive, conversion, vie privée">
+    <meta name="author" content="Jason Rouet">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="InstaFed - Migration Instagram vers Pixelfed">
+    <meta property="og:description" content="Outil gratuit pour migrer vos photos Instagram vers Pixelfed">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://instafed.app/">
+    <meta property="og:image" content="https://instafed.app/og-image.png">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="InstaFed - Migration Instagram vers Pixelfed">
+    <meta name="twitter:description" content="Outil gratuit pour migrer vos photos Instagram vers Pixelfed">
+    <meta name="twitter:image" content="https://instafed.app/twitter-card.png">
+    
+    <link rel="stylesheet" href="../../shared/design-system/variables.css">
+    <link rel="stylesheet" href="../../shared/design-system/base.css">
+    <link rel="stylesheet" href="../../shared/design-system/components.css">
+    <link rel="stylesheet" href="../../shared/design-system/utilities.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="libs/jszip.min.js"></script>
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "InstaFed",
+      "description": "Outil gratuit pour migrer vos photos Instagram vers Pixelfed",
+      "url": "https://instafed.app/",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+</head>
+<body>
+    <!-- Skip to main content link for screen readers -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Sticky Navigation Menu -->
+    <nav class="sticky-nav" id="stickyNav" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <div class="nav-links" role="menubar">
+                <a href="#" class="nav-link" role="menuitem" aria-label="Go to top of page">Home</a>
+                <a href="#migration-tool" class="nav-link" role="menuitem" aria-label="Go to migration tool section">Migration Tool</a>
+                <a href="#why-pixelfed" class="nav-link" role="menuitem" aria-label="Go to why Pixelfed section">Why Pixelfed?</a>
+                <a href="#sources" class="nav-link" role="menuitem" aria-label="Go to additional resources section">Resources</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()" aria-label="Back to top of page">↑</button>
+
+    <main id="main-content" role="main">
+        <div class="container">
+            <!-- Header -->
+            <header class="card-base">
+                <div class="header text-center">
+                    <h1>InstaFed</h1>
+                    <h2>Instagram → Pixelfed Migration</h2>
+                    <p class="header-description">
+                        Convert your Instagram archive to Pixelfed format in minutes.<br>
+                        <strong>100% private</strong> - all processing happens on your device.
+                    </p>
+                    <div class="cta-container">
+                        <a href="#migration-tool" class="cta-button primary" aria-label="Start migration process">
+                            <svg class="icon icon--upload" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M9 16h6v-6h4l-7-7-7 7h4v6zm-4 4h14v-2H5v2z"/>
+                            </svg>
+                            Start Migration
+                        </a>
+                        <a href="#why-pixelfed" class="cta-button secondary" aria-label="Learn more about Pixelfed migration">
+                            <svg class="icon icon--info" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                            </svg>
+                            Why Migrate?
+                        </a>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Migration Tool Section -->
+            <section class="card-base" id="migration-tool">
+                <div class="section migration-section">
+                    <h2>Migration Tool</h2>
+                    
+                    <!-- Progress Tracker -->
+                    <div class="progress-tracker">
+                        <div class="progress-step active" data-step="1">
+                            <div class="step-indicator">1</div>
+                            <div class="step-label">Select Archive</div>
+                        </div>
+                        <div class="progress-step" data-step="2">
+                            <div class="step-indicator">2</div>
+                            <div class="step-label">Analyze</div>
+                        </div>
+                        <div class="progress-step" data-step="3">
+                            <div class="step-indicator">3</div>
+                            <div class="step-label">Configure</div>
+                        </div>
+                        <div class="progress-step" data-step="4">
+                            <div class="step-indicator">4</div>
+                            <div class="step-label">Convert</div>
+                        </div>
+                        <div class="progress-step" data-step="5">
+                            <div class="step-indicator">5</div>
+                            <div class="step-label">Download</div>
+                        </div>
+                    </div>
+
+                    <!-- Step 1: Archive Selection -->
+                    <div class="migration-step active" id="step1" role="region" aria-label="Step 1: Select Instagram Archive">
+                        <div class="step-header">
+                            <h3>Select Your Instagram Archive</h3>
+                            <button class="help-button" onclick="toggleHelp('archive-help')" aria-label="Show help for getting Instagram archive">
+                                Need help getting your archive?
+                            </button>
+                        </div>
+
+                        <div id="archive-help" class="help-content hidden">
+                            <div class="card-base info-box">
+                                <h4>How to Get Your Instagram Archive</h4>
+                                <ol>
+                                    <li>Log into Instagram on desktop</li>
+                                    <li>Go to <a href="https://accountscenter.instagram.com/info_and_permissions/" target="_blank" rel="noopener" aria-label="Instagram Archiving and Downloading settings (opens in new tab)">Settings → Privacy and Security</a></li>
+                                    <li>Click "Download your information"</li>
+                                    <li>Select <strong>JSON format</strong> (important!)</li>
+                                    <li>Wait for email (usually 1-48 hours)</li>
+                                </ol>
+                            </div>
+                        </div>
+
+                        <div class="file-drop-zone" id="fileDropZone" role="button" tabindex="0" aria-label="Drop Instagram archive file here or click to browse files" aria-describedby="file-drop-instructions">
+                            <div class="drop-zone-content">
+                                <svg class="icon icon--large" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                                </svg>
+                                <p id="file-drop-instructions">Drop your Instagram archive here<br>or click to browse</p>
+                                <p class="file-info">Accepts ZIP or TAR.GZ files</p>
+                            </div>
+                            <input type="file" id="archiveFile" accept=".zip,.tar.gz" class="file-input" aria-label="Select Instagram archive file" />
+                        </div>
+
+                        <div id="fileInfo" class="file-details hidden" aria-live="polite" aria-atomic="true">
+                            <div class="file-preview">
+                                <span id="fileName"></span>
+                                <span id="fileSize"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="action-buttons hidden">
+                            <button class="btn-base btn-primary" onclick="startAnalysis()" aria-label="Start analysis of selected archive">
+                                Analyze Archive
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Analysis -->
+                    <div class="migration-step" id="step2" role="region" aria-label="Step 2: Analyze Instagram Archive">
+                        <div class="step-header">
+                            <h3>Analyzing Your Archive</h3>
+                        </div>
+                        
+                        <div class="analysis-progress">
+                            <div class="progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Analysis progress">
+                                <div class="progress-bar" id="analysisProgress"></div>
+                            </div>
+                            <div id="analysisStatus" class="analysis-status" aria-live="polite" aria-atomic="true">
+                                <div class="status-message">Scanning content...</div>
+                            </div>
+                        </div>
+
+                        <div id="analysisResults" class="analysis-results hidden" aria-live="polite" aria-atomic="true">
+                            <!-- Instagram Account Info -->
+                            <div class="instagram-account-info">
+                                <div class="account-card">
+                                    <svg class="icon icon--instagram" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                                    </svg>
+                                    <div class="account-details">
+                                        <span class="account-label">Instagram Account Source:</span>
+                                        <a id="instagramAccountLink" href="#" target="_blank" rel="noopener" class="account-username">
+                                            <span id="instagramUsername">@username</span>
+                                            <svg class="icon icon--external" viewBox="0 0 24 24" aria-hidden="true">
+                                                <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <svg class="icon icon--photo" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                                    </svg>
+                                    <span id="photoCount">0</span>
+                                    <label>Photos</label>
+                                </div>
+                                <div class="stat-card">
+                                    <svg class="icon icon--video" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
+                                    </svg>
+                                    <span id="videoCount">0</span>
+                                    <label>Videos</label>
+                                </div>
+                                <div class="stat-card">
+                                    <svg class="icon icon--storage" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-2 6h-2v2h2v2h-2v2h-2v-2h-2v-2h2v-2h2v2zm-6 2h2v-2h-2v2zm0 4h2v-2h-2v2z"/>
+                                    </svg>
+                                    <span id="totalSize">0</span>
+                                    <label>Total Size</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="action-buttons hidden">
+                            <button class="btn-base btn-primary" onclick="goToConfiguration()" aria-label="Go to configuration step">
+                                <svg class="icon icon--settings" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
+                                </svg>
+                                Configure Options
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Configuration -->
+                    <div class="migration-step" id="step3" role="region" aria-label="Step 3: Configure Conversion Options">
+                        <div class="step-header">
+                            <h3>Configure Conversion Options</h3>
+                            <p>Review detected issues and customize how your archive will be processed.</p>
+                        </div>
+
+                        <!-- Essential Option -->
+                        <div class="options-section">
+                            <h4>Essential Option</h4>
+                            <div class="options-grid">
+                                <!-- Fix Empty Captions -->
+                                <div class="option-card">
+                                    <div class="option-content">
+                                        <div class="option-header">
+                                            <h5>Fix Empty Captions</h5>
+                                            <span class="tooltip">
+                                                <i class="icon icon--info"></i>
+                                                <span class="tooltiptext">
+                                                    <strong>Why this matters:</strong> Posts without captions can appear incomplete on Pixelfed and may not engage your audience as effectively. Adding a placeholder ensures all your content has proper descriptions.
+                                                    <br><br>
+                                                    <strong>Best practice:</strong> Use descriptive placeholders that add context to your migration, like "Migrated thanks to #instafed" to credit the tool.
+                                                    <br><br>
+                                                    <a href="https://docs.pixelfed.org/features/posts#post-content" target="_blank" rel="noopener">📖 Pixelfed Post Guidelines</a>
+                                                </span>
+                                            </span>
+                                        </div>
+                                        <p>Replace empty descriptions with a placeholder</p>
+                                        <div class="option-explanation">
+                                            <p>Posts without captions can appear incomplete on Pixelfed. Adding a placeholder ensures all your content has proper descriptions.</p>
+                                            <p class="explanation-source">
+                                                <a href="https://anders.thoresson.se/post/2025/01/preparing-your-instagram-export-for-pixelfed-import/" target="_blank" rel="noopener">📖 Source: Anders Thoresson - Instagram to Pixelfed Import Guide</a>
+                                            </p>
+                                        </div>
+                                        <div class="option-detail">
+                                            <label for="captionPlaceholder">Placeholder:</label>
+                                            <select id="captionPlaceholder" onchange="document.getElementById('customPlaceholder').style.display = this.value === 'custom' ? 'inline-block' : 'none';">
+                                                <option value="Migrated thanks to #instafed" selected>❤️ Show some free love (adds "Migrated thanks to #instafed")</option>
+                                                <option value="[Post imported]">[Post imported]</option>
+                                                <option value="[Migrated from Instagram]">[Migrated from Instagram]</option>
+                                                <option value="custom">Custom text...</option>
+                                            </select>
+                                            <input type="text" id="customPlaceholder" style="display:none;margin-top:0.5em;" placeholder="Enter your custom text">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Optional Options -->
+                        <details class="options-section optional-options" id="optionalOptions">
+                            <summary class="optional-summary">
+                                <span class="summary-content">
+                                    <h4>Optional Options</h4>
+                                    <p class="section-description">These options are disabled by default. Enable them if you want to further customize the migration.</p>
+                                </span>
+                                <svg class="expand-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M7 10l5 5 5-5z"/>
+                                </svg>
+                            </summary>
+                            <div class="options-grid">
+                                <!-- Clean Sensitive Metadata -->
+                                <div class="option-card">
+                                    <label class="checkbox-container">
+                                        <input type="checkbox" id="cleanMetadata">
+                                        <span class="checkmark"></span>
+                                        <div class="option-header-row">
+                                            <h5>Clean Sensitive Metadata</h5>
+                                            <span class="option-status" data-checkbox="cleanMetadata">Désactivé</span>
+                                        </div>
+                                        <div class="option-content">
+                                            <p>Remove GPS and EXIF data for privacy protection</p>
+                                            <div class="option-explanation">
+                                                <p>EXIF data can contain GPS coordinates, camera settings, and timestamps that reveal personal information. Cleaning metadata helps protect your privacy.</p>
+                                            </div>
+                                            <div class="option-detail">
+                                                <label for="metadataLevel">Level:</label>
+                                                <select id="metadataLevel">
+                                                    <option value="strict">Remove all metadata (GPS, camera info, timestamps)</option>
+                                                    <option value="moderate">Remove GPS only (keep camera info)</option>
+                                                    <option value="light">Remove GPS and camera info (keep timestamps)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+
+                                <!-- Add Hashtags -->
+                                <div class="option-card">
+                                    <label class="checkbox-container">
+                                        <input type="checkbox" id="addHashtags">
+                                        <span class="checkmark"></span>
+                                        <div class="option-header-row">
+                                            <h5>Add Hashtags</h5>
+                                            <span class="option-status" data-checkbox="addHashtags">Désactivé</span>
+                                        </div>
+                                        <div class="option-content">
+                                            <p>Automatically add hashtags to your migrated posts</p>
+                                            <div class="option-explanation">
+                                                <p>Hashtags help others find your content on Pixelfed and the wider Fediverse. They're essential for building an audience on decentralized platforms.</p>
+                                            </div>
+                                            <div class="option-detail">
+                                                <label for="hashtagList">Hashtags:</label>
+                                                <input type="text" id="hashtagList" class="form-control" placeholder="#migration #pixelfed" value="#migration #pixelfed">
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                                <!-- Publication Date Management -->
+                                <div class="option-card">
+                                    <label class="checkbox-container">
+                                        <input type="checkbox" id="preserveDates">
+                                        <span class="checkmark"></span>
+                                        <div class="option-header-row">
+                                            <h5>Use Migration Date</h5>
+                                            <span class="option-status" data-checkbox="preserveDates">Désactivé</span>
+                                        </div>
+                                        <div class="option-content">
+                                            <p>Replace original dates with migration date/time</p>
+                                            <div class="option-explanation">
+                                                <p>Keep original dates to maintain chronological order, or set to import date to publish all content immediately and start building your audience right away.</p>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </details>
+
+                        <!-- Preview -->
+                        <div class="preview-section">
+                            <h4>What will be processed:</h4>
+                            <div class="preview-summary">
+                                <ul id="previewChanges">
+                                    <!-- Content will be generated dynamically by JavaScript -->
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="action-buttons hidden">
+                            <button class="btn-base btn-primary" onclick="startConversion()" aria-label="Start conversion with selected options">
+                                <svg class="icon icon--convert" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                </svg>
+                                Start Conversion
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Conversion -->
+                    <div class="migration-step" id="step4" role="region" aria-label="Step 4: Convert Archive">
+                        <div class="step-header">
+                            <h3>Converting Your Content</h3>
+                        </div>
+
+                        <div class="conversion-progress">
+                            <div class="progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Conversion progress">
+                                <div class="progress-bar" id="conversionProgress"></div>
+                            </div>
+                            <div id="conversionStatus" aria-live="polite" aria-atomic="true">Preparing files...</div>
+                        </div>
+
+                        <div class="fixes-applied hidden" id="fixesApplied" aria-live="polite" aria-atomic="true">
+                            <!-- Content will be generated dynamically by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Step 5: Download -->
+                    <div class="migration-step" id="step5" role="region" aria-label="Step 5: Download Converted Archive">
+                        <div class="step-header">
+                            <h3>Your Archive is Ready!</h3>
+                        </div>
+
+                        <div class="success-message" role="status" aria-live="polite" aria-atomic="true">
+                            <svg class="icon icon--success" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                            <p>Your Instagram content has been successfully converted to Pixelfed format.</p>
+                        </div>
+
+                        <div class="download-section">
+                            <div class="download-info">
+                                <h4>Download Your Converted Archive</h4>
+                                <p>The archive is now in the correct format for Pixelfed import (ZIP format containing JSON, properly structured).</p>
+                                <div class="format-info">
+                                    <svg class="icon icon--info" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                                    </svg>
+                                    <span>Format: ZIP archive containing JSON (ready for Pixelfed import)</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="action-buttons hidden">
+                            <button class="btn-base btn-primary" onclick="downloadArchive()" aria-label="Download converted Pixelfed archive as ZIP file">
+                                <svg class="icon icon--download" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                                </svg>
+                                Download ZIP Archive
+                            </button>
+                        </div>
+
+                        <!-- Next Steps -->
+                        <div class="next-steps">
+                            <h4>Next Steps to Complete Your Migration</h4>
+                            <div class="step5-next-steps-grid">
+                                <div class="step5-next-step-card">
+                                    <div class="step5-step-header">
+                                        <span class="step5-step-number">1</span>
+                                        <h5>Choose a Pixelfed Server</h5>
+                                    </div>
+                                    <p>Select a Pixelfed instance to host your account. Consider factors like community size, moderation policies, and server location.</p>
+                                    <a href="https://pixelfed.org/servers" target="_blank" rel="noopener" class="btn-base btn-secondary">Find Servers</a>
+                                </div>
+                                <div class="step5-next-step-card">
+                                    <div class="step5-step-header">
+                                        <span class="step5-step-number">2</span>
+                                        <h5>Import Your Archive</h5>
+                                    </div>
+                                    <p>Use the downloaded JSON archive file to import your content. Most Pixelfed servers support bulk import features.</p>
+                                    <button onclick="showImportGuide()" class="btn-base btn-secondary">View Import Guide</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Why Pixelfed Section -->
+            <section class="card-base" id="why-pixelfed">
+                <div class="section why-pixelfed-section">
+                    <h2>Why Migrate to Pixelfed?</h2>
+                    
+                    <!-- What is Pixelfed -->
+                    <div class="pixelfed-info">
+                        <div class="card-base info-box" role="note" aria-label="Pixelfed information">
+                            <h4>
+                                <svg class="icon icon--info" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                                </svg>
+                                What is Pixelfed?
+                            </h4>
+                            <p><strong>Pixelfed</strong> is a free and decentralized alternative to Instagram. Based on the ActivityPub protocol, it's part of the "Fediverse" ⁂ - a network of independent servers that communicate with each other.</p>
+                        </div>
+                    </div>
+
+                    <!-- Key Benefits -->
+                    <div class="benefits-section" role="region" aria-label="Key benefits of migration">
+                        <h3>Key Benefits</h3>
+                        <div class="benefits-grid">
+                            <div class="benefit-card" role="article" aria-label="Privacy first benefit">
+                                <svg class="icon icon--privacy" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                </svg>
+                                <h4>Privacy First</h4>
+                                <p>Your data stays yours. No tracking, no mining, no selling to advertisers.</p>
+                            </div>
+                            <div class="benefit-card" role="article" aria-label="Freedom of choice benefit">
+                                <svg class="icon icon--freedom" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                </svg>
+                                <h4>Freedom of Choice</h4>
+                                <p>Choose your server or host your own. You're not locked into one platform.</p>
+                            </div>
+                            <div class="benefit-card" role="article" aria-label="Connected community benefit">
+                                <div class="icon fediverse-icon" aria-hidden="true">⁂</div>
+                                <h4>Connected Community</h4>
+                                <p>Part of the Fediverse - connect with users on Mastodon, PeerTube, and more.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+
+
+
+            <!-- Additional Resources -->
+            <section class="card-base" id="sources">
+                <div class="section sources-section">
+                    <h2>Helpful Resources</h2>
+                    
+                    <div class="resources-grid" role="region" aria-label="Additional resources">
+                        <div class="resource-card" role="article" aria-label="Pixelfed documentation">
+                            <h4>Pixelfed Documentation</h4>
+                            <p>Official documentation and guides for Pixelfed users.</p>
+                            <a href="https://docs.pixelfed.org" target="_blank" rel="noopener">→ docs.pixelfed.org</a>
+                        </div>
+
+                        <div class="resource-card" role="article" aria-label="Fediverse information">
+                            <h4>Fediverse Guide</h4>
+                            <p>Learn about the decentralized social web and ActivityPub.</p>
+                            <a href="https://fediverse.party" target="_blank" rel="noopener">→ fediverse.party</a>
+                        </div>
+
+                        <div class="resource-card" role="article" aria-label="Pixelfed servers">
+                            <h4>Pixelfed Servers</h4>
+                            <p>Find and compare different Pixelfed instances.</p>
+                            <a href="https://pixelfed.org/servers" target="_blank" rel="noopener">→ pixelfed.org/servers</a>
+                        </div>
+
+                        <div class="resource-card" role="article" aria-label="Community support">
+                            <h4>Community Support</h4>
+                            <p>Get help from the Pixelfed and Fediverse communities.</p>
+                            <a href="https://github.com/pixelfed/pixelfed/discussions" target="_blank" rel="noopener">→ GitHub Discussions</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="app-footer" role="contentinfo">
+                <div class="container footer-container">
+                    <p>Fork me on GitHub.</p>
+                    <p style="margin-top: 0.5rem; font-size: 0.75rem; opacity: 0.8;">A mini-project by <a href="https://jasonrouet.com/" target="_blank" rel="noopener" aria-label="Visit Jason Rouet's website (opens in new tab)">Jason Rouet</a></p>
+                </div>
+            </footer>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html> 

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feed Subscription Organizer</title>
+    <link rel="icon" type="image/svg+xml" href="../../shared/assets/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="../../shared/assets/favicon.ico">
+    <link rel="stylesheet" href="../../shared/design-system/variables.css">
+    <link rel="stylesheet" href="../../shared/design-system/base.css">
+    <link rel="stylesheet" href="../../shared/design-system/components.css">
+    <link rel="stylesheet" href="../../shared/design-system/utilities.css">
+</head>
+<body>
+    <!-- Le contenu natif sera masqué dynamiquement -->
+    <div id="native-content" class="container">
+        <header class="header">
+            <h1>Feed Subscription Organizer</h1>
+            <p>Découvrez vos patterns de lecture et optimisez votre organisation RSS</p>
+        </header>
+
+        <section id="uploadSection">
+            <div class="card">
+                <div class="upload-zone" id="dropzone">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--blue); margin-bottom: 1rem;">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7,10 12,15 17,10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    <div style="font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem;">Déposez vos fichiers ici</div>
+                    <p style="margin-bottom: 1rem;">Pour une analyse complète, déposez :</p>
+                    <ul style="margin-bottom: 1rem; text-align: left; display: inline-block;">
+                        <li><strong>starred.json</strong> - Vos articles favoris (obligatoire)</li>
+                        <li><strong>subscriptions.xml</strong> - Vos abonnements OPML (optionnel)</li>
+                    </ul>
+                    <button type="button" class="btn btn-primary">Choisir des fichiers</button>
+                    <input type="file" id="fileInput" accept=".json,.xml,.opml" multiple class="sr-only" />
+                </div>
+            </div>
+        </section>
+
+        <section class="loading" id="loadingSection">
+            <div class="card">
+                <div class="loading-spinner"></div>
+                <p><strong>Analyse de vos patterns de lecture...</strong></p>
+                <p><small>Cela peut prendre quelques instants pour les gros fichiers</small></p>
+            </div>
+        </section>
+
+        <section class="hidden" id="resultsSection">
+            <!-- Section principale : Résultats d'analyse -->
+            <div class="card">
+                <h3>Résultats de l'analyse de votre fichier JSON</h3>
+                <p style="margin-bottom: 1.5rem; color: var(--gray);">Informations extraites de vos favoris.</p>
+                
+                <!-- 1. Évolution des favoris par année -->
+                <div id="yearlyEvolutionSection"></div>
+                
+                <!-- 2. Les 3 cards -->
+                <div class="grid grid-cols-3" id="statisticsGrid"></div>
+                
+                <!-- 3. Récapitulatif -->
+                <div id="summarySection"></div>
+                
+                <!-- 4. Bouton voir toutes les sources -->
+                <div id="allSourcesButtonSection"></div>
+            </div>
+
+            <!-- Section principale : Recommandations d'organisation -->
+            <div class="card" id="recommendationsCard">
+                <h3>Recommandations d'organisation personnalisées</h3>
+                <div id="recommendationsContainer"></div>
+            </div>
+
+
+        </section>
+
+        <footer class="footer">
+            <p>Confidentialité : Votre fichier est analysé localement dans votre navigateur.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.75rem; opacity: 0.8;">Un mini-projet de <a href="https://jasonrouet.com/" target="_blank" rel="noopener" style="color: var(--blue); text-decoration: none;">Jason Rouet</a></p>
+        </footer>
+    </div>
+
+    <script type="module">
+        import Card from '../../../shared/components/Card/Card.js';
+        import Button from '../../../shared/components/Button/Button.js';
+        import Header from '../../../shared/components/Header/Header.js';
+        import Footer from '../../../shared/components/Footer/Footer.js';
+        import Grid from '../../../shared/components/Grid/Grid.js';
+        import Loader from '../../../shared/components/Loader/Loader.js';
+        import { List, ListItem } from '../../../shared/components/List/index.js';
+        import Badge from '../../../shared/components/Badge/Badge.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Masquer le contenu natif
+            const nativeContent = document.getElementById('native-content');
+            if (nativeContent) nativeContent.style.display = 'none';
+
+            // Générer le header
+            const header = Header({
+                title: 'Feed Subscription Organizer',
+                subtitle: 'Découvrez vos patterns de lecture et optimisez votre organisation RSS'
+            });
+
+            // Zone de dépôt de fichiers
+            const uploadZone = Card({
+                children: [
+                    // SVG icon (conservé tel quel)
+                    document.createRange().createContextualFragment(`
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--blue); margin-bottom: 1rem;">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7,10 12,15 17,10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                    `),
+                    'Déposez vos fichiers ici',
+                    List({
+                        children: [
+                            ListItem({ children: '<strong>starred.json</strong> - Vos articles favoris (obligatoire)' }),
+                            ListItem({ children: '<strong>subscriptions.xml</strong> - Vos abonnements OPML (optionnel)' })
+                        ]
+                    }),
+                    Button({ variant: 'primary', children: 'Choisir des fichiers' }),
+                    document.createElement('input').appendChild(document.createTextNode(''))
+                        .setAttribute('type', 'file')
+                        .setAttribute('id', 'fileInput')
+                        .setAttribute('accept', '.json,.xml,.opml')
+                        .setAttribute('multiple', true)
+                        .setAttribute('class', 'sr-only')
+                ]
+            });
+
+            // Section de chargement
+            const loadingSection = Card({
+                children: [
+                    Loader({ message: 'Analyse de vos patterns de lecture...' }),
+                    'Cela peut prendre quelques instants pour les gros fichiers'
+                ]
+            });
+
+            // Section des résultats (initialement masquée)
+            const resultsSection = Card({
+                children: [
+                    Header({ title: 'Résultats de l\'analyse de votre fichier JSON', subtitle: 'Informations extraites de vos favoris.' }),
+                    // Sections à remplir dynamiquement
+                    document.createElement('div').setAttribute('id', 'yearlyEvolutionSection'),
+                    Grid({ columns: 3, children: [] }).setAttribute('id', 'statisticsGrid'),
+                    document.createElement('div').setAttribute('id', 'summarySection'),
+                    document.createElement('div').setAttribute('id', 'allSourcesButtonSection')
+                ]
+            });
+
+            // Section des recommandations
+            const recommendationsSection = Card({
+                children: [
+                    Header({ title: 'Recommandations d\'organisation personnalisées', subtitle: '' }),
+                    document.createElement('div').setAttribute('id', 'recommendationsContainer')
+                ]
+            });
+
+            // Footer
+            const footer = Footer({
+                children: [
+                    'Confidentialité : Votre fichier est analysé localement dans votre navigateur.',
+                    document.createRange().createContextualFragment(`
+                        <p style="margin-top: 0.5rem; font-size: 0.75rem; opacity: 0.8;">
+                            Un mini-projet de <a href="https://jasonrouet.com/" target="_blank" rel="noopener" style="color: var(--blue); text-decoration: none;">Jason Rouet</a>
+                        </p>
+                    `)
+                ]
+            });
+
+            // Assemblage et montage
+            const container = document.createElement('div');
+            container.className = 'container';
+            [header, uploadZone, loadingSection, resultsSection, recommendationsSection, footer]
+                .forEach(component => container.appendChild(component));
+
+            // Insertion dans le DOM
+            document.body.appendChild(container);
+        });
+    </script>
+
+    <script src="analytics.js"></script>
+    <script>
+        // Initialiser l'application
+        const app = new App();
+    </script>
+</body>
+</html> 

@@ -1,0 +1,24 @@
+// components/Loader/Loader.css
+.loading {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(255,255,255,0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+}
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--light, #f3f4f6);
+  border-left: 4px solid var(--blue, #2c5aa0);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

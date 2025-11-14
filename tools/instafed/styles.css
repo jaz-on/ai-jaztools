@@ -1,0 +1,45 @@
+/* InstaFed - Main Stylesheet */
+
+/* Import shared design system */
+@import url('../../shared/design-system/variables.css');
+@import url('../../shared/design-system/base.css');
+@import url('../../shared/design-system/components.css');
+@import url('../../shared/design-system/utilities.css');
+
+/* Import modular CSS files */
+@import url('styles/base.css');
+@import url('styles/layout.css');
+@import url('styles/components.css');
+@import url('styles/icons.css');
+
+/* Additional responsive styles for mobile comparison */
+.comparison-mobile {
+    display: none;
+}
+
+.comparison-desktop {
+    display: block;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 48rem) {
+    .feature-row {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        padding: 0.75rem;
+    }
+
+    .info-box,
+    .warning-box,
+    .success-box {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .step-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+} 

@@ -1,0 +1,6 @@
+type: static
+build:
+  command: ""
+  directory: .
+port: 80
+

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI JazTools - Mini outils rapides</title>
+    <meta name="description" content="Collection de mini outils développés rapidement pour répondre à des besoins temporaires et ponctuels">
+    <link rel="icon" type="image/svg+xml" href="../shared/assets/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="../shared/assets/favicon.ico">
+    <link rel="stylesheet" href="../shared/design-system/variables.css">
+    <link rel="stylesheet" href="../shared/design-system/base.css">
+    <link rel="stylesheet" href="../shared/design-system/components.css">
+    <link rel="stylesheet" href="../shared/design-system/utilities.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="app-header">
+            <h1>AI JazTools</h1>
+            <p class="subtitle">Collection de mini outils rapides pour répondre à des besoins temporaires et ponctuels</p>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="main-nav">
+            <ul class="nav-list">
+                <li><a href="#tools" class="btn btn-secondary">Voir les outils</a></li>
+                <li><a href="#about" class="btn btn-secondary">À propos</a></li>
+            </ul>
+        </nav>
+
+        <!-- Tools Section -->
+        <section id="tools" class="tools-section">
+            <h2 class="text-center text-2xl font-semibold mb-6">Les outils disponibles</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Feed Minitools -->
+                <div class="card tool-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Feed Minitools</h3>
+                        <span class="badge badge-primary">RSS</span>
+                    </div>
+                    <div class="card-body">
+                        <p>Suite d'outils pour gérer, migrer et organiser vos flux RSS et favoris.</p>
+                        <ul class="tool-features">
+                            <li>Favorites Migrator - Migration de favoris entre plateformes</li>
+                            <li>Subscription Organizer - Organisation et analyse d'abonnements RSS</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer">
+                        <a href="../tools/feed-minitools/index.html" class="btn btn-primary w-full">Accéder à Feed Minitools</a>
+                    </div>
+                </div>
+
+                <!-- InstaFed -->
+                <div class="card tool-card">
+                    <div class="card-header">
+                        <h3 class="card-title">InstaFed</h3>
+                        <span class="badge badge-success">Migration</span>
+                    </div>
+                    <div class="card-body">
+                        <p>Outil gratuit pour migrer vos photos Instagram vers Pixelfed. Conversion automatique et respect de la vie privée.</p>
+                        <ul class="tool-features">
+                            <li>Conversion automatique des archives Instagram</li>
+                            <li>Traitement 100% local (données privées)</li>
+                            <li>Format compatible Pixelfed</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer">
+                        <a href="../tools/instafed/index.html" class="btn btn-primary w-full">Accéder à InstaFed</a>
+                    </div>
+                </div>
+
+                <!-- Podcast Analyzer -->
+                <div class="card tool-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Podcast Analyzer</h3>
+                        <span class="badge badge-info">IA</span>
+                    </div>
+                    <div class="card-body">
+                        <p>Analyse automatique de podcasts WordPress avec IA. Extraction de points clés, citations et ressources.</p>
+                        <ul class="tool-features">
+                            <li>Analyse par URL ou transcription</li>
+                            <li>Extraction de points clés et citations</li>
+                            <li>Export des analyses</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer">
+                        <a href="../tools/podcast-analyzer/index.html" class="btn btn-primary w-full">Accéder à Podcast Analyzer</a>
+                    </div>
+                </div>
+
+                <!-- URLs to OPML -->
+                <div class="card tool-card">
+                    <div class="card-header">
+                        <h3 class="card-title">URLs to OPML</h3>
+                        <span class="badge badge-warning">RSS</span>
+                    </div>
+                    <div class="card-body">
+                        <p>Convertit une liste d'URLs de sites web en format OPML en détectant automatiquement leurs flux RSS/Atom.</p>
+                        <ul class="tool-features">
+                            <li>Traitement en lot d'URLs</li>
+                            <li>Détection automatique des flux</li>
+                            <li>Génération de fichiers OPML</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer">
+                        <a href="../tools/feed-minitools/urls-to-opml/index.html" class="btn btn-primary w-full">Accéder à URLs to OPML</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about-section">
+            <div class="card">
+                <h2>À propos</h2>
+                <p>Cette collection regroupe des mini outils développés rapidement pour répondre à des besoins temporaires et ponctuels. Ils partagent une nomenclature commune, une cohérence de code/stack, CSS et nommage pour être maintenus en commun.</p>
+                <p>Les outils sont soit des méthodes d'utilisation d'IA pour des mini projets, soit des mini projets générés via IA.</p>
+                <h3>Caractéristiques communes</h3>
+                <ul>
+                    <li>Design system unifié</li>
+                    <li>Nomenclature cohérente</li>
+                    <li>Stack technique standardisée</li>
+                    <li>Déploiement via Coolify sur VPS</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="app-footer mt-8">
+            <p>Collection open source - Vos données restent sur votre appareil</p>
+            <p style="margin-top: 0.5rem; font-size: 0.75rem; opacity: 0.8;">
+                Un projet de <a href="https://jasonrouet.com/" target="_blank" rel="noopener">Jason Rouet</a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
+

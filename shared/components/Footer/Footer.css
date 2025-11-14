@@ -1,0 +1,17 @@
+// components/Footer/Footer.css
+.app-footer {
+  text-align: center;
+  margin-top: 3rem;
+  padding: 1.5rem;
+  color: var(--gray, #6b7280);
+  font-size: 0.875rem;
+  background: var(--light, #f3f4f6);
+  border-radius: 0.5rem;
+}
+.app-footer a {
+  color: var(--blue, #2c5aa0);
+  text-decoration: none;
+}
+.app-footer a:hover {
+  text-decoration: underline;
+}

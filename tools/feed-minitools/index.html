@@ -1,0 +1,69 @@
+<!-- feed-minitools/index.html : Page d'accueil de la suite Feed Minitools -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feed Minitools</title>
+    <link rel="icon" type="image/svg+xml" href="../../shared/assets/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="../../shared/assets/favicon.ico">
+    <link rel="stylesheet" href="../../shared/design-system/variables.css">
+    <link rel="stylesheet" href="../../shared/design-system/base.css">
+    <link rel="stylesheet" href="../../shared/design-system/components.css">
+    <link rel="stylesheet" href="../../shared/design-system/utilities.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation principale -->
+        <nav class="flex items-center justify-center my-4">
+            <div class="flex items-center mr-6">
+                <img src="../../shared/assets/favicon.svg" alt="Logo Feed Minitools" style="height: 2rem; margin-right: 0.75rem;">
+                <span class="font-bold text-xl">Feed Minitools</span>
+            </div>
+            <ul class="flex items-center gap-4">
+                <li><a href="favorites-migrator/public/index.html" class="btn btn-secondary">Favorites Migrator</a></li>
+                <li><a href="subscription-organizer/index.html" class="btn btn-secondary">Subscription Organizer</a></li>
+                <li><a href="urls-to-opml/index.html" class="btn btn-secondary">URLs to OPML</a></li>
+            </ul>
+        </nav>
+
+        <!-- Header principal -->
+        <header class="app-header">
+            <h1>Feed Minitools</h1>
+            <p class="subtitle">Une suite d'outils pour mieux gérer, migrer et organiser vos flux RSS et favoris.</p>
+        </header>
+
+        <!-- Section outils -->
+        <section>
+            <h2 class="text-center text-2xl font-semibold mb-6">Les outils de la suite</h2>
+            <div class="grid grid-cols-3 stats-grid">
+                <!-- Carte 1 -->
+                <div class="card flex flex-col items-center justify-between">
+                    <h3 class="text-xl font-bold mb-2">Favorites Migrator</h3>
+                    <p class="text-center mb-4">Migrez facilement vos favoris RSS d'une plateforme à l'autre, sans perte de données.</p>
+                    <a href="favorites-migrator/public/index.html" class="btn btn-primary w-full">Accéder à l'outil</a>
+                </div>
+                <!-- Carte 2 -->
+                <div class="card flex flex-col items-center justify-between">
+                    <h3 class="text-xl font-bold mb-2">Subscription Organizer</h3>
+                    <p class="text-center mb-4">Analysez et organisez vos abonnements RSS pour optimiser votre veille et vos lectures.</p>
+                    <a href="subscription-organizer/index.html" class="btn btn-primary w-full">Accéder à l'outil</a>
+                </div>
+                <!-- Carte 3 -->
+                <div class="card flex flex-col items-center justify-between">
+                    <h3 class="text-xl font-bold mb-2">URLs to OPML</h3>
+                    <p class="text-center mb-4">Convertissez une liste d'URLs de sites web en fichier OPML en détectant automatiquement leurs flux RSS/Atom.</p>
+                    <a href="urls-to-opml/index.html" class="btn btn-primary w-full">Accéder à l'outil</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="app-footer mt-8">
+            <p>Suite open source, vos données restent sur votre appareil.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.75rem; opacity: 0.8;">Un projet de <a href="https://jasonrouet.com/" target="_blank" rel="noopener">Jason Rouet</a></p>
+        </footer>
+    </div>
+</body>
+</html>
+

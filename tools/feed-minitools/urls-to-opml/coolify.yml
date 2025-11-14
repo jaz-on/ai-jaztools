@@ -1,0 +1,10 @@
+# URLs to OPML - Static site configuration
+# This is a client-side application that runs entirely in the browser
+# No backend or build process required
+
+type: static
+build:
+  command: echo "No build required - static files only"
+  directory: .
+port: 80
+

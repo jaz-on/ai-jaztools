@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URLs to OPML</title>
+    <link rel="icon" type="image/svg+xml" href="../../../shared/assets/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="../../../shared/assets/favicon.ico">
+    <link rel="stylesheet" href="../../../shared/design-system/variables.css">
+    <link rel="stylesheet" href="../../../shared/design-system/base.css">
+    <link rel="stylesheet" href="../../../shared/design-system/components.css">
+    <link rel="stylesheet" href="../../../shared/design-system/utilities.css">
+</head>
+<body>
+    <main class="container" style="max-width: 800px; margin: 2rem auto; padding: 1rem;">
+        <header style="text-align: center; margin-bottom: 2rem;">
+            <h1>URLs to OPML</h1>
+            <p>Convert website URLs to OPML feed subscriptions</p>
+        </header>
+
+        <div class="card-base" style="padding: 2rem;">
+            <div style="margin-bottom: 1.5rem;">
+                <label for="urls" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">
+                    Enter website URLs (one per line):
+                </label>
+                <div style="font-size: 0.875rem; color: var(--gray); margin-bottom: 0.5rem;">
+                    Example:<br>
+                    https://example.com<br>
+                    https://another-site.com
+                </div>
+                <textarea
+                    id="urls"
+                    style="width: 100%; min-height: 120px; padding: 0.75rem; border: 1px solid var(--gray-light); border-radius: 4px; font-family: inherit;"
+                    placeholder="https://example.com&#10;https://another-site.com"
+                ></textarea>
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+                <button id="findFeedsBtn" class="btn-base btn-primary" style="flex: 0 0 auto;">
+                    <span id="findFeedsText">Find Feeds</span>
+                    <span id="findFeedsLoading" class="hidden">Searching...</span>
+                </button>
+                <button id="downloadOPMLBtn" class="btn-base btn-secondary" style="flex: 0 0 auto;" disabled>
+                    Download OPML
+                </button>
+            </div>
+
+            <div id="errorMessage" class="message error hidden" style="margin-bottom: 1rem;"></div>
+
+            <div id="feedsResults" class="hidden">
+                <h3 style="margin-bottom: 1rem;">Found Feeds:</h3>
+                <div id="feedsList"></div>
+            </div>
+        </div>
+
+        <footer style="text-align: center; margin-top: 2rem; padding: 1rem; color: var(--gray); font-size: 0.875rem;">
+            <p>All processing happens in your browser. No data is sent to any server.</p>
+        </footer>
+    </main>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
+

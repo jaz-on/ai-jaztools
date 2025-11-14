@@ -1,0 +1,96 @@
+/* ai-jaztools - Variables CSS unifiées */
+
+:root {
+    /* Couleurs principales */
+    --blue: #2c5aa0;
+    --blue-dark: #1e3f6b;
+    --blue-light: #4a7bc8;
+    --dark: #000;
+    --white: #fff;
+    --gray: #6b7280;
+    --gray-light: #9ca3af;
+    --gray-dark: #374151;
+    --light: #f3f4f6;
+    --light-dark: #e5e7eb;
+    
+    /* Couleurs sémantiques */
+    --success: #4caf50;
+    --success-light: #66bb6a;
+    --success-dark: #388e3c;
+    --error: #f44336;
+    --error-light: #ef5350;
+    --error-dark: #d32f2f;
+    --warning: #ff9800;
+    --warning-light: #ffb74d;
+    --warning-dark: #f57c00;
+    --info: #2196f3;
+    --info-light: #42a5f5;
+    --info-dark: #1976d2;
+    
+    /* Espacement et dimensions */
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space: 1rem;
+    --space-md: 1.5rem;
+    --space-lg: 2rem;
+    --space-xl: 3rem;
+    --space-2xl: 4rem;
+    
+    /* Rayons de bordure */
+    --radius-sm: 0.25rem;
+    --radius: 0.5rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1rem;
+    --radius-xl: 1.5rem;
+    
+    /* Ombres */
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow: 0 1px 3px rgba(0,0,0,0.1);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+    --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+    --shadow-xl: 0 20px 25px rgba(0,0,0,0.1);
+    
+    /* Transitions */
+    --transition-fast: all 0.15s ease;
+    --transition: all 0.2s ease;
+    --transition-slow: all 0.3s ease;
+    
+    /* Typographie */
+    --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.25rem;
+    --font-size-2xl: 1.5rem;
+    --font-size-3xl: 1.875rem;
+    --font-size-4xl: 2.25rem;
+    
+    /* Poids de police */
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    
+    /* Hauteur de ligne */
+    --line-height-tight: 1.25;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.75;
+    
+    /* Z-index */
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
+    --z-fixed: 1030;
+    --z-modal-backdrop: 1040;
+    --z-modal: 1050;
+    --z-popover: 1060;
+    --z-tooltip: 1070;
+    
+    /* Breakpoints */
+    --breakpoint-sm: 640px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 1024px;
+    --breakpoint-xl: 1280px;
+    --breakpoint-2xl: 1536px;
+}
+
