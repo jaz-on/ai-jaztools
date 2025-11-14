@@ -25,7 +25,6 @@ const TOOLS = [
     { name: 'subscription-organizer', displayName: 'Subscription Organizer', color: COLORS.primary },
     { name: 'urls-to-opml', displayName: 'URLs to OPML', color: COLORS.primary },
     { name: 'instafed', displayName: 'InstaFed', color: COLORS.primary },
-    { name: 'podcast-analyzer', displayName: 'Podcast Analyzer', color: COLORS.primary },
 ];
 
 /**

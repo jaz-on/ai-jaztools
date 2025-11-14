@@ -26,7 +26,6 @@ node scripts/generate-favicons.js
 - `subscription-organizer` → "Subscription Organizer"
 - `urls-to-opml` → "URLs to OPML"
 - `instafed` → "InstaFed"
-- `podcast-analyzer` → "Podcast Analyzer"
 
 ### Personnalisation
 
