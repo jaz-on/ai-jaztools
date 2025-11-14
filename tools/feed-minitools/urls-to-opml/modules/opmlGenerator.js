@@ -1,11 +1,18 @@
 /**
- * OPML Generator Module - Generate OPML files from feed data
+ * @module tools/feed-minitools/urls-to-opml/modules/opmlGenerator
+ * 
+ * Module de génération OPML
+ * 
+ * Génère des fichiers OPML à partir des données de flux.
  */
 
 /**
- * Generate OPML content from feeds data
- * @param {Array<Object>} feedsData - Array of site feeds objects
- * @returns {string} OPML XML content
+ * Génère le contenu OPML à partir des données de flux
+ * 
+ * @param {Array<Object>} feedsData - Tableau d'objets contenant les flux des sites
+ * @param {string} feedsData[].site_url - URL du site
+ * @param {Array<Object>} feedsData[].feeds - Tableau de flux avec url et title
+ * @returns {string} Contenu XML OPML
  */
 export function generateOPML(feedsData) {
     const dateCreated = new Date().toISOString();
@@ -35,9 +42,11 @@ ${outlines}  </body>
 }
 
 /**
- * Escape XML special characters
- * @param {string} str - String to escape
- * @returns {string} Escaped string
+ * Échappe les caractères spéciaux XML
+ * 
+ * @param {string} str - Chaîne à échapper
+ * @returns {string} Chaîne échappée
+ * @private
  */
 function escapeXML(str) {
     if (!str) return '';
@@ -50,9 +59,11 @@ function escapeXML(str) {
 }
 
 /**
- * Download OPML file
- * @param {string} opmlContent - OPML XML content
- * @param {string} filename - Filename for download (default: 'feeds.opml')
+ * Télécharge un fichier OPML
+ * 
+ * @param {string} opmlContent - Contenu XML OPML
+ * @param {string} [filename='feeds.opml'] - Nom du fichier pour le téléchargement
+ * @returns {void}
  */
 export function downloadOPML(opmlContent, filename = 'feeds.opml') {
     const blob = new Blob([opmlContent], { type: 'text/xml' });

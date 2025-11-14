@@ -1,5 +1,32 @@
-// public/js/validation.js - Frontend validation module
+/**
+ * @module tools/feed-minitools/favorites-migrator/modules/validation
+ * 
+ * Module de validation pour Favorites Migrator
+ * 
+ * Fournit des fonctions de validation pour les champs de formulaire.
+ */
+
+import { showError as displayError, showSuccess as displaySuccess } from '../../../../shared/utils/messages.js';
+
+// Helper function to get shared components
+function getSharedComponent(name) {
+    if (window.SharedComponents && window.SharedComponents[name]) {
+        return window.SharedComponents[name];
+    }
+    return null;
+}
+
+/**
+ * Classe de gestion de la validation
+ * 
+ * @class
+ */
 class ValidationModule {
+    /**
+     * Crée une instance du module de validation
+     * 
+     * @constructor
+     */
     constructor() {
         this.validationRules = {
             email: {
@@ -21,9 +48,10 @@ class ValidationModule {
     }
 
     /**
-     * Validate email field
-     * @param {HTMLInputElement} input - Email input element
-     * @returns {boolean} - Validation result
+     * Valide le champ email
+     * 
+     * @param {HTMLInputElement} input - Élément input email
+     * @returns {boolean} Résultat de la validation
      */
     validateEmail(input) {
         const email = input.value.trim();
@@ -46,8 +74,9 @@ class ValidationModule {
     }
 
     /**
-     * Validate password field
-     * @param {HTMLInputElement} input - Password input element
+     * Valide le champ mot de passe
+     * 
+     * @param {HTMLInputElement} input - Élément input mot de passe
      * @returns {boolean} - Validation result
      */
     validatePassword(input) {
@@ -248,45 +277,101 @@ class ValidationModule {
     }
 
     /**
-     * Show field error
+     * Show field error with accessibility support
      * @param {HTMLInputElement} input - Input element
      * @param {string} message - Error message
      */
     showFieldError(input, message) {
-        input.classList.add('error');
+        input.classList.add('error', 'input-error');
+        input.setAttribute('aria-invalid', 'true');
         
-        // Remove old error message if it exists
-        const existingError = input.parentNode.querySelector('.field-error');
-        if (existingError) {
-            existingError.remove();
+        // Get or create error element ID
+        const errorId = `${input.id}-error`;
+        let errorElement = document.getElementById(errorId);
+        
+        if (!errorElement) {
+            // Create error element if it doesn't exist
+            errorElement = document.createElement('span');
+            errorElement.id = errorId;
+            errorElement.className = 'error-message field-error';
+            errorElement.setAttribute('role', 'alert');
+            errorElement.setAttribute('aria-live', 'polite');
+            errorElement.setAttribute('aria-atomic', 'true');
+            
+            // Insert after input or at end of parent
+            if (input.nextSibling) {
+                input.parentNode.insertBefore(errorElement, input.nextSibling);
+            } else {
+                input.parentNode.appendChild(errorElement);
+            }
         }
         
-        // Add new error message
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'field-error';
-        errorDiv.textContent = message;
-        input.parentNode.appendChild(errorDiv);
+        // Update error message
+        errorElement.textContent = message;
+        errorElement.classList.remove('hidden');
+        
+        // Update aria-describedby to include error
+        const describedBy = input.getAttribute('aria-describedby') || '';
+        if (!describedBy.includes(errorId)) {
+            input.setAttribute('aria-describedby', `${describedBy} ${errorId}`.trim());
+        }
+        
+        // Focus the input for better UX
+        input.focus();
     }
 
     /**
-     * Clear field error
+     * Clear field error with accessibility support
      * @param {HTMLInputElement} input - Input element
      */
     clearFieldError(input) {
-        input.classList.remove('error');
-        const errorDiv = input.parentNode.querySelector('.field-error');
-        if (errorDiv) {
-            errorDiv.remove();
+        input.classList.remove('error', 'input-error');
+        input.setAttribute('aria-invalid', 'false');
+        
+        const errorId = `${input.id}-error`;
+        const errorElement = document.getElementById(errorId);
+        if (errorElement) {
+            errorElement.textContent = '';
+            errorElement.classList.add('hidden');
+        }
+        
+        // Remove error ID from aria-describedby
+        const describedBy = input.getAttribute('aria-describedby') || '';
+        const updatedDescribedBy = describedBy
+            .split(' ')
+            .filter(id => id !== errorId)
+            .join(' ')
+            .trim();
+        if (updatedDescribedBy) {
+            input.setAttribute('aria-describedby', updatedDescribedBy);
+        } else {
+            input.removeAttribute('aria-describedby');
         }
     }
 
     /**
-     * Show form error
-     * @param {string} message - Error message
+     * Affiche une erreur de formulaire
+     * 
+     * @param {string} message - Message d'erreur
+     * @returns {void}
      */
     showFormError(message) {
-        const errorDiv = document.getElementById('error-message');
-        if (errorDiv) {
+        const errorDiv = document.getElementById('error-message-container') || document.getElementById('error-message');
+        const Message = getSharedComponent('Message');
+        if (Message && errorDiv) {
+            errorDiv.innerHTML = '';
+            const messageEl = Message({
+                type: 'error',
+                children: message
+            });
+            errorDiv.appendChild(messageEl);
+            errorDiv.classList.remove('hidden');
+            
+            setTimeout(() => {
+                errorDiv.innerHTML = '';
+                errorDiv.classList.add('hidden');
+            }, 8000);
+        } else if (errorDiv) {
             errorDiv.textContent = message;
             errorDiv.classList.remove('hidden');
             
@@ -297,12 +382,28 @@ class ValidationModule {
     }
 
     /**
-     * Show form success
-     * @param {string} message - Success message
+     * Affiche un message de succès de formulaire
+     * 
+     * @param {string} message - Message de succès
+     * @returns {void}
      */
     showFormSuccess(message) {
-        const successDiv = document.getElementById('success-message');
-        if (successDiv) {
+        const successDiv = document.getElementById('success-message-container') || document.getElementById('success-message');
+        const Message = getSharedComponent('Message');
+        if (Message && successDiv) {
+            successDiv.innerHTML = '';
+            const messageEl = Message({
+                type: 'success',
+                children: message
+            });
+            successDiv.appendChild(messageEl);
+            successDiv.classList.remove('hidden');
+            
+            setTimeout(() => {
+                successDiv.innerHTML = '';
+                successDiv.classList.add('hidden');
+            }, 3000);
+        } else if (successDiv) {
             successDiv.textContent = message;
             successDiv.classList.remove('hidden');
             

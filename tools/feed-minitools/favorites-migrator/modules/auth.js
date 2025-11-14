@@ -1,14 +1,34 @@
-// public/js/auth.js - Frontend authentication module
-import Button from '../../../components/Button/Button.js';
+/**
+ * @module tools/feed-minitools/favorites-migrator/modules/auth
+ * 
+ * Module d'authentification pour Favorites Migrator
+ * 
+ * Gère l'authentification utilisateur avec l'API Feedbin.
+ */
 
+import Button from '../../../../shared/components/Button/Button.js';
+import { createError, displayError, ErrorType } from '../../../../shared/utils/error-handler.js';
+
+/**
+ * Classe de gestion de l'authentification
+ * 
+ * @class
+ */
 class AuthModule {
+    /**
+     * Crée une instance du module d'authentification
+     * 
+     * @constructor
+     */
     constructor() {
         this.credentials = null;
         this.isAuthenticated = false;
     }
 
     /**
-     * Initialize the auth module
+     * Initialise le module d'authentification
+     * 
+     * @returns {void}
      */
     init() {
         // Bind login form events
@@ -19,9 +39,10 @@ class AuthModule {
     }
 
     /**
-     * Handle login form submission
-     * @param {Event} event - Form submission event
-     * @returns {Promise<boolean>} - Success status
+     * Gère la soumission du formulaire de connexion
+     * 
+     * @param {Event} event - Événement de soumission du formulaire
+     * @returns {Promise<boolean>} Statut de succès
      */
     async handleLogin(event) {
         event.preventDefault();
@@ -337,29 +358,33 @@ class AuthModule {
      * @param {string} message - Error message
      */
     showError(message) {
-        const errorDiv = document.getElementById('error-message');
+        const errorDiv = document.getElementById('error-message-container') || document.getElementById('error-message');
         
-        // More explicit error messages
+        // More explicit error messages (en français)
         const errorMessages = {
-            'Invalid credentials': 'Incorrect email or password. Check your Feedbin credentials.',
-            'Network error': 'Connection problem. Check your internet connection.',
-            'Rate limit exceeded': 'Too many requests. Please wait a few minutes.',
-            'File format error': 'Invalid file format. Use a JSON file exported from FreshRSS.',
-            'Authentication failed': 'Authentication failed. Check your Feedbin credentials.',
-            'Not authenticated': 'Session expired. Please log in again.',
-            'Missing data to start migration': 'Please first load a FreshRSS file and analyze Feedbin.',
-            'Invalid FreshRSS file format': 'The file must contain an "items" array with your FreshRSS favorites.',
-            'Unable to retrieve Feedbin subscriptions': 'Check your Feedbin credentials and internet connection.'
+            'Invalid credentials': 'Email ou mot de passe incorrect. Vérifiez vos identifiants Feedbin.',
+            'Network error': 'Problème de connexion. Vérifiez votre connexion internet.',
+            'Rate limit exceeded': 'Trop de requêtes. Veuillez attendre quelques minutes.',
+            'File format error': 'Format de fichier invalide. Utilisez un fichier JSON exporté depuis FreshRSS.',
+            'Authentication failed': 'Échec de l\'authentification. Vérifiez vos identifiants Feedbin.',
+            'Not authenticated': 'Session expirée. Veuillez vous reconnecter.',
+            'Missing data to start migration': 'Veuillez d\'abord charger un fichier FreshRSS et analyser Feedbin.',
+            'Invalid FreshRSS file format': 'Le fichier doit contenir un tableau "items" avec vos favoris FreshRSS.',
+            'Unable to retrieve Feedbin subscriptions': 'Vérifiez vos identifiants Feedbin et votre connexion internet.'
         };
         
         const userMessage = errorMessages[message] || message;
-        errorDiv.textContent = userMessage;
-        errorDiv.classList.remove('hidden');
-        
-        // Hide after 8 seconds for important errors
-        setTimeout(() => {
-            errorDiv.classList.add('hidden');
-        }, 8000);
+        const Message = this.getSharedComponent('Message');
+        if (Message && errorDiv) {
+            errorDiv.innerHTML = '';
+            const messageEl = Message({
+                type: 'error',
+                children: userMessage
+            });
+            errorDiv.appendChild(messageEl);
+        } else if (errorDiv) {
+            displayError(userMessage, errorDiv);
+        }
     }
 
     /**
@@ -367,21 +392,46 @@ class AuthModule {
      * @param {string} message - Success message
      */
     showSuccess(message) {
-        const successDiv = document.getElementById('success-message');
-        successDiv.textContent = message;
-        successDiv.classList.remove('hidden');
-        
-        setTimeout(() => {
-            successDiv.classList.add('hidden');
-        }, 3000);
+        const successDiv = document.getElementById('success-message-container') || document.getElementById('success-message');
+        const Message = this.getSharedComponent('Message');
+        if (Message && successDiv) {
+            successDiv.innerHTML = '';
+            const messageEl = Message({
+                type: 'success',
+                children: message
+            });
+            successDiv.appendChild(messageEl);
+        } else if (successDiv) {
+            displaySuccess(message, successDiv);
+        }
     }
 
     /**
      * Clear all messages
      */
     clearMessages() {
-        document.getElementById('error-message').classList.add('hidden');
-        document.getElementById('success-message').classList.add('hidden');
+        const errorDiv = document.getElementById('error-message-container') || document.getElementById('error-message');
+        const successDiv = document.getElementById('success-message-container') || document.getElementById('success-message');
+        if (errorDiv) {
+            errorDiv.innerHTML = '';
+            errorDiv.classList.add('hidden');
+        }
+        if (successDiv) {
+            successDiv.innerHTML = '';
+            successDiv.classList.add('hidden');
+        }
+    }
+
+    /**
+     * Helper function to get shared components
+     * @param {string} name - Component name
+     * @returns {Function|null} Component function or null
+     */
+    getSharedComponent(name) {
+        if (window.SharedComponents && window.SharedComponents[name]) {
+            return window.SharedComponents[name];
+        }
+        return null;
     }
 }
 
@@ -420,14 +470,17 @@ function hideMutualizedMessages () {
     if (msg) msg.style.display = 'none';
   });
 }
-function showMutualizedLoader () {
+async function showMutualizedLoader () {
   let loader = document.getElementById('loader-mutualized');
   if (!loader) {
-    import('../../components/Loader/Loader.js').then(({ default: Loader }) => {
+    try {
+      const { default: Loader } = await import('../../components/Loader/Loader.js');
       loader = Loader({ message: 'Connexion en cours...' });
       loader.id = 'loader-mutualized';
       document.body.appendChild(loader);
-    });
+    } catch (error) {
+      console.error('Error loading Loader component:', error);
+    }
   } else {
     loader.style.display = '';
   }
@@ -469,17 +522,25 @@ window.addEventListener('DOMContentLoaded', () => {
         passwordInput.classList.remove('error');
       }
       if (hasError) return;
-      showMutualizedLoader();
-      // Simuler une requête asynchrone (remplacer par la vraie logique)
-      await new Promise(r => setTimeout(r, 1200));
-      hideMutualizedLoader();
-      // Exemple : afficher un message d’erreur ou de succès
-      const email = emailInput.value;
-      const password = passwordInput.value;
-      if (email === 'demo@demo.com' && password === 'demo') {
-        showMutualizedMessage('success', 'Connexion réussie !');
-      } else {
-        showMutualizedMessage('error', 'Identifiants invalides.');
+      
+      try {
+        showMutualizedLoader();
+        // Simuler une requête asynchrone (remplacer par la vraie logique)
+        await new Promise(r => setTimeout(r, 1200));
+        
+        // Exemple : afficher un message d'erreur ou de succès
+        const email = emailInput.value;
+        const password = passwordInput.value;
+        if (email === 'demo@demo.com' && password === 'demo') {
+          showMutualizedMessage('success', 'Connexion réussie !');
+        } else {
+          showMutualizedMessage('error', 'Identifiants invalides.');
+        }
+      } catch (error) {
+        console.error('Erreur lors de la connexion:', error);
+        showMutualizedMessage('error', 'Une erreur est survenue lors de la connexion.');
+      } finally {
+        hideMutualizedLoader();
       }
     });
   }

@@ -1,11 +1,32 @@
-// public/js/ui.js - Frontend UI utilities module
+/**
+ * @module tools/feed-minitools/favorites-migrator/modules/ui
+ * 
+ * Module d'interface utilisateur pour Favorites Migrator
+ * 
+ * Gère les composants UI, la navigation par onglets et les interactions utilisateur.
+ */
+
+import { showError as displayError, showSuccess as displaySuccess } from '../../../../shared/utils/messages.js';
+
+/**
+ * Classe de gestion de l'interface utilisateur
+ * 
+ * @class
+ */
 class UIModule {
+    /**
+     * Crée une instance du module UI
+     * 
+     * @constructor
+     */
     constructor() {
         this.currentTab = 'migration';
     }
 
     /**
-     * Initialize UI components
+     * Initialise les composants UI
+     * 
+     * @returns {void}
      */
     init() {
         this.bindTabEvents();
@@ -15,16 +36,67 @@ class UIModule {
     }
 
     /**
-     * Bind tab switching events
+     * Lie les événements de changement d'onglet avec navigation clavier
+     * 
+     * @returns {void}
      */
     bindTabEvents() {
-        document.querySelectorAll('.tab-button').forEach(button => {
+        const tabButtons = document.querySelectorAll('.tab-btn[role="tab"]');
+        
+        tabButtons.forEach((button, index) => {
+            // Click event
             button.addEventListener('click', (e) => {
                 e.preventDefault();
                 const tabName = button.getAttribute('data-tab');
                 this.switchTab(tabName);
             });
+            
+            // Keyboard navigation
+            button.addEventListener('keydown', (e) => {
+                this.handleTabKeydown(e, index, tabButtons);
+            });
         });
+    }
+    
+    /**
+     * Gère la navigation clavier pour les onglets
+     * 
+     * @param {KeyboardEvent} e - Événement clavier
+     * @param {number} currentIndex - Index de l'onglet actuel
+     * @param {NodeList} tabButtons - Tous les boutons d'onglets
+     * @returns {void}
+     */
+    handleTabKeydown(e, currentIndex, tabButtons) {
+        const buttons = Array.from(tabButtons);
+        let targetIndex = currentIndex;
+        
+        switch(e.key) {
+            case 'ArrowRight':
+            case 'ArrowDown':
+                e.preventDefault();
+                targetIndex = (currentIndex + 1) % buttons.length;
+                break;
+            case 'ArrowLeft':
+            case 'ArrowUp':
+                e.preventDefault();
+                targetIndex = (currentIndex - 1 + buttons.length) % buttons.length;
+                break;
+            case 'Home':
+                e.preventDefault();
+                targetIndex = 0;
+                break;
+            case 'End':
+                e.preventDefault();
+                targetIndex = buttons.length - 1;
+                break;
+            default:
+                return;
+        }
+        
+        const targetButton = buttons[targetIndex];
+        const tabName = targetButton.getAttribute('data-tab');
+        this.switchTab(tabName);
+        targetButton.focus();
     }
 
     /**
@@ -95,36 +167,54 @@ class UIModule {
     }
 
     /**
-     * Switch to tab
+     * Switch to tab with accessibility support
      * @param {string} tabName - Tab name
      */
     switchTab(tabName) {
-        // Hide all tab contents
-        document.querySelectorAll('.tab-content').forEach(content => {
-            content.classList.add('hidden');
+        // Hide all tab contents and update ARIA
+        document.querySelectorAll('.tab-content[role="tabpanel"]').forEach(content => {
+            content.classList.remove('active');
+            content.setAttribute('aria-hidden', 'true');
+            content.setAttribute('tabindex', '-1');
         });
         
-        // Remove active class from all tabs
-        document.querySelectorAll('.tab-button').forEach(button => {
+        // Remove active class from all tabs and update ARIA
+        document.querySelectorAll('.tab-btn[role="tab"]').forEach(button => {
             button.classList.remove('active');
+            button.setAttribute('aria-selected', 'false');
+            button.setAttribute('tabindex', '-1');
         });
         
         // Show selected tab content
-        const selectedContent = document.getElementById(`${tabName}-tab`);
+        const selectedContent = document.getElementById(tabName);
         if (selectedContent) {
-            selectedContent.classList.remove('hidden');
+            selectedContent.classList.add('active');
+            selectedContent.setAttribute('aria-hidden', 'false');
+            selectedContent.setAttribute('tabindex', '0');
         }
         
-        // Add active class to selected tab button
-        const selectedButton = document.querySelector(`[data-tab="${tabName}"]`);
+        // Add active class to selected tab button and update ARIA
+        const selectedButton = document.querySelector(`[data-tab="${tabName}"][role="tab"]`);
         if (selectedButton) {
             selectedButton.classList.add('active');
+            selectedButton.setAttribute('aria-selected', 'true');
+            selectedButton.setAttribute('tabindex', '0');
         }
 
         this.currentTab = tabName;
         
         // Load tab-specific data
         this.loadTabData(tabName);
+        
+        // Focus first focusable element in the new tab panel
+        setTimeout(() => {
+            const firstFocusable = selectedContent?.querySelector(
+                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+            );
+            if (firstFocusable) {
+                firstFocusable.focus();
+            }
+        }, 100);
     }
 
     /**
@@ -157,9 +247,12 @@ class UIModule {
             if (response.ok) {
                 const data = await response.json();
                 this.displayMyActivityHistory(data);
+            } else {
+                this.showError(`Erreur lors du chargement de l'activité: ${response.statusText}`);
             }
         } catch (error) {
             console.error('Error loading activity:', error);
+            this.showError(`Erreur lors du chargement de l'activité: ${error.message || 'Erreur inconnue'}`);
         }
     }
 
@@ -172,9 +265,12 @@ class UIModule {
             if (response.ok) {
                 const data = await response.json();
                 this.displayMyPreferences(data);
+            } else {
+                this.showError(`Erreur lors du chargement des préférences: ${response.statusText}`);
             }
         } catch (error) {
             console.error('Error loading preferences:', error);
+            this.showError(`Erreur lors du chargement des préférences: ${error.message || 'Erreur inconnue'}`);
         }
     }
 
@@ -187,9 +283,12 @@ class UIModule {
             if (response.ok) {
                 const data = await response.json();
                 this.displayAdminStats(data);
+            } else {
+                this.showError(`Erreur lors du chargement des statistiques: ${response.statusText}`);
             }
         } catch (error) {
             console.error('Error loading admin data:', error);
+            this.showError(`Erreur lors du chargement des statistiques: ${error.message || 'Erreur inconnue'}`);
         }
     }
 
@@ -315,7 +414,7 @@ class UIModule {
             }
         } catch (error) {
             console.error('Error saving preferences:', error);
-            this.showError('Error saving preferences');
+            this.showError(`Erreur lors de la sauvegarde des préférences: ${error.message || 'Erreur inconnue'}`);
         }
     }
 
@@ -342,7 +441,7 @@ class UIModule {
             }
         } catch (error) {
             console.error('Error exporting activity:', error);
-            this.showError('Error exporting activity');
+            this.showError(`Erreur lors de l'export de l'activité: ${error.message || 'Erreur inconnue'}`);
         }
     }
 
@@ -369,7 +468,7 @@ class UIModule {
             }
         } catch (error) {
             console.error('Error exporting admin data:', error);
-            this.showError('Error exporting admin data');
+            this.showError(`Erreur lors de l'export des données admin: ${error.message || 'Erreur inconnue'}`);
         }
     }
 
@@ -396,7 +495,7 @@ class UIModule {
             }
         } catch (error) {
             console.error('Error clearing logs:', error);
-            this.showError('Error clearing logs');
+            this.showError(`Erreur lors de la suppression des logs: ${error.message || 'Erreur inconnue'}`);
         }
     }
 
@@ -418,13 +517,18 @@ class UIModule {
      * @param {string} message - Error message
      */
     showError(message) {
-        const errorDiv = document.getElementById('error-message');
-        errorDiv.textContent = message;
-        errorDiv.classList.remove('hidden');
-        
-        setTimeout(() => {
-            errorDiv.classList.add('hidden');
-        }, 8000);
+        const errorDiv = document.getElementById('error-message-container') || document.getElementById('error-message');
+        const Message = this.getSharedComponent('Message');
+        if (Message && errorDiv) {
+            errorDiv.innerHTML = '';
+            const messageEl = Message({
+                type: 'error',
+                children: message
+            });
+            errorDiv.appendChild(messageEl);
+        } else if (errorDiv) {
+            displayError(message, errorDiv);
+        }
     }
 
     /**
@@ -432,21 +536,44 @@ class UIModule {
      * @param {string} message - Success message
      */
     showSuccess(message) {
-        const successDiv = document.getElementById('success-message');
-        successDiv.textContent = message;
-        successDiv.classList.remove('hidden');
-        
-        setTimeout(() => {
-            successDiv.classList.add('hidden');
-        }, 3000);
+        const successDiv = document.getElementById('success-message-container') || document.getElementById('success-message');
+        const Message = this.getSharedComponent('Message');
+        if (Message && successDiv) {
+            successDiv.innerHTML = '';
+            const messageEl = Message({
+                type: 'success',
+                children: message
+            });
+            successDiv.appendChild(messageEl);
+        } else if (successDiv) {
+            displaySuccess(message, successDiv);
+        }
     }
 
     /**
      * Clear all messages
      */
     clearMessages() {
-        document.getElementById('error-message').classList.add('hidden');
-        document.getElementById('success-message').classList.add('hidden');
+        const errorDiv = document.getElementById('error-message-container') || document.getElementById('error-message');
+        const successDiv = document.getElementById('success-message-container') || document.getElementById('success-message');
+        if (errorDiv) {
+            errorDiv.innerHTML = '';
+        }
+        if (successDiv) {
+            successDiv.innerHTML = '';
+        }
+    }
+
+    /**
+     * Helper function to get shared components
+     * @param {string} name - Component name
+     * @returns {Function|null} Component function or null
+     */
+    getSharedComponent(name) {
+        if (window.SharedComponents && window.SharedComponents[name]) {
+            return window.SharedComponents[name];
+        }
+        return null;
     }
 
     /**

@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feed Subscription Organizer</title>
+    
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self';">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
+    
     <link rel="icon" type="image/svg+xml" href="../../shared/assets/favicon.svg">
     <link rel="icon" type="image/x-icon" href="../../shared/assets/favicon.ico">
     <link rel="stylesheet" href="../../shared/design-system/variables.css">
@@ -21,36 +29,53 @@
 
         <section id="uploadSection">
             <div class="card">
-                <div class="upload-zone" id="dropzone">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--blue); margin-bottom: 1rem;">
+                <!-- Message containers (will be populated dynamically) -->
+                <div id="error-message-container" style="margin-bottom: 1rem;"></div>
+                <div id="success-message-container" style="margin-bottom: 1rem;"></div>
+                <div 
+                    class="upload-zone" 
+                    id="dropzone"
+                    role="button"
+                    tabindex="0"
+                    aria-label="Zone de dépôt de fichiers. Déposez vos fichiers ici ou cliquez pour parcourir"
+                    aria-describedby="dropzone-instructions"
+                >
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--blue); margin-bottom: 1rem;" aria-hidden="true">
                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                         <polyline points="7,10 12,15 17,10"/>
                         <line x1="12" y1="15" x2="12" y2="3"/>
                     </svg>
                     <div style="font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem;">Déposez vos fichiers ici</div>
-                    <p style="margin-bottom: 1rem;">Pour une analyse complète, déposez :</p>
+                    <p id="dropzone-instructions" style="margin-bottom: 1rem;">Pour une analyse complète, déposez :</p>
                     <ul style="margin-bottom: 1rem; text-align: left; display: inline-block;">
                         <li><strong>starred.json</strong> - Vos articles favoris (obligatoire)</li>
                         <li><strong>subscriptions.xml</strong> - Vos abonnements OPML (optionnel)</li>
                     </ul>
-                    <button type="button" class="btn btn-primary">Choisir des fichiers</button>
-                    <input type="file" id="fileInput" accept=".json,.xml,.opml" multiple class="sr-only" />
+                    <button type="button" class="btn btn-primary" aria-label="Ouvrir le sélecteur de fichiers">Choisir des fichiers</button>
+                    <input 
+                        type="file" 
+                        id="fileInput" 
+                        accept=".json,.xml,.opml" 
+                        multiple 
+                        class="sr-only"
+                        aria-label="Sélectionner des fichiers à analyser"
+                    />
                 </div>
             </div>
         </section>
 
-        <section class="loading" id="loadingSection">
+        <section class="loading" id="loadingSection" role="status" aria-live="polite" aria-label="Chargement en cours">
             <div class="card">
-                <div class="loading-spinner"></div>
+                <div class="loading-spinner" aria-hidden="true"></div>
                 <p><strong>Analyse de vos patterns de lecture...</strong></p>
                 <p><small>Cela peut prendre quelques instants pour les gros fichiers</small></p>
             </div>
         </section>
 
-        <section class="hidden" id="resultsSection">
+        <section class="hidden" id="resultsSection" role="region" aria-labelledby="results-title" aria-live="polite">
             <!-- Section principale : Résultats d'analyse -->
             <div class="card">
-                <h3>Résultats de l'analyse de votre fichier JSON</h3>
+                <h3 id="results-title">Résultats de l'analyse de votre fichier JSON</h3>
                 <p style="margin-bottom: 1.5rem; color: var(--gray);">Informations extraites de vos favoris.</p>
                 
                 <!-- 1. Évolution des favoris par année -->
@@ -75,9 +100,9 @@
 
         </section>
 
-        <footer class="footer">
+        <footer class="footer" role="contentinfo">
             <p>Confidentialité : Votre fichier est analysé localement dans votre navigateur.</p>
-            <p style="margin-top: 0.5rem; font-size: 0.75rem; opacity: 0.8;">Un mini-projet de <a href="https://jasonrouet.com/" target="_blank" rel="noopener" style="color: var(--blue); text-decoration: none;">Jason Rouet</a></p>
+            <p style="margin-top: 0.5rem; font-size: 0.75rem; opacity: 0.8;">Un mini-projet de <a href="https://jasonrouet.com/" target="_blank" rel="noopener" aria-label="Site web de Jason Rouet (ouvre dans un nouvel onglet)" style="color: var(--blue); text-decoration: none;">Jason Rouet</a></p>
         </footer>
     </div>
 
@@ -90,6 +115,21 @@
         import Loader from '../../../shared/components/Loader/Loader.js';
         import { List, ListItem } from '../../../shared/components/List/index.js';
         import Badge from '../../../shared/components/Badge/Badge.js';
+        import Message from '../../../shared/components/Message/Message.js';
+        
+        // Make components available globally
+        window.SharedComponents = {
+            Card,
+            Button,
+            Header,
+            Footer,
+            Grid,
+            Loader,
+            List,
+            ListItem,
+            Badge,
+            Message
+        };
 
         document.addEventListener('DOMContentLoaded', () => {
             // Masquer le contenu natif
@@ -181,8 +221,8 @@
         });
     </script>
 
-    <script src="analytics.js"></script>
-    <script>
+    <script type="module">
+        import App from './analytics.js';
         // Initialiser l'application
         const app = new App();
     </script>

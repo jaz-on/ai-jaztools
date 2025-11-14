@@ -1,11 +1,16 @@
 /**
- * Feed Parser Module - Client-side RSS/Atom feed detection and parsing
+ * @module tools/feed-minitools/urls-to-opml/modules/feedParser
+ * 
+ * Module de parsing de flux RSS/Atom
+ * 
+ * Détecte et parse les flux RSS/Atom depuis des URLs de sites web.
  */
 
 /**
- * Check if a URL is a valid RSS/Atom feed
- * @param {string} url - Feed URL to check
- * @returns {Promise<Object|null>} Feed info or null if invalid
+ * Vérifie si une URL est un flux RSS/Atom valide
+ * 
+ * @param {string} url - URL du flux à vérifier
+ * @returns {Promise<Object|null>} Informations du flux ou null si invalide
  */
 export async function checkFeed(url) {
     try {
@@ -61,10 +66,11 @@ export async function checkFeed(url) {
 }
 
 /**
- * Find potential feed URLs in HTML content
- * @param {string} baseUrl - Base URL of the website
- * @param {string} htmlContent - HTML content to parse
- * @returns {Array<string>} Array of potential feed URLs
+ * Trouve les URLs de flux potentielles dans le contenu HTML
+ * 
+ * @param {string} baseUrl - URL de base du site web
+ * @param {string} htmlContent - Contenu HTML à parser
+ * @returns {Array<string>} Tableau d'URLs de flux potentielles
  */
 export function findFeedsInHTML(baseUrl, htmlContent) {
     const parser = new DOMParser();
@@ -111,9 +117,10 @@ export function findFeedsInHTML(baseUrl, htmlContent) {
 }
 
 /**
- * Process a single site to find its feeds
- * @param {string} url - Website URL to process
- * @returns {Promise<Object>} Site feeds information
+ * Traite un site unique pour trouver ses flux
+ * 
+ * @param {string} url - URL du site web à traiter
+ * @returns {Promise<Object>} Informations sur les flux du site avec site_url et feeds
  */
 export async function processSite(url) {
     try {
@@ -163,9 +170,10 @@ export async function processSite(url) {
 }
 
 /**
- * Validate and normalize a list of URLs
- * @param {string} urlText - Text containing URLs (one per line)
- * @returns {Array<string>} Array of valid URLs
+ * Valide et normalise une liste d'URLs
+ * 
+ * @param {string} urlText - Texte contenant des URLs (une par ligne)
+ * @returns {Array<string>} Tableau d'URLs valides
  */
 export function validateUrls(urlText) {
     const lines = urlText.split('\n');

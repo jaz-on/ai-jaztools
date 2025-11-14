@@ -1,5 +1,51 @@
-// public/js/migration.js - Frontend migration module
+/**
+ * @module tools/feed-minitools/favorites-migrator/modules/migration
+ * 
+ * Module de migration pour Favorites Migrator
+ * 
+ * Gère la migration des favoris de FreshRSS vers Feedbin.
+ */
+
+import { showError as displayError, showSuccess as displaySuccess } from '../../../../shared/utils/messages.js';
+
+// Helper function to get shared components
+function getSharedComponent(name) {
+    if (window.SharedComponents && window.SharedComponents[name]) {
+        return window.SharedComponents[name];
+    }
+    return null;
+}
+
+// Helper function to update ProgressBar value
+function updateProgressBarValue(container, value, max = 100) {
+    const progressFill = container.querySelector('.progress-fill');
+    if (progressFill) {
+        const percentage = Math.min(100, Math.max(0, (value / max) * 100));
+        progressFill.style.width = `${percentage}%`;
+        
+        // Update ARIA attributes on parent progress element
+        const progressElement = container.closest('[role="progressbar"]') || container.querySelector('.progress');
+        if (progressElement) {
+            progressElement.setAttribute('aria-valuenow', value);
+        }
+    } else if (container && container.style) {
+        // Fallback for native progress bars
+        const percentage = Math.min(100, Math.max(0, (value / max) * 100));
+        container.style.width = `${percentage}%`;
+    }
+}
+
+/**
+ * Classe de gestion de la migration
+ * 
+ * @class
+ */
 class MigrationModule {
+    /**
+     * Crée une instance du module de migration
+     * 
+     * @constructor
+     */
     constructor() {
         this.freshRSSData = null;
         this.feedbinSubscriptions = null;
@@ -7,9 +53,10 @@ class MigrationModule {
     }
 
     /**
-     * Handle file upload for FreshRSS data
-     * @param {Event} event - File upload event
-     * @returns {Promise<boolean>} - Success status
+     * Gère l'upload de fichier pour les données FreshRSS
+     * 
+     * @param {Event} event - Événement d'upload de fichier
+     * @returns {Promise<boolean>} Statut de succès
      */
     async handleFileUpload(event) {
         const file = event.target.files[0];
@@ -17,13 +64,35 @@ class MigrationModule {
 
         // Validate file type
         if (file.type !== 'application/json') {
-            this.showError('Please select a JSON file exported from FreshRSS');
+            const errorDiv = document.getElementById('error-message-container') || document.getElementById('error-message');
+            const Message = getSharedComponent('Message');
+            if (Message && errorDiv) {
+                errorDiv.innerHTML = '';
+                const messageEl = Message({
+                    type: 'error',
+                    children: 'Veuillez sélectionner un fichier JSON exporté depuis FreshRSS'
+                });
+                errorDiv.appendChild(messageEl);
+            } else if (errorDiv) {
+                displayError('Veuillez sélectionner un fichier JSON exporté depuis FreshRSS', errorDiv);
+            }
             return false;
         }
 
         // Validate file size (max 50MB)
         if (file.size > 50 * 1024 * 1024) {
-            this.showError('File too large (max 50MB)');
+            const errorDiv = document.getElementById('error-message-container') || document.getElementById('error-message');
+            const Message = getSharedComponent('Message');
+            if (Message && errorDiv) {
+                errorDiv.innerHTML = '';
+                const messageEl = Message({
+                    type: 'error',
+                    children: 'Fichier trop volumineux (maximum 50MB)'
+                });
+                errorDiv.appendChild(messageEl);
+            } else if (errorDiv) {
+                displayError('Fichier trop volumineux (maximum 50MB)', errorDiv);
+            }
             return false;
         }
 
@@ -33,12 +102,34 @@ class MigrationModule {
 
             // Validate FreshRSS format
             if (!data.items || !Array.isArray(data.items)) {
-                this.showError('Invalid FreshRSS file format. The file must contain an "items" array.');
+                const errorDiv = document.getElementById('error-message-container') || document.getElementById('error-message');
+                const Message = getSharedComponent('Message');
+                if (Message && errorDiv) {
+                    errorDiv.innerHTML = '';
+                    const messageEl = Message({
+                        type: 'error',
+                        children: 'Format de fichier FreshRSS invalide. Le fichier doit contenir un tableau "items".'
+                    });
+                    errorDiv.appendChild(messageEl);
+                } else if (errorDiv) {
+                    displayError('Format de fichier FreshRSS invalide. Le fichier doit contenir un tableau "items".', errorDiv);
+                }
                 return false;
             }
 
             if (data.items.length === 0) {
-                this.showError('FreshRSS file contains no items to migrate');
+                const errorDiv = document.getElementById('error-message-container') || document.getElementById('error-message');
+                const Message = getSharedComponent('Message');
+                if (Message && errorDiv) {
+                    errorDiv.innerHTML = '';
+                    const messageEl = Message({
+                        type: 'error',
+                        children: 'Le fichier FreshRSS ne contient aucun élément à migrer'
+                    });
+                    errorDiv.appendChild(messageEl);
+                } else if (errorDiv) {
+                    displayError('Le fichier FreshRSS ne contient aucun élément à migrer', errorDiv);
+                }
                 return false;
             }
 
@@ -58,7 +149,18 @@ class MigrationModule {
 
         } catch (error) {
             console.error('File upload error:', error);
-            this.showError('Error reading file. Please check the file format.');
+            const errorDiv = document.getElementById('error-message-container') || document.getElementById('error-message');
+            const Message = getSharedComponent('Message');
+            if (Message && errorDiv) {
+                errorDiv.innerHTML = '';
+                const messageEl = Message({
+                    type: 'error',
+                    children: 'Erreur lors de la lecture du fichier. Veuillez vérifier le format du fichier.'
+                });
+                errorDiv.appendChild(messageEl);
+            } else if (errorDiv) {
+                displayError('Erreur lors de la lecture du fichier. Veuillez vérifier le format du fichier.', errorDiv);
+            }
             return false;
         }
     }
@@ -107,18 +209,51 @@ class MigrationModule {
      */
     async startMigration() {
         if (!this.freshRSSData || !this.feedbinSubscriptions) {
-            this.showError('Missing data to start migration');
+            const errorDiv = document.getElementById('error-message-container') || document.getElementById('error-message');
+            const Message = getSharedComponent('Message');
+            if (Message && errorDiv) {
+                errorDiv.innerHTML = '';
+                const messageEl = Message({
+                    type: 'error',
+                    children: 'Données manquantes pour démarrer la migration'
+                });
+                errorDiv.appendChild(messageEl);
+            } else if (errorDiv) {
+                displayError('Données manquantes pour démarrer la migration', errorDiv);
+            }
             return false;
         }
 
         const startBtn = document.getElementById('start-migration');
-        const progressContainer = document.getElementById('migration-progress');
-        const progressFill = document.getElementById('progress-fill');
+        const progressContainer = document.getElementById('migration-progress-container') || document.getElementById('migration-progress');
         const progressText = document.getElementById('progress-text');
         
+        // Create progress bar using shared component
+        const ProgressBar = getSharedComponent('ProgressBar');
+        const ProgressContainer = getSharedComponent('ProgressContainer');
+        let progressFill = null;
+        
+        if (ProgressBar && ProgressContainer && progressContainer) {
+            // Clear existing progress
+            progressContainer.innerHTML = '';
+            
+            const progressBar = ProgressBar({ value: 0, max: 100 });
+            const progressWrapper = ProgressContainer({ children: [progressBar] });
+            progressWrapper.className = 'progress-container';
+            progressWrapper.setAttribute('role', 'status');
+            progressWrapper.setAttribute('aria-live', 'polite');
+            progressWrapper.setAttribute('aria-atomic', 'true');
+            progressWrapper.classList.remove('hidden');
+            
+            progressContainer.appendChild(progressWrapper);
+            progressFill = progressWrapper.querySelector('.progress-fill') || progressWrapper.querySelector('.progress-bar');
+        } else if (progressContainer) {
+            progressFill = document.getElementById('progress-fill');
+            progressContainer.classList.remove('hidden');
+        }
+        
         this.migrationState = 'running';
-        startBtn.disabled = true;
-        progressContainer.classList.remove('hidden');
+        if (startBtn) startBtn.disabled = true;
         
         try {
             progressText.textContent = 'Starting migration...';
@@ -136,8 +271,14 @@ class MigrationModule {
             
             if (result.success) {
                 this.migrationState = 'completed';
-                progressFill.style.width = '100%';
-                progressText.textContent = '100% - Migration completed!';
+                if (progressContainer) {
+                    updateProgressBarValue(progressContainer, 100);
+                } else if (progressFill) {
+                    progressFill.style.width = '100%';
+                }
+                if (progressText) {
+                    progressText.textContent = '100% - Migration completed!';
+                }
                 
                 this.updateStepStatus(3, 'completed');
                 this.updateStepStatus(4, 'current');
@@ -152,10 +293,27 @@ class MigrationModule {
             console.error('Migration error:', error);
             this.migrationState = 'error';
             this.updateStepStatus(3, 'blocked');
-            this.showError('Error during migration: ' + error.message);
+            const errorDiv = document.getElementById('error-message-container') || document.getElementById('error-message');
+            const Message = getSharedComponent('Message');
+            if (Message && errorDiv) {
+                errorDiv.innerHTML = '';
+                const messageEl = Message({
+                    type: 'error',
+                    children: 'Erreur lors de la migration: ' + error.message
+                });
+                errorDiv.appendChild(messageEl);
+            } else if (errorDiv) {
+                displayError('Erreur lors de la migration: ' + error.message, errorDiv);
+            }
             
-            progressFill.style.width = '0%';
-            progressText.textContent = 'Migration error';
+            if (progressContainer) {
+                updateProgressBarValue(progressContainer, 0);
+            } else if (progressFill) {
+                progressFill.style.width = '0%';
+            }
+            if (progressText) {
+                progressText.textContent = 'Erreur de migration';
+            }
             return false;
         }
     }
@@ -177,7 +335,12 @@ class MigrationModule {
         const items = this.freshRSSData.items || [];
         results.total = items.length;
 
-        const progressFill = document.getElementById('progress-fill');
+        // Get progress elements (may be from shared component or native)
+        const progressContainer = document.getElementById('migration-progress-container') || document.getElementById('migration-progress');
+        let progressFill = null;
+        if (progressContainer) {
+            progressFill = progressContainer.querySelector('.progress-fill') || progressContainer.querySelector('.progress-bar') || document.getElementById('progress-fill');
+        }
         const progressText = document.getElementById('progress-text');
 
         // Process items in batches
@@ -187,7 +350,11 @@ class MigrationModule {
             
             // Update progress
             const progress = Math.round(((i + batch.length) / items.length) * 100);
-            if (progressFill) progressFill.style.width = `${progress}%`;
+            if (progressContainer) {
+                updateProgressBarValue(progressContainer, progress);
+            } else if (progressFill) {
+                progressFill.style.width = `${progress}%`;
+            }
             if (progressText) progressText.textContent = `${progress}% - Processing...`;
 
             // Process batch
@@ -495,7 +662,18 @@ class MigrationModule {
             
         } catch (error) {
             console.error('Export error:', error);
-            this.showError('Export error: ' + error.message);
+            const errorDiv = document.getElementById('error-message-container') || document.getElementById('error-message');
+            const Message = getSharedComponent('Message');
+            if (Message && errorDiv) {
+                errorDiv.innerHTML = '';
+                const messageEl = Message({
+                    type: 'error',
+                    children: 'Erreur lors de l\'export: ' + error.message
+                });
+                errorDiv.appendChild(messageEl);
+            } else if (errorDiv) {
+                displayError('Erreur lors de l\'export: ' + error.message, errorDiv);
+            }
         } finally {
             this.setButtonLoading(exportBtn, false);
             exportBtn.textContent = originalText;
@@ -712,6 +890,44 @@ class MigrationModule {
      */
     sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    /**
+     * Show error message
+     * @param {string} message - Error message
+     */
+    showError(message) {
+        const errorDiv = document.getElementById('error-message-container') || document.getElementById('error-message');
+        const Message = getSharedComponent('Message');
+        if (Message && errorDiv) {
+            errorDiv.innerHTML = '';
+            const messageEl = Message({
+                type: 'error',
+                children: message
+            });
+            errorDiv.appendChild(messageEl);
+        } else if (errorDiv) {
+            displayError(message, errorDiv);
+        }
+    }
+
+    /**
+     * Show success message
+     * @param {string} message - Success message
+     */
+    showSuccess(message) {
+        const successDiv = document.getElementById('success-message-container') || document.getElementById('success-message');
+        const Message = getSharedComponent('Message');
+        if (Message && successDiv) {
+            successDiv.innerHTML = '';
+            const messageEl = Message({
+                type: 'success',
+                children: message
+            });
+            successDiv.appendChild(messageEl);
+        } else if (successDiv) {
+            displaySuccess(message, successDiv);
+        }
     }
 }
 

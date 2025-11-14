@@ -5,6 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feed Minitools</title>
+    
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self';">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
+    
     <link rel="icon" type="image/svg+xml" href="../../shared/assets/favicon.svg">
     <link rel="icon" type="image/x-icon" href="../../shared/assets/favicon.ico">
     <link rel="stylesheet" href="../../shared/design-system/variables.css">
@@ -17,7 +25,7 @@
         <!-- Navigation principale -->
         <nav class="flex items-center justify-center my-4">
             <div class="flex items-center mr-6">
-                <img src="../../shared/assets/favicon.svg" alt="Logo Feed Minitools" style="height: 2rem; margin-right: 0.75rem;">
+                <img src="../../shared/assets/favicon.svg" alt="Logo Feed Minitools" style="height: 2rem; margin-right: 0.75rem;" loading="lazy">
                 <span class="font-bold text-xl">Feed Minitools</span>
             </div>
             <ul class="flex items-center gap-4">

@@ -1,14 +1,49 @@
-# Feed Minitools - Favorites Migrator
+<div align="center">
+
+# Favorites Migrator
 
 ![Favicon](./favicon.svg)
 
+[![Node.js](https://img.shields.io/badge/Node.js-16%2B-green)]() [![Backend](https://img.shields.io/badge/Backend-Express-blue)]() [![RSS](https://img.shields.io/badge/RSS-Migration-orange)]() [![AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](../../../../LICENSE)
+
 Interface web moderne et sécurisée pour migrer vos favoris FreshRSS vers Feedbin.
 
-## 🚀 Démarrage rapide
+</div>
+
+## Vue d'ensemble
+
+Favorites Migrator est un outil web qui facilite la migration de vos articles favoris depuis FreshRSS vers Feedbin. L'outil utilise l'API Feedbin pour transférer vos favoris de manière sécurisée, avec un algorithme de correspondance intelligent qui identifie automatiquement les articles correspondants. Toutes les opérations sont tracées et vous pouvez suivre l'historique de vos migrations.
+
+**Public cible** : Utilisateurs souhaitant migrer leurs favoris d'un lecteur RSS (FreshRSS) vers un autre (Feedbin) tout en conservant leurs données.
+
+## Fonctionnalités
+
+- **Migration guidée** : Processus étape par étape avec suivi en temps réel
+- **Algorithme de correspondance intelligent** : 5 niveaux de correspondance (URL exacte, domaine+chemin, titre exact, titre flou, date+domaine)
+- **Interface unifiée** : Navigation par onglets (Migration, Statistiques, Historique, Préférences)
+- **Statistiques personnelles** : Suivi de vos migrations et métriques détaillées
+- **Export des favoris non migrés** : Génération automatique d'OPML et CSV
+- **Sécurité renforcée** : Aucun stockage persistant des mots de passe, authentification en mémoire uniquement
+- **Gestion robuste** : Système de retry avec backoff exponentiel, gestion intelligente du rate limiting
+
+## Utilisation
+
+### Prérequis
+
+- Node.js 16+ (pour le serveur)
+- Compte Feedbin actif
+- Fichier `starred_entries.json` exporté depuis FreshRSS
+- Navigateur moderne
+
+### Démarrage rapide
 
 ```bash
-# Installation
+# Installation des dépendances
 npm install
+
+# Configuration des variables d'environnement (optionnel)
+cp .env.example .env
+# Éditez .env si vous souhaitez modifier les valeurs par défaut
 
 # Lancement de l'interface web
 npm start
@@ -16,321 +51,112 @@ npm start
 
 Puis ouvrez votre navigateur sur `http://localhost:3000`
 
-> **Note :** Si le port 3000 est déjà utilisé, l'application tentera automatiquement les ports suivants ou vous pouvez définir la variable d'environnement `PORT`.
+> **Note** : Si le port 3000 est déjà utilisé, l'application tentera automatiquement les ports suivants ou vous pouvez définir la variable d'environnement `PORT`. Consultez le fichier `.env.example` pour la liste complète des variables d'environnement disponibles.
 
-## ✨ Fonctionnalités
+### Guide d'utilisation
 
-### 🔐 Sécurité renforcée
-- **Aucun stockage persistant** des mots de passe
-- **Authentification en mémoire** uniquement
-- **Proxy sécurisé** vers l'API Feedbin
-- **Code open source** auditable
-- **Rate limiting** pour protéger contre les abus
-
-### 🎯 Interface unifiée moderne
-- **Interface à onglets** : Migration, statistiques, historique, préférences
-- **Navigation intuitive** : Un seul point d'entrée pour toutes les fonctionnalités
-- **Statistiques personnelles** : Suivi de vos migrations et métriques
-- **Configuration avancée** : Préférences personnalisables
-- **Fonctionnalités admin** : Gestion globale (si autorisé)
-
-### 🔄 Processus de migration guidé
-1. **Connexion** : Saisissez vos identifiants Feedbin
-2. **Analyse** : L'interface analyse vos abonnements existants
+1. **Connexion** : Saisissez vos identifiants Feedbin dans l'interface
+2. **Analyse** : L'interface analyse automatiquement vos abonnements existants
 3. **Import** : Chargez votre fichier FreshRSS (`starred_entries.json`)
 4. **Migration** : Lancez la migration avec suivi en temps réel
-5. **Vérification** : Consultez les résultats détaillés
-6. **Export** : Exportez les favoris non migrés si nécessaire
+5. **Vérification** : Consultez les résultats détaillés et les statistiques
+6. **Export** : Exportez les favoris non migrés si nécessaire (format OPML ou CSV)
 
-### 🆕 Nouvelles fonctionnalités (v2.1.0)
+## Architecture
 
-#### 🎨 Interface unifiée
-- **Navigation par onglets** : Migration, statistiques, historique, préférences, administration
-- **Statistiques personnelles** : Métriques de vos migrations
-- **Historique détaillé** : Suivi chronologique de vos migrations
-- **Préférences utilisateur** : Configuration personnalisable
-- **Fonctionnalités admin** : Gestion globale (si autorisé)
+### Stack technique
 
-#### 📊 Tableau de bord personnel
-- **Mes statistiques** : Nombre de migrations, favoris traités, taux de réussite
-- **Mon historique** : Liste chronologique avec filtrage par période
-- **Mes préférences** : Configuration migration et notifications
-- **Export personnel** : Téléchargement de vos données
+- **Frontend** : HTML5, CSS3, JavaScript vanilla (ES6+ modules)
+- **Design System** : `../../../shared/design-system/`
+- **Composants** : `../../../shared/components/` (si utilisés)
+- **Backend** : Node.js avec Express
+- **Dépendances** : Express, modules Node.js natifs
+- **Build** : Aucun
 
-#### ⚙️ Configuration avancée
-- **Paramètres migration** : Tentatives max, taille des lots, seuil de correspondance
-- **Notifications** : Email, navigateur, rapports détaillés
-- **Préférences d'interface** : Thème, accessibilité
-- **Sauvegarde automatique** des préférences
-
-#### 📄 Export des favoris non migrés
-- **Génération automatique d'OPML** pour les feeds manquants
-- **Export CSV détaillé** de tous les favoris non migrés
-- **Analyse des échecs** par source avec statistiques
-- **Instructions guidées** pour améliorer le taux de réussite
-
-#### 🎯 Algorithme de correspondance amélioré
-- **5 niveaux de correspondance** : URL exacte, domaine+chemin, titre exact, titre flou, date+domaine
-- **Correspondance floue** par similarité de titre (algorithme Levenshtein)
-- **Correspondance par date** dans une fenêtre de ±3 jours
-- **Indicateurs de méthode** pour chaque correspondance trouvée
-
-#### 🛡️ Robustesse améliorée
-- **Système de retry** avec backoff exponentiel
-- **Gestion intelligente du rate limiting** de l'API Feedbin
-- **Gestion d'erreurs catégorisée** avec messages clairs
-- **Timeouts configurables** pour les requêtes API
-
-## 📁 Structure du projet
+### Structure des fichiers
 
 ```
-feed-minitools-favorites-migrator/
-├── server.js              # Serveur Express principal
-├── public/                # Interface web unifiée
-│   ├── index.html         # Interface à onglets
-│   ├── style.css          # Styles complets (interface + admin)
-│   └── app.js            # Logique complète (migration + admin)
-├── utils/                 # Utilitaires
-│   ├── history.js        # Gestion de l'historique
-│   └── logger.js         # Système de logging
-├── config/               # Configuration
-│   └── default.json      # Paramètres par défaut
-├── data/                 # Données persistantes
-├── legacy/               # Anciens scripts (obsolètes)
-│   ├── README.md         # Documentation legacy
-│   └── *.js             # Scripts remplacés
-├── package.json          # Dépendances Node.js
-├── README.md            # Ce fichier
-├── AUDIT-SUMMARY.md     # Résumé d'audit
-├── CODING-STANDARDS.md  # Standards de code
-├── TASK-TRACKER.md      # Suivi des tâches
-├── REFACTORING-PLAN.md  # Plan de refactoring
-└── debug-migration.js   # Script de débogage
+favorites-migrator/
+├── index.html          # Page principale (interface à onglets)
+├── app.js              # Logique principale côté client
+├── modules/            # Modules ES6
+│   ├── api.js         # Communication avec l'API Feedbin
+│   ├── auth.js        # Gestion de l'authentification
+│   ├── migration.js   # Logique de migration
+│   ├── ui.js          # Gestion de l'interface utilisateur
+│   └── validation.js  # Validation des données
+├── data/               # Données persistantes
+│   └── migration-history.json # Historique des migrations
+├── coolify.yml        # Configuration de déploiement
+└── README.md           # Ce fichier
 ```
 
-## 🎯 Interface unifiée
+## Déploiement
 
-### Onglets disponibles
+Voir [docs/DEPLOYMENT.md](../../../../docs/DEPLOYMENT.md) pour le guide complet.
 
-#### 🚀 **Migration**
-- Processus guidé en 4 étapes
-- Upload et analyse des fichiers FreshRSS
-- Migration en temps réel avec barre de progression
-- Gestion des échecs et rapports détaillés
+### Variables d'environnement
 
-#### 📊 **Mon activité**
-- **Vue d'ensemble** : Statistiques consolidées (migrations, favoris, taux de réussite)
-- **Historique détaillé** : Liste chronologique avec filtrage par période
-- **Export unifié** : Données complètes en un seul fichier
-- **Interface optimisée** : Navigation simplifiée et intuitive
+Copiez le fichier `.env.example` en `.env` et configurez les variables suivantes (toutes optionnelles) :
 
-#### ⚙️ **Mes préférences**
-- Configuration migration (tentatives, lots, correspondance)
-- Notifications (email, navigateur, rapports)
-- Sauvegarde automatique des préférences
+- `PORT` : Port du serveur (défaut: 3000)
+- `NODE_ENV` : Environnement d'exécution (`development` ou `production`)
 
-#### 🔧 **Administration** (admin uniquement)
-- Statistiques globales
-- Gestion des logs
-- Export des données
-- Configuration système
+Voir `.env.example` pour plus de détails sur chaque variable.
 
-## 🔧 Configuration
+### Configuration CORS
 
-### Prérequis
-- Node.js 16+ 
-- Compte Feedbin actif
-- Fichier `starred_entries.json` exporté depuis FreshRSS
+Si le backend est migré vers Option B (http natif Node.js), utilisez le module CORS standardisé :
 
-### Variables d'environnement (optionnel)
-```bash
-# Port du serveur (défaut: 3000)
-PORT=3000
+```javascript
+const { setCorsHeaders, handlePreflight } = require('../../../shared/utils/cors');
+const http = require('http');
 
-# Mode développement
-NODE_ENV=development
+const corsOptions = {
+  origin: '*',
+  methods: ['GET', 'POST', 'OPTIONS'],
+  headers: ['Content-Type']
+};
+
+const server = http.createServer((req, res) => {
+  // Gérer les requêtes preflight (OPTIONS)
+  if (handlePreflight(req, res, corsOptions)) {
+    return;
+  }
+
+  // Configurer les headers CORS pour toutes les réponses
+  setCorsHeaders(res, corsOptions);
+
+  // Traiter les autres requêtes...
+});
 ```
 
-### Scripts disponibles
-```bash
-# Démarrage en production
-npm start
+Le module CORS standardisé gère automatiquement :
+- Les requêtes preflight (OPTIONS)
+- Les headers CORS standardisés
+- La configuration flexible des origines, méthodes et headers autorisés
 
-# Démarrage en développement (avec rechargement automatique)
-npm run dev
+Voir `shared/utils/cors.js` pour plus de détails.
 
-# Tests
-npm test
+## Confidentialité
 
-# Tests en mode watch
-npm run test:watch
+Favorites Migrator garantit une sécurité et confidentialité maximales :
 
-# Linting
-npm run lint
+- **Aucun stockage persistant** : Les mots de passe ne sont jamais stockés
+- **Authentification en mémoire** : Les identifiants sont uniquement conservés en mémoire pendant la session
+- **Proxy sécurisé** : Communication sécurisée vers l'API Feedbin
+- **Code open source** : Le code est auditable et vérifiable
+- **Rate limiting** : Protection contre les abus côté serveur
+- **Session temporaire** : Les données de session sont automatiquement nettoyées
 
-# Nettoyage des données
-npm run cleanup
-```
+## Contribution
 
-## 📊 Fonctionnalités avancées
+Les contributions sont les bienvenues ! Voir [docs/CONTRIBUTING.md](../../../../docs/CONTRIBUTING.md).
 
-### Analyse intelligente
-- **Détection automatique** des feeds manquants
-- **Statistiques détaillées** par source
-- **Recommandations** d'import prioritaires
-- **Export OPML** pour les feeds non trouvés
+## Licence
 
-### Migration optimisée
-- **Traitement par lots** pour éviter les limitations API
-- **Gestion des erreurs** robuste avec retry automatique
-- **Reprise automatique** en cas d'interruption
-- **Correspondance améliorée** avec 5 méthodes différentes
+AGPL-3.0 - Voir [LICENSE](../../../../LICENSE)
 
-### Rapports complets
-- **Taux de réussite** global et par source
-- **Liste des échecs** avec analyse détaillée
-- **Recommandations** d'amélioration
-- **Export CSV** des favoris non migrés
+## Auteur
 
-## 🛡️ Sécurité
-
-### Garanties
-- ✅ **Aucun stockage** des mots de passe
-- ✅ **Communication directe** avec Feedbin
-- ✅ **Session temporaire** uniquement
-- ✅ **Code auditable** et open source
-- ✅ **Rate limiting** côté serveur
-
-### Bonnes pratiques
-- 🔒 Utilisez des identifiants temporaires si possible
-- 🔒 Changez votre mot de passe après migration
-- 🔒 Vérifiez les logs de connexion Feedbin
-- 🔒 Utilisez un réseau sécurisé
-
-## 🚨 Dépannage
-
-### Problèmes courants
-
-**Erreur de connexion Feedbin**
-```bash
-# Vérifiez vos identifiants
-# Assurez-vous que votre compte est actif
-# Vérifiez votre connexion internet
-```
-
-**Port déjà utilisé**
-```bash
-# L'application tentera automatiquement les ports suivants
-# Ou définissez manuellement : PORT=3001 npm start
-```
-
-**Migration partielle**
-```bash
-# Utilisez le bouton "Exporter les favoris non migrés"
-# Importez le fichier OPML généré dans Feedbin
-# Attendez 30-60 minutes que Feedbin synchronise
-# Relancez la migration
-```
-
-**Performance lente**
-```bash
-# Le système de retry automatique gère les ralentissements
-# Vérifiez votre connexion internet
-# Les pauses automatiques évitent le rate limiting
-```
-
-## 📈 Statistiques et suivi
-
-L'interface fournit des statistiques détaillées :
-- **Taux de réussite** global et personnel
-- **Analyse par source** de contenu
-- **Feeds manquants** avec priorités
-- **Recommandations** d'amélioration
-- **Export des favoris non migrés**
-- **Historique complet** des migrations
-
-## 🔄 Migration depuis les anciens scripts
-
-Si vous utilisiez les scripts legacy :
-
-1. **Sauvegardez** vos données existantes
-2. **Lancez** l'interface web : `npm start`
-3. **Connectez-vous** avec vos identifiants
-4. **Suivez** le processus guidé
-5. **Exportez** les favoris non migrés si nécessaire
-
-## 🆕 Guide d'utilisation de l'interface unifiée
-
-### Première utilisation
-
-1. **Lancez l'application** : `npm start`
-2. **Ouvrez votre navigateur** sur `http://localhost:3000`
-3. **Connectez-vous** avec vos identifiants Feedbin
-4. **Naviguez par onglets** pour accéder aux différentes fonctionnalités
-
-### Configuration des préférences
-
-1. **Onglet "Mes préférences"**
-2. **Configuration migration** :
-   - Tentatives maximum (1-10)
-   - Taille des lots (1-50)
-   - Seuil de correspondance floue (0.5-1.0)
-3. **Notifications** :
-   - Email (optionnel)
-   - Navigateur (recommandé)
-   - Rapports détaillés (recommandé)
-4. **Sauvegardez** vos préférences
-
-### Suivi de vos migrations
-
-1. **Onglet "Mes statistiques"** : Vue d'ensemble
-2. **Onglet "Mon historique"** : Détails chronologiques
-3. **Filtrage** : Par période (7, 30, 90 jours, tout)
-4. **Export** : Téléchargement de vos données
-
-### Export des favoris non migrés
-
-Après une migration, si certains favoris n'ont pas été migrés :
-
-1. **Cliquez sur "Exporter les favoris non migrés"**
-2. **Téléchargez le fichier OPML** généré
-3. **Importez l'OPML dans Feedbin** (Settings > Import/Export)
-4. **Attendez 30-60 minutes** que Feedbin synchronise
-5. **Relancez la migration** pour récupérer les favoris manquants
-
-### Amélioration du taux de réussite
-
-Le nouvel algorithme utilise 5 méthodes de correspondance :
-1. **URL exacte** : Correspondance parfaite des URLs
-2. **Domaine + chemin** : Même domaine et chemin d'URL
-3. **Titre exact** : Titres identiques (insensible à la casse)
-4. **Titre flou** : Titres similaires (80% de similarité minimum)
-5. **Date + domaine** : Articles du même domaine dans une fenêtre de ±3 jours
-
-## 🏗️ Architecture technique
-
-### Frontend unifié
-- **Interface à onglets** : Navigation intuitive
-- **Code consolidé** : Un seul fichier JavaScript (`app.js`)
-- **Styles unifiés** : Un seul fichier CSS (`style.css`)
-- **Performance optimisée** : Moins de requêtes HTTP
-
-### Backend robuste
-- **API organisée** : Routes séparées par fonctionnalité
-- **Gestion d'erreurs** : Catégorisation et retry automatique
-- **Rate limiting** : Protection contre les abus
-- **Logs détaillés** : Suivi des opérations
-
-### Sécurité renforcée
-- **Authentification** : Vérification des identifiants Feedbin
-- **Rôles** : Détection automatique du statut admin
-- **Validation** : Vérification des données côté serveur
-- **Session** : Stockage temporaire uniquement
-
-## 📝 Licence
-
-Ce projet est open source sous licence **AGPL-3.0**. Voir le fichier [LICENSE](../../../LICENSE) pour plus de détails.
-
-## 🤝 Contribution
-
-Les contributions sont les bienvenues ! Voir [CODING-STANDARDS.md](CODING-STANDARDS.md) pour les standards de code et [SECURITY.md](SECURITY.md) pour les détails de sécurité. 
+[Jason Rouet](https://jasonrouet.com/)

@@ -1,14 +1,40 @@
 // Feed Subscription Organizer - JavaScript Ultra-Condensé
-import Card from '../components/Card/Card.js';
-import Button from '../components/Button/Button.js';
-import Header from '../components/Header/Header.js';
-import Footer from '../components/Footer/Footer.js';
-import Grid from '../components/Grid/Grid.js';
-import Loader from '../components/Loader/Loader.js';
-import { List, ListItem } from '../components/List/index.js';
-import Badge from '../components/Badge/Badge.js';
+import Card from '../../../shared/components/Card/Card.js';
+import Button from '../../../shared/components/Button/Button.js';
+import Header from '../../../shared/components/Header/Header.js';
+import Footer from '../../../shared/components/Footer/Footer.js';
+import Grid from '../../../shared/components/Grid/Grid.js';
+import Loader from '../../../shared/components/Loader/Loader.js';
+import { List, ListItem } from '../../../shared/components/List/index.js';
+import Badge from '../../../shared/components/Badge/Badge.js';
+import { showError } from '../../../shared/utils/messages.js';
+import Message from '../../../shared/components/Message/Message.js';
 
-class App {
+// Helper function to get shared components
+function getSharedComponent(name) {
+    if (window.SharedComponents && window.SharedComponents[name]) {
+        return window.SharedComponents[name];
+    }
+    return null;
+}
+
+// Helper function to show error message using shared component
+function showErrorMessage(message) {
+    const errorDiv = document.getElementById('error-message-container') || document.getElementById('error-message');
+    const MessageComponent = getSharedComponent('Message') || Message;
+    if (MessageComponent && errorDiv) {
+        errorDiv.innerHTML = '';
+        const messageEl = MessageComponent({
+            type: 'error',
+            children: message
+        });
+        errorDiv.appendChild(messageEl);
+    } else if (errorDiv) {
+        showError(message, errorDiv);
+    }
+}
+
+export default class App {
     constructor() {
         this.elements = {};
         this.currentAnalysis = null;
@@ -78,7 +104,7 @@ class App {
         });
         
         if (!jsonFile) {
-            alert('Veuillez sélectionner un fichier starred.json valide.');
+            showErrorMessage('Veuillez sélectionner un fichier starred.json valide.');
             return;
         }
         
@@ -93,14 +119,18 @@ class App {
     processJsonFile(file) {
         const reader = new FileReader();
         reader.onload = e => this.handleJsonFileRead(e);
-        reader.onerror = () => alert('Erreur de lecture du fichier JSON.');
+        reader.onerror = () => {
+            showErrorMessage('Erreur de lecture du fichier JSON.');
+        };
         reader.readAsText(file);
     }
     
     processOpmlFile(file) {
         const reader = new FileReader();
         reader.onload = e => this.handleOpmlFileRead(e);
-        reader.onerror = () => alert('Erreur de lecture du fichier OPML.');
+        reader.onerror = () => {
+            showErrorMessage('Erreur de lecture du fichier OPML.');
+        };
         reader.readAsText(file);
     }
     
@@ -112,7 +142,7 @@ class App {
             }
             setTimeout(() => this.analyzeData(jsonData), 500);
         } catch (error) {
-            alert(`Erreur d'analyse JSON : ${error.message}`);
+            showErrorMessage(`Erreur d'analyse JSON : ${error.message}`);
         }
     }
     
@@ -133,7 +163,7 @@ class App {
             this.currentAnalysis = analysis;
             this.displayResults(analysis);
         } catch (error) {
-            alert(`Erreur d'analyse : ${error.message}`);
+            showErrorMessage(`Erreur d'analyse : ${error.message}`);
         }
     }
 
@@ -1318,15 +1348,4 @@ class App {
         const urls = sources.map(([domain]) => `https://${domain}`).join('\n');
         navigator.clipboard.writeText(urls);
     }
-}
-
-
-
-// Initialisation
-let app;
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => { app = new App(); });
-} else {
-    app = new App();
-}
-window.app = app; 
+} 

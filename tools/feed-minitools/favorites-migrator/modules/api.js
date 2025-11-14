@@ -1,9 +1,24 @@
 /**
- * Feedbin API Module - Direct client-side API communication
- * Uses Basic Auth to communicate directly with Feedbin API
+ * @module tools/feed-minitools/favorites-migrator/modules/api
+ * 
+ * Module API Feedbin - Communication directe côté client
+ * 
+ * Utilise l'authentification Basic Auth pour communiquer directement avec l'API Feedbin.
  */
 
+import { createError, ErrorType } from '../../../../shared/utils/error-handler.js';
+
+/**
+ * Classe de gestion de l'API Feedbin
+ * 
+ * @class
+ */
 class FeedbinAPI {
+    /**
+     * Crée une instance de l'API Feedbin
+     * 
+     * @constructor
+     */
     constructor() {
         this.baseURL = 'https://api.feedbin.com/v2';
         this.email = null;
@@ -11,9 +26,11 @@ class FeedbinAPI {
     }
 
     /**
-     * Set credentials for API calls
-     * @param {string} email - Feedbin email
-     * @param {string} password - Feedbin password
+     * Définit les identifiants pour les appels API
+     * 
+     * @param {string} email - Email Feedbin
+     * @param {string} password - Mot de passe Feedbin
+     * @returns {void}
      */
     setCredentials(email, password) {
         this.email = email;
@@ -21,7 +38,9 @@ class FeedbinAPI {
     }
 
     /**
-     * Clear credentials
+     * Efface les identifiants
+     * 
+     * @returns {void}
      */
     clearCredentials() {
         this.email = null;
@@ -29,8 +48,10 @@ class FeedbinAPI {
     }
 
     /**
-     * Create Basic Auth header
-     * @returns {string} Authorization header value
+     * Crée l'en-tête d'authentification Basic Auth
+     * 
+     * @returns {string} Valeur de l'en-tête Authorization
+     * @throws {Error} Si les identifiants ne sont pas définis
      */
     getAuthHeader() {
         if (!this.email || !this.password) {
@@ -41,10 +62,12 @@ class FeedbinAPI {
     }
 
     /**
-     * Make authenticated request to Feedbin API
-     * @param {string} endpoint - API endpoint (without base URL)
-     * @param {Object} options - Fetch options
-     * @returns {Promise<Response>} API response
+     * Effectue une requête authentifiée à l'API Feedbin
+     * 
+     * @param {string} endpoint - Endpoint API (sans l'URL de base)
+     * @param {Object} [options] - Options de fetch
+     * @returns {Promise<Response>} Réponse de l'API
+     * @throws {Error} Si la requête échoue ou si les identifiants sont invalides
      */
     async makeRequest(endpoint, options = {}) {
         const url = `${this.baseURL}${endpoint}`;
@@ -63,25 +86,33 @@ class FeedbinAPI {
 
             // Handle authentication errors
             if (response.status === 401) {
-                throw new Error('Invalid credentials');
+                const error = createError('Identifiants invalides', ErrorType.API);
+                throw error;
             }
 
             return response;
         } catch (error) {
-            if (error.message === 'Invalid credentials') {
+            if (error.type === ErrorType.API && error.message === 'Identifiants invalides') {
                 throw error;
             }
             // Handle CORS errors
             if (error.name === 'TypeError' && error.message.includes('fetch')) {
-                throw new Error('CORS error: Feedbin API may not allow direct browser access. A proxy may be required.');
+                const corsError = createError('Erreur CORS: L\'API Feedbin peut ne pas autoriser l\'accès direct depuis le navigateur. Un proxy peut être requis.', ErrorType.NETWORK, error);
+                throw corsError;
+            }
+            // Wrap unknown errors
+            if (!error.type) {
+                const wrappedError = createError(error.message || 'Erreur inconnue', ErrorType.UNKNOWN, error);
+                throw wrappedError;
             }
             throw error;
         }
     }
 
     /**
-     * Test authentication
-     * @returns {Promise<boolean>} True if authenticated
+     * Teste l'authentification
+     * 
+     * @returns {Promise<boolean>} True si authentifié
      */
     async testAuth() {
         try {
@@ -89,6 +120,10 @@ class FeedbinAPI {
             return response.ok;
         } catch (error) {
             console.error('Auth test error:', error);
+            // Log the error for debugging
+            if (error.originalError) {
+                console.error('Original error:', error.originalError);
+            }
             return false;
         }
     }
@@ -98,11 +133,16 @@ class FeedbinAPI {
      * @returns {Promise<Array>} Subscriptions array
      */
     async getSubscriptions() {
-        const response = await this.makeRequest('/subscriptions.json');
-        if (!response.ok) {
-            throw new Error(`Failed to get subscriptions: ${response.statusText}`);
+        try {
+            const response = await this.makeRequest('/subscriptions.json');
+            if (!response.ok) {
+                throw new Error(`Failed to get subscriptions: ${response.statusText}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error('Error getting subscriptions:', error);
+            throw error;
         }
-        return await response.json();
     }
 
     /**
@@ -111,15 +151,20 @@ class FeedbinAPI {
      * @returns {Promise<Array>} Starred entries array
      */
     async getStarredEntries(page = null) {
-        let endpoint = '/starred_entries.json';
-        if (page) {
-            endpoint += `?page=${page}`;
+        try {
+            let endpoint = '/starred_entries.json';
+            if (page) {
+                endpoint += `?page=${page}`;
+            }
+            const response = await this.makeRequest(endpoint);
+            if (!response.ok) {
+                throw new Error(`Failed to get starred entries: ${response.statusText}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error('Error getting starred entries:', error);
+            throw error;
         }
-        const response = await this.makeRequest(endpoint);
-        if (!response.ok) {
-            throw new Error(`Failed to get starred entries: ${response.statusText}`);
-        }
-        return await response.json();
     }
 
     /**
@@ -128,11 +173,16 @@ class FeedbinAPI {
      * @returns {Promise<boolean>} Success status
      */
     async starEntry(entryId) {
-        const response = await this.makeRequest('/starred_entries.json', {
-            method: 'POST',
-            body: JSON.stringify({ starred_entries: [entryId] })
-        });
-        return response.ok;
+        try {
+            const response = await this.makeRequest('/starred_entries.json', {
+                method: 'POST',
+                body: JSON.stringify({ starred_entries: [entryId] })
+            });
+            return response.ok;
+        } catch (error) {
+            console.error('Error starring entry:', error);
+            throw error;
+        }
     }
 
     /**
@@ -141,11 +191,16 @@ class FeedbinAPI {
      * @returns {Promise<boolean>} Success status
      */
     async starEntries(entryIds) {
-        const response = await this.makeRequest('/starred_entries.json', {
-            method: 'POST',
-            body: JSON.stringify({ starred_entries: entryIds })
-        });
-        return response.ok;
+        try {
+            const response = await this.makeRequest('/starred_entries.json', {
+                method: 'POST',
+                body: JSON.stringify({ starred_entries: entryIds })
+            });
+            return response.ok;
+        } catch (error) {
+            console.error('Error starring entries:', error);
+            throw error;
+        }
     }
 
     /**
@@ -154,11 +209,16 @@ class FeedbinAPI {
      * @returns {Promise<Object>} Entry object
      */
     async getEntry(entryId) {
-        const response = await this.makeRequest(`/entries/${entryId}.json`);
-        if (!response.ok) {
-            throw new Error(`Failed to get entry: ${response.statusText}`);
+        try {
+            const response = await this.makeRequest(`/entries/${entryId}.json`);
+            if (!response.ok) {
+                throw new Error(`Failed to get entry: ${response.statusText}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error('Error getting entry:', error);
+            throw error;
         }
-        return await response.json();
     }
 
     /**
@@ -167,13 +227,18 @@ class FeedbinAPI {
      * @returns {Promise<Array>} Matching entries
      */
     async searchEntriesByURL(url) {
-        // Feedbin API doesn't have direct URL search, so we'll need to search through entries
-        // This is a simplified version - in practice, you might need to paginate through entries
-        const response = await this.makeRequest(`/entries.json?per_page=100&search=${encodeURIComponent(url)}`);
-        if (!response.ok) {
-            throw new Error(`Failed to search entries: ${response.statusText}`);
+        try {
+            // Feedbin API doesn't have direct URL search, so we'll need to search through entries
+            // This is a simplified version - in practice, you might need to paginate through entries
+            const response = await this.makeRequest(`/entries.json?per_page=100&search=${encodeURIComponent(url)}`);
+            if (!response.ok) {
+                throw new Error(`Failed to search entries: ${response.statusText}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error('Error searching entries by URL:', error);
+            throw error;
         }
-        return await response.json();
     }
 }
 
