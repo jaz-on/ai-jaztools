@@ -27,21 +27,9 @@ Suite d'outils pour gérer, migrer et organiser vos flux RSS et favoris.
 [Accéder à Feed Minitools](./tools/feed-minitools/index.html)
 
 ### ![InstaFed](./tools/instafed/favicon.svg) InstaFed
-Outil gratuit pour migrer vos photos Instagram vers Pixelfed. Conversion automatique et respect de la vie privée.
+Outil gratuit pour migrer vos photos Instagram vers Pixelfed. Conversion automatique et respect de la vie privée. Traitement 100% côté client pour une confidentialité maximale.
 
 [Accéder à InstaFed](./tools/instafed/index.html)
-
-### ![Podcast Analyzer](./tools/podcast-analyzer/favicon.svg) Podcast Analyzer
-Analyse automatique de podcasts WordPress avec IA. Extraction de points clés, citations et ressources.
-
-[Accéder à Podcast Analyzer](./tools/podcast-analyzer/index.html)
-
-### ![URLs to OPML](./tools/feed-minitools/urls-to-opml/favicon.svg) URLs to OPML
-Convertit une liste d'URLs de sites web en format OPML en détectant automatiquement leurs flux RSS/Atom.
-
-**Note** : Cet outil fait partie de la suite Feed Minitools.
-
-[Accéder à URLs to OPML](./tools/feed-minitools/urls-to-opml/index.html)
 
 ## Structure du projet
 
@@ -50,15 +38,25 @@ ai-jaztools/
 ├── shared/              # Ressources communes
 │   ├── design-system/  # Design system unifié (CSS)
 │   ├── components/     # Composants JavaScript réutilisables
-│   └── assets/          # Assets communs (favicons, etc.)
+│   ├── assets/         # Assets communs (favicons, etc.)
+│   └── utils/          # Utilitaires JavaScript partagés
 ├── tools/               # Tous les outils
-│   ├── feed-minitools/  # Suite d'outils RSS (favorites-migrator, subscription-organizer, urls-to-opml)
-│   ├── instafed/
-│   └── podcast-analyzer/
+│   ├── feed-minitools/  # Suite d'outils RSS
+│   │   ├── favorites-migrator/  # Migration de favoris RSS
+│   │   ├── subscription-organizer/  # Organisation d'abonnements RSS
+│   │   └── urls-to-opml/  # Conversion URLs vers OPML
+│   └── instafed/       # Migration Instagram vers Pixelfed
 ├── landing/             # Landing page principale
 ├── docs/                # Documentation
-└── ai-starter-kit/      # Outil de développement (templates et configs pour IDEs)
+└── scripts/             # Scripts utilitaires (génération favicons, etc.)
 ```
+
+**Structure standardisée des outils** (Option A) :
+- `index.html` : Page principale
+- `app.js` : Logique JavaScript principale (modules ES6)
+- `modules/` : Modules JavaScript séparés (si nécessaire)
+- `styles.css` : Styles locaux (optionnel si Design System suffisant)
+- `README.md` : Documentation de l'outil
 
 > **Note** : `ai-starter-kit/` est un outil de développement qui fournit des templates et configurations pour les IDEs (Cursor, VS Code, Windsurf). Il n'est pas déployé avec les outils finaux.
 
@@ -67,18 +65,34 @@ ai-jaztools/
 ### Développement local
 
 1. Clonez le repository
-2. Ouvrez les fichiers HTML directement dans votre navigateur
-3. Pour les outils avec backend, consultez leur README spécifique
+2. Ouvrez les fichiers HTML directement dans votre navigateur (pas de build nécessaire)
+3. Tous les outils sont statiques et fonctionnent sans serveur backend
+4. Pour plus de détails sur un outil spécifique, consultez son README dans `tools/[nom-outil]/README.md`
 
 ### Déploiement
 
-Voir [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md) pour le guide complet de déploiement sur Coolify.
+Voir [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md) pour le guide complet de déploiement sur Coolify. Tous les outils sont déployés en tant que services statiques (pas de build, déploiement direct).
 
 ## Documentation
 
+### Guides principaux
+
 - [Guide de déploiement](./docs/DEPLOYMENT.md) - Déploiement sur Coolify
 - [Design System](./docs/DESIGN-SYSTEM.md) - Documentation du design system
+- [Plan d'harmonisation](./docs/PLAN-HARMONISATION.md) - Stack technique et conventions
+- [Accessibilité](./docs/ACCESSIBILITY.md) - Guide d'accessibilité
+- [Performance](./docs/PERFORMANCE.md) - Optimisations et bonnes pratiques
+- [Logging](./docs/LOGGING.md) - Gestion des logs
 - [Politique de Licence](./docs/LICENSING.md) - Licence AGPL-3.0 et compatibilité des dépendances
+
+### Templates
+
+- [Template README](./docs/TEMPLATE-README.md) - Template pour la documentation des outils
+- [Template variables d'environnement](./docs/TEMPLATE-ENV.md) - Template pour les fichiers .env
+- [Template HTML accessible](./docs/TEMPLATE-ACCESSIBLE.html) - Template HTML avec accessibilité
+
+### À venir
+
 - [Architecture](./docs/ARCHITECTURE.md) - Architecture du monorepo (à venir)
 - [Contributing](./docs/CONTRIBUTING.md) - Guide de contribution (à venir)
 
@@ -88,10 +102,12 @@ Tous les outils utilisent un design system unifié situé dans `shared/design-sy
 
 ## Technologies
 
-- **Frontend** : HTML, CSS, JavaScript vanilla
-- **Backend** : Node.js (Express), Python
-- **Frameworks** : React (podcast-analyzer via CDN)
-- **Déploiement** : Coolify sur VPS
+- **Frontend** : HTML5, CSS3, JavaScript vanilla (ES6+ modules)
+- **Stack** : Option A (vanilla JS pur, traitement 100% côté client)
+- **Design System** : CSS partagé dans `shared/design-system/`
+- **Composants** : Modules JavaScript réutilisables dans `shared/components/`
+- **Déploiement** : Coolify sur VPS (déploiement direct, pas de build)
+- **Dépendances** : Aucune (ou minimales si nécessaire, tout en local)
 
 ## Contribution
 

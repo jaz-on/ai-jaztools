@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI JazTools - Mini outils rapides</title>
     <meta name="description" content="Collection de mini outils développés rapidement pour répondre à des besoins temporaires et ponctuels">
+    
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self';">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
+    
     <link rel="icon" type="image/svg+xml" href="../shared/assets/favicon.svg">
     <link rel="icon" type="image/x-icon" href="../shared/assets/favicon.ico">
     <link rel="stylesheet" href="../shared/design-system/variables.css">
@@ -12,129 +20,366 @@
     <link rel="stylesheet" href="../shared/design-system/components.css">
     <link rel="stylesheet" href="../shared/design-system/utilities.css">
     <link rel="stylesheet" href="styles.css">
+    
+    <!-- Shared Components -->
+    <script type="module">
+        // Import shared components for dynamic use
+        import Button from '../shared/components/Button/Button.js';
+        import Card from '../shared/components/Card/Card.js';
+        import Header from '../shared/components/Header/Header.js';
+        import Footer from '../shared/components/Footer/Footer.js';
+        import Badge from '../shared/components/Badge/Badge.js';
+        import Grid from '../shared/components/Grid/Grid.js';
+        import { List, ListItem } from '../shared/components/List/index.js';
+        
+        // Make components available globally
+        window.SharedComponents = {
+            Button,
+            Card,
+            Header,
+            Footer,
+            Badge,
+            Grid,
+            List,
+            ListItem
+        };
+    </script>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <header class="app-header">
-            <h1>AI JazTools</h1>
-            <p class="subtitle">Collection de mini outils rapides pour répondre à des besoins temporaires et ponctuels</p>
-        </header>
-
-        <!-- Navigation -->
-        <nav class="main-nav">
-            <ul class="nav-list">
-                <li><a href="#tools" class="btn btn-secondary">Voir les outils</a></li>
-                <li><a href="#about" class="btn btn-secondary">À propos</a></li>
-            </ul>
-        </nav>
-
-        <!-- Tools Section -->
-        <section id="tools" class="tools-section">
-            <h2 class="text-center text-2xl font-semibold mb-6">Les outils disponibles</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Feed Minitools -->
-                <div class="card tool-card">
-                    <div class="card-header">
-                        <h3 class="card-title">Feed Minitools</h3>
-                        <span class="badge badge-primary">RSS</span>
-                    </div>
-                    <div class="card-body">
-                        <p>Suite d'outils pour gérer, migrer et organiser vos flux RSS et favoris.</p>
-                        <ul class="tool-features">
-                            <li>Favorites Migrator - Migration de favoris entre plateformes</li>
-                            <li>Subscription Organizer - Organisation et analyse d'abonnements RSS</li>
-                        </ul>
-                    </div>
-                    <div class="card-footer">
-                        <a href="../tools/feed-minitools/index.html" class="btn btn-primary w-full">Accéder à Feed Minitools</a>
-                    </div>
-                </div>
-
-                <!-- InstaFed -->
-                <div class="card tool-card">
-                    <div class="card-header">
-                        <h3 class="card-title">InstaFed</h3>
-                        <span class="badge badge-success">Migration</span>
-                    </div>
-                    <div class="card-body">
-                        <p>Outil gratuit pour migrer vos photos Instagram vers Pixelfed. Conversion automatique et respect de la vie privée.</p>
-                        <ul class="tool-features">
-                            <li>Conversion automatique des archives Instagram</li>
-                            <li>Traitement 100% local (données privées)</li>
-                            <li>Format compatible Pixelfed</li>
-                        </ul>
-                    </div>
-                    <div class="card-footer">
-                        <a href="../tools/instafed/index.html" class="btn btn-primary w-full">Accéder à InstaFed</a>
-                    </div>
-                </div>
-
-                <!-- Podcast Analyzer -->
-                <div class="card tool-card">
-                    <div class="card-header">
-                        <h3 class="card-title">Podcast Analyzer</h3>
-                        <span class="badge badge-info">IA</span>
-                    </div>
-                    <div class="card-body">
-                        <p>Analyse automatique de podcasts WordPress avec IA. Extraction de points clés, citations et ressources.</p>
-                        <ul class="tool-features">
-                            <li>Analyse par URL ou transcription</li>
-                            <li>Extraction de points clés et citations</li>
-                            <li>Export des analyses</li>
-                        </ul>
-                    </div>
-                    <div class="card-footer">
-                        <a href="../tools/podcast-analyzer/index.html" class="btn btn-primary w-full">Accéder à Podcast Analyzer</a>
-                    </div>
-                </div>
-
-                <!-- URLs to OPML -->
-                <div class="card tool-card">
-                    <div class="card-header">
-                        <h3 class="card-title">URLs to OPML</h3>
-                        <span class="badge badge-warning">RSS</span>
-                    </div>
-                    <div class="card-body">
-                        <p>Convertit une liste d'URLs de sites web en format OPML en détectant automatiquement leurs flux RSS/Atom.</p>
-                        <ul class="tool-features">
-                            <li>Traitement en lot d'URLs</li>
-                            <li>Détection automatique des flux</li>
-                            <li>Génération de fichiers OPML</li>
-                        </ul>
-                    </div>
-                    <div class="card-footer">
-                        <a href="../tools/feed-minitools/urls-to-opml/index.html" class="btn btn-primary w-full">Accéder à URLs to OPML</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- About Section -->
-        <section id="about" class="about-section">
-            <div class="card">
-                <h2>À propos</h2>
-                <p>Cette collection regroupe des mini outils développés rapidement pour répondre à des besoins temporaires et ponctuels. Ils partagent une nomenclature commune, une cohérence de code/stack, CSS et nommage pour être maintenus en commun.</p>
-                <p>Les outils sont soit des méthodes d'utilisation d'IA pour des mini projets, soit des mini projets générés via IA.</p>
-                <h3>Caractéristiques communes</h3>
-                <ul>
-                    <li>Design system unifié</li>
-                    <li>Nomenclature cohérente</li>
-                    <li>Stack technique standardisée</li>
-                    <li>Déploiement via Coolify sur VPS</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="app-footer mt-8">
-            <p>Collection open source - Vos données restent sur votre appareil</p>
-            <p style="margin-top: 0.5rem; font-size: 0.75rem; opacity: 0.8;">
-                Un projet de <a href="https://jasonrouet.com/" target="_blank" rel="noopener">Jason Rouet</a>
-            </p>
-        </footer>
+    <!-- Skip link pour navigation clavier -->
+    <a href="#main-content" class="skip-link">Aller au contenu principal</a>
+    
+    <div class="container" id="app-container">
+        <!-- Header, Navigation, Tools, About, Footer will be created dynamically -->
     </div>
+    
+    <script type="module">
+        // Helper function to get shared components
+        function getSharedComponent(name) {
+            if (window.SharedComponents && window.SharedComponents[name]) {
+                return window.SharedComponents[name];
+            }
+            console.warn(`Shared component ${name} not available yet`);
+            return null;
+        }
+        
+        // Initialize landing page with shared components
+        function initializeLandingPage() {
+            const container = document.getElementById('app-container');
+            if (!container) return;
+            
+            const Header = getSharedComponent('Header');
+            const Footer = getSharedComponent('Footer');
+            const Card = getSharedComponent('Card');
+            const Badge = getSharedComponent('Badge');
+            const Button = getSharedComponent('Button');
+            const Grid = getSharedComponent('Grid');
+            const List = getSharedComponent('List');
+            const ListItem = getSharedComponent('ListItem');
+            
+            // Create Header
+            if (Header) {
+                const header = Header({
+                    title: 'AI JazTools',
+                    subtitle: 'Collection de mini outils rapides pour répondre à des besoins temporaires et ponctuels'
+                });
+                header.className = 'app-header';
+                header.style.cssText = 'text-align: center; margin: var(--space-lg) 0; padding: var(--space-xl) 0 var(--space-lg) 0; background: var(--dark); color: var(--white); border-radius: var(--radius);';
+                container.appendChild(header);
+            }
+            
+            // Create Navigation
+            const nav = document.createElement('nav');
+            nav.className = 'my-5 text-center';
+            nav.setAttribute('role', 'navigation');
+            nav.setAttribute('aria-label', 'Navigation principale');
+            
+            if (List && ListItem && Button) {
+                const navList = List({
+                    children: [
+                        ListItem({
+                            children: [
+                                Button({
+                                    variant: 'secondary',
+                                    children: 'Voir les outils',
+                                    onClick: () => {
+                                        document.getElementById('tools-section')?.scrollIntoView({ behavior: 'smooth' });
+                                    },
+                                    ariaLabel: 'Aller à la section des outils'
+                                })
+                            ]
+                        }),
+                        ListItem({
+                            children: [
+                                Button({
+                                    variant: 'secondary',
+                                    children: 'À propos',
+                                    onClick: () => {
+                                        document.getElementById('about-section')?.scrollIntoView({ behavior: 'smooth' });
+                                    },
+                                    ariaLabel: 'Aller à la section à propos'
+                                })
+                            ]
+                        })
+                    ]
+                });
+                navList.className = 'list flex flex-wrap justify-center nav-gap';
+                nav.appendChild(navList);
+            }
+            container.appendChild(nav);
+            
+            // Create Main
+            const main = document.createElement('main');
+            main.id = 'main-content';
+            main.setAttribute('role', 'main');
+            
+            // Tools Section
+            const toolsSection = document.createElement('section');
+            toolsSection.id = 'tools-section';
+            toolsSection.className = 'my-6';
+            toolsSection.setAttribute('aria-labelledby', 'tools-title');
+            
+            const toolsTitle = document.createElement('h2');
+            toolsTitle.id = 'tools-title';
+            toolsTitle.className = 'text-center text-2xl font-semibold mb-6';
+            toolsTitle.textContent = 'Les outils disponibles';
+            toolsSection.appendChild(toolsTitle);
+            
+            if (Grid && Card && Badge && Button && List && ListItem) {
+                // Feed Minitools Card
+                const feedMinitoolsCard = Card({
+                    children: [
+                        (() => {
+                            const header = document.createElement('div');
+                            header.className = 'card-header';
+                            const title = document.createElement('h3');
+                            title.className = 'card-title';
+                            title.textContent = 'Feed Minitools';
+                            header.appendChild(title);
+                            header.appendChild(Badge({ variant: 'primary', children: 'RSS' }));
+                            return header;
+                        })(),
+                        (() => {
+                            const body = document.createElement('div');
+                            body.className = 'card-body flex-grow';
+                            const p = document.createElement('p');
+                            p.textContent = 'Suite d\'outils pour gérer, migrer et organiser vos flux RSS et favoris.';
+                            body.appendChild(p);
+                            const list = List({
+                                children: [
+                                    ListItem({ children: 'Favorites Migrator - Migration de favoris entre plateformes' }),
+                                    ListItem({ children: 'Subscription Organizer - Organisation et analyse d\'abonnements RSS' })
+                                ]
+                            });
+                            list.className = 'list mt-3';
+                            body.appendChild(list);
+                            return body;
+                        })(),
+                        (() => {
+                            const footer = document.createElement('div');
+                            footer.className = 'card-footer';
+                            const link = Button({
+                                variant: 'primary',
+                                children: 'Accéder à Feed Minitools',
+                                onClick: () => window.location.href = '../tools/feed-minitools/index.html'
+                            });
+                            link.className = 'btn btn-primary w-full';
+                            link.style.cssText = 'display: block; width: 100%; text-align: center; text-decoration: none;';
+                            footer.appendChild(link);
+                            return footer;
+                        })()
+                    ]
+                });
+                feedMinitoolsCard.className = 'card flex flex-col h-full';
+                
+                // InstaFed Card
+                const instafedCard = Card({
+                    children: [
+                        (() => {
+                            const header = document.createElement('div');
+                            header.className = 'card-header';
+                            const title = document.createElement('h3');
+                            title.className = 'card-title';
+                            title.textContent = 'InstaFed';
+                            header.appendChild(title);
+                            header.appendChild(Badge({ variant: 'success', children: 'Migration' }));
+                            return header;
+                        })(),
+                        (() => {
+                            const body = document.createElement('div');
+                            body.className = 'card-body flex-grow';
+                            const p = document.createElement('p');
+                            p.textContent = 'Outil gratuit pour migrer vos photos Instagram vers Pixelfed. Conversion automatique et respect de la vie privée.';
+                            body.appendChild(p);
+                            const list = List({
+                                children: [
+                                    ListItem({ children: 'Conversion automatique des archives Instagram' }),
+                                    ListItem({ children: 'Traitement 100% local (données privées)' }),
+                                    ListItem({ children: 'Format compatible Pixelfed' })
+                                ]
+                            });
+                            list.className = 'list mt-3';
+                            body.appendChild(list);
+                            return body;
+                        })(),
+                        (() => {
+                            const footer = document.createElement('div');
+                            footer.className = 'card-footer';
+                            const link = Button({
+                                variant: 'primary',
+                                children: 'Accéder à InstaFed',
+                                onClick: () => window.location.href = '../tools/instafed/index.html'
+                            });
+                            link.className = 'btn btn-primary w-full';
+                            link.style.cssText = 'display: block; width: 100%; text-align: center; text-decoration: none;';
+                            footer.appendChild(link);
+                            return footer;
+                        })()
+                    ]
+                });
+                instafedCard.className = 'card flex flex-col h-full';
+                
+                // URLs to OPML Card
+                const urlsOpmlCard = Card({
+                    children: [
+                        (() => {
+                            const header = document.createElement('div');
+                            header.className = 'card-header';
+                            const title = document.createElement('h3');
+                            title.className = 'card-title';
+                            title.textContent = 'URLs to OPML';
+                            header.appendChild(title);
+                            header.appendChild(Badge({ variant: 'warning', children: 'RSS' }));
+                            return header;
+                        })(),
+                        (() => {
+                            const body = document.createElement('div');
+                            body.className = 'card-body flex-grow';
+                            const p = document.createElement('p');
+                            p.textContent = 'Convertit une liste d\'URLs de sites web en format OPML en détectant automatiquement leurs flux RSS/Atom.';
+                            body.appendChild(p);
+                            const list = List({
+                                children: [
+                                    ListItem({ children: 'Traitement en lot d\'URLs' }),
+                                    ListItem({ children: 'Détection automatique des flux' }),
+                                    ListItem({ children: 'Génération de fichiers OPML' })
+                                ]
+                            });
+                            list.className = 'list mt-3';
+                            body.appendChild(list);
+                            return body;
+                        })(),
+                        (() => {
+                            const footer = document.createElement('div');
+                            footer.className = 'card-footer';
+                            const link = Button({
+                                variant: 'primary',
+                                children: 'Accéder à URLs to OPML',
+                                onClick: () => window.location.href = '../tools/feed-minitools/urls-to-opml/index.html'
+                            });
+                            link.className = 'btn btn-primary w-full';
+                            link.style.cssText = 'display: block; width: 100%; text-align: center; text-decoration: none;';
+                            footer.appendChild(link);
+                            return footer;
+                        })()
+                    ]
+                });
+                urlsOpmlCard.className = 'card flex flex-col h-full';
+                
+                const toolsGrid = Grid({
+                    columns: 3,
+                    children: [feedMinitoolsCard, instafedCard, urlsOpmlCard]
+                });
+                toolsGrid.className = 'grid grid-cols-3';
+                toolsSection.appendChild(toolsGrid);
+            }
+            
+            main.appendChild(toolsSection);
+            
+            // About Section
+            const aboutSection = document.createElement('section');
+            aboutSection.id = 'about-section';
+            aboutSection.className = 'my-6';
+            aboutSection.setAttribute('aria-labelledby', 'about-title');
+            
+            if (Card && List && ListItem) {
+                const aboutCard = Card({
+                    children: [
+                        (() => {
+                            const title = document.createElement('h2');
+                            title.id = 'about-title';
+                            title.textContent = 'À propos';
+                            return title;
+                        })(),
+                        (() => {
+                            const p1 = document.createElement('p');
+                            p1.textContent = 'Cette collection regroupe des mini outils développés rapidement pour répondre à des besoins temporaires et ponctuels. Ils partagent une nomenclature commune, une cohérence de code/stack, CSS et nommage pour être maintenus en commun.';
+                            return p1;
+                        })(),
+                        (() => {
+                            const p2 = document.createElement('p');
+                            p2.textContent = 'Les outils sont soit des méthodes d\'utilisation d\'IA pour des mini projets, soit des mini projets générés via IA.';
+                            return p2;
+                        })(),
+                        (() => {
+                            const h3 = document.createElement('h3');
+                            h3.textContent = 'Caractéristiques communes';
+                            return h3;
+                        })(),
+                        (() => {
+                            const list = List({
+                                children: [
+                                    ListItem({ children: 'Design system unifié' }),
+                                    ListItem({ children: 'Nomenclature cohérente' }),
+                                    ListItem({ children: 'Stack technique standardisée' }),
+                                    ListItem({ children: 'Déploiement via Coolify sur VPS' })
+                                ]
+                            });
+                            list.className = 'mt-3';
+                            return list;
+                        })()
+                    ]
+                });
+                aboutCard.className = 'card';
+                aboutSection.appendChild(aboutCard);
+            }
+            
+            main.appendChild(aboutSection);
+            container.appendChild(main);
+            
+            // Create Footer
+            if (Footer) {
+                const footer = Footer({
+                    children: [
+                        'Collection open source - Vos données restent sur votre appareil',
+                        (() => {
+                            const p = document.createElement('p');
+                            p.className = 'mt-2 text-xs opacity-75';
+                            const link = document.createElement('a');
+                            link.href = 'https://jasonrouet.com/';
+                            link.target = '_blank';
+                            link.rel = 'noopener';
+                            link.setAttribute('aria-label', 'Site web de Jason Rouet (ouvre dans un nouvel onglet)');
+                            link.textContent = 'Jason Rouet';
+                            p.appendChild(document.createTextNode('Un projet de '));
+                            p.appendChild(link);
+                            return p;
+                        })()
+                    ]
+                });
+                footer.className = 'app-footer mt-8';
+                footer.style.cssText = 'text-align: center; margin-top: var(--space-xl); padding: var(--space-md); color: var(--gray); font-size: var(--font-size-sm); background: var(--light); border-radius: var(--radius);';
+                container.appendChild(footer);
+            }
+        }
+        
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                initializeLandingPage();
+            }, 100);
+        });
+    </script>
 </body>
 </html>
 
