@@ -1,4 +1,22 @@
-// Enhanced Application State Management
+/**
+ * @module tools/instafed/app
+ * 
+ * InstaFed - Main Application
+ * 
+ * Application cliente pour migrer des archives Instagram vers le format Pixelfed.
+ * Gère l'analyse, la conversion et le téléchargement des archives.
+ */
+
+import { createError, ErrorType, logError } from '../../shared/utils/error-handler.js';
+import { showError } from '../../shared/utils/messages.js';
+
+// Helper function to get shared components
+function getSharedComponent(name) {
+    if (window.SharedComponents && window.SharedComponents[name]) {
+        return window.SharedComponents[name];
+    }
+    return null;
+}
 
 // ===== MODULES UTILITAIRES =====
 
@@ -85,26 +103,38 @@ const ValidationUtils = {
     }
 };
 
-// Module: ErrorHandler - Gestion avancée des erreurs
+// Module: ErrorHandler - Gestion avancée des erreurs (utilise le module partagé)
 const ErrorHandler = {
     types: {
-        NETWORK: 'network',
-        VALIDATION: 'validation',
-        PROCESSING: 'processing',
-        MEMORY: 'memory'
+        NETWORK: ErrorType.NETWORK,
+        VALIDATION: ErrorType.VALIDATION,
+        PROCESSING: ErrorType.UNKNOWN,
+        MEMORY: ErrorType.UNKNOWN
     },
     
     handleError(error, context = {}) {
-        const errorInfo = {
-            message: error.message || error,
-            type: this.getErrorType(error),
-            context,
-            timestamp: new Date().toISOString(),
-            stack: error.stack
-        };
+        // Déterminer le type d'erreur
+        let errorType = ErrorType.UNKNOWN;
+        if (error.name === 'NetworkError' || error.message?.includes('network') || error.message?.includes('connexion')) {
+            errorType = ErrorType.NETWORK;
+        } else if (error.name === 'ValidationError' || error.message?.includes('invalid') || error.message?.includes('invalide')) {
+            errorType = ErrorType.VALIDATION;
+        }
+        
+        // Créer l'erreur standardisée
+        const errorInfo = createError(
+            error.message || 'Une erreur est survenue',
+            errorType,
+            error instanceof Error ? error : null
+        );
+        
+        // Ajouter le contexte
+        if (Object.keys(context).length > 0) {
+            errorInfo.context = context;
+        }
         
         // Log de l'erreur
-        console.error('Error occurred:', errorInfo);
+        logError(errorInfo);
         
         // Notification utilisateur
         this.showUserError(errorInfo);
@@ -129,17 +159,41 @@ const ErrorHandler = {
         if (typeof logMessage === 'function') {
             logMessage(message, 'errorLog', 'error');
         } else {
-            console.error('User error:', message);
+            // Chercher un container d'erreur dans le DOM
+            const errorContainer = document.getElementById('error-message-container');
+            if (errorContainer) {
+                const Message = getSharedComponent('Message');
+                if (Message) {
+                    // Clear existing messages
+                    errorContainer.innerHTML = '';
+                    const messageEl = Message({
+                        type: 'error',
+                        children: message
+                    });
+                    errorContainer.appendChild(messageEl);
+                    errorContainer.classList.remove('hidden');
+                } else {
+                    // Fallback to old method
+                    const oldContainer = document.getElementById('error-message');
+                    if (oldContainer) {
+                        showError(message, oldContainer);
+                    } else {
+                        console.error('Error container not found:', message);
+                    }
+                }
+            } else {
+                console.error('Error container not found:', message);
+            }
         }
     },
     
     getUserFriendlyMessage(errorInfo) {
         switch (errorInfo.type) {
-            case this.types.NETWORK:
+            case ErrorType.NETWORK:
                 return 'Erreur de connexion. Vérifiez votre connexion internet.';
-            case this.types.VALIDATION:
+            case ErrorType.VALIDATION:
                 return 'Fichier invalide. Assurez-vous que c\'est un fichier ZIP Instagram.';
-            case this.types.PROCESSING:
+            case ErrorType.API:
                 return 'Erreur de traitement. Réessayez avec un autre fichier.';
             default:
                 return 'Une erreur inattendue s\'est produite.';
@@ -148,13 +202,13 @@ const ErrorHandler = {
     
     attemptRecovery(errorInfo) {
         switch (errorInfo.type) {
-            case this.types.NETWORK:
+            case ErrorType.NETWORK:
                 // Retry automatique après 2 secondes
                 setTimeout(() => {
                     EventManager.emit('retry-operation', errorInfo);
                 }, 2000);
                 break;
-            case this.types.VALIDATION:
+            case ErrorType.VALIDATION:
                 // Tentative de correction automatique
                 this.attemptAutoFix(errorInfo);
                 break;
@@ -721,26 +775,18 @@ const JSZipUtils = {
         return true;
     },
     
-    safeLoadAsync: function(arrayBuffer) {
-        return new Promise((resolve, reject) => {
-            try {
-                const zip = new JSZip();
-                zip.loadAsync(arrayBuffer)
-                    .then(zip => {
-                        try {
-                            this.validateArchive(zip);
-                            resolve(zip);
-                        } catch (validationError) {
-                            reject(validationError);
-                        }
-                    })
-                    .catch(error => {
-                        reject(new Error(`Failed to load ZIP file: ${error.message}`));
-                    });
-            } catch (error) {
-                reject(new Error(`JSZip initialization failed: ${error.message}`));
+    async safeLoadAsync(arrayBuffer) {
+        try {
+            const zip = new JSZip();
+            const loadedZip = await zip.loadAsync(arrayBuffer);
+            this.validateArchive(loadedZip);
+            return loadedZip;
+        } catch (error) {
+            if (error.message && error.message.includes('JSZip')) {
+                throw new Error(`JSZip initialization failed: ${error.message}`);
             }
-        });
+            throw new Error(`Failed to load ZIP file: ${error.message}`);
+        }
     }
 };
 
@@ -749,50 +795,45 @@ async function extractInstagramUsername(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         
-        reader.onload = function(e) {
-            JSZipUtils.safeLoadAsync(e.target.result)
-                .then(zip => {
-                    // Look for the personal information file
-                    const personalInfoFile = zip.file('personal_information/personal_information/personal_information.json');
+        reader.onload = async function(e) {
+            try {
+                const zip = await JSZipUtils.safeLoadAsync(e.target.result);
+                
+                // Look for the personal information file
+                const personalInfoFile = zip.file('personal_information/personal_information/personal_information.json');
+                
+                if (!personalInfoFile) {
+                    console.log('Personal information file not found in archive');
+                    reject(new Error('Personal information file not found in archive'));
+                    return;
+                }
+                
+                try {
+                    const content = await personalInfoFile.async('string');
+                    const data = JSON.parse(content);
                     
-                    if (personalInfoFile) {
-                        personalInfoFile.async('string')
-                            .then(content => {
-                                try {
-                                    const data = JSON.parse(content);
-                                    
-                                    // Look for the username in the profile_user section
-                                    if (data.profile_user && data.profile_user.length > 0) {
-                                        const userInfo = data.profile_user[0];
-                                        if (userInfo.string_map_data && userInfo.string_map_data.Username) {
-                                            const username = userInfo.string_map_data.Username.value;
-                                            console.log('Extracted username from archive:', username);
-                                            resolve(username);
-                                            return;
-                                        }
-                                    }
-                                    
-                                    // If not found in profile_user, try other sections
-                                    console.log('Username not found in profile_user, trying other sections...');
-                                    reject(new Error('Username not found in expected location'));
-                                } catch (parseError) {
-                                    console.error('Error parsing personal information JSON:', parseError);
-                                    reject(new Error(`Invalid personal information format: ${parseError.message}`));
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Error reading personal information file:', error);
-                                reject(new Error(`Failed to read personal information: ${error.message}`));
-                            });
-                    } else {
-                        console.log('Personal information file not found in archive');
-                        reject(new Error('Personal information file not found in archive'));
+                    // Look for the username in the profile_user section
+                    if (data.profile_user && data.profile_user.length > 0) {
+                        const userInfo = data.profile_user[0];
+                        if (userInfo.string_map_data && userInfo.string_map_data.Username) {
+                            const username = userInfo.string_map_data.Username.value;
+                            console.log('Extracted username from archive:', username);
+                            resolve(username);
+                            return;
+                        }
                     }
-                })
-                .catch(error => {
-                    console.error('Error processing ZIP file:', error);
-                    reject(error);
-                });
+                    
+                    // If not found in profile_user, try other sections
+                    console.log('Username not found in profile_user, trying other sections...');
+                    reject(new Error('Username not found in expected location'));
+                } catch (parseError) {
+                    console.error('Error parsing personal information JSON:', parseError);
+                    reject(new Error(`Invalid personal information format: ${parseError.message}`));
+                }
+            } catch (error) {
+                console.error('Error processing ZIP file:', error);
+                reject(error);
+            }
         };
         
         reader.onerror = function() {
@@ -808,123 +849,121 @@ async function analyzeArchiveIssues(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         
-        reader.onload = function(e) {
-            JSZipUtils.safeLoadAsync(e.target.result)
-                .then(zip => {
-                    const issues = {
-                        emptyCaptions: 0,
-                        photosWithGPS: 0,
-                        structureIssues: false,
-                        totalPosts: 0,
-                        totalPhotos: 0,
-                        totalVideos: 0,
-                        processingErrors: []
-                    };
+        reader.onload = async function(e) {
+            try {
+                const zip = await JSZipUtils.safeLoadAsync(e.target.result);
+                const issues = {
+                    emptyCaptions: 0,
+                    photosWithGPS: 0,
+                    structureIssues: false,
+                    totalPosts: 0,
+                    totalPhotos: 0,
+                    totalVideos: 0,
+                    processingErrors: []
+                };
+                
+                try {
+                    // Count all files in the archive
+                    const allFiles = Object.keys(zip.files);
+                    console.log('All files in archive:', allFiles);
                     
-                    try {
-                        // Count all files in the archive
-                        const allFiles = Object.keys(zip.files);
-                        console.log('All files in archive:', allFiles);
-                        
-                        // Count media files with better validation
-                        const mediaFiles = allFiles.filter(filename => {
-                            const lowerFilename = filename.toLowerCase();
-                            return lowerFilename.includes('.jpg') || 
-                                   lowerFilename.includes('.jpeg') || 
-                                   lowerFilename.includes('.png') || 
-                                   lowerFilename.includes('.mp4') || 
-                                   lowerFilename.includes('.mov');
-                        });
-                        
-                        // Count photos vs videos
-                        const photoFiles = mediaFiles.filter(filename => {
-                            const lowerFilename = filename.toLowerCase();
-                            return lowerFilename.includes('.jpg') || 
-                                   lowerFilename.includes('.jpeg') || 
-                                   lowerFilename.includes('.png');
-                        });
-                        
-                        const videoFiles = mediaFiles.filter(filename => {
-                            const lowerFilename = filename.toLowerCase();
-                            return lowerFilename.includes('.mp4') || 
-                                   lowerFilename.includes('.mov');
-                        });
-                        
-                        issues.totalPhotos = photoFiles.length;
-                        issues.totalVideos = videoFiles.length;
-                        
-                        console.log('Found media files:', {
-                            photos: issues.totalPhotos,
-                            videos: issues.totalVideos,
-                            total: issues.totalPhotos + issues.totalVideos
-                        });
-                        
-                        // Analyze posts data if available
-                        const postsFile = zip.file('content/posts_1.json');
-                        if (postsFile) {
-                            return postsFile.async('string')
-                                .then(content => {
-                                    try {
-                                        const postsData = JSON.parse(content);
-                                        if (postsData && Array.isArray(postsData)) {
-                                            issues.totalPosts = postsData.length;
-                                            
-                                            // Count posts with empty captions
-                                            issues.emptyCaptions = postsData.filter(post => 
-                                                !post.caption || post.caption.trim() === ''
-                                            ).length;
-                                            
-                                            // Count posts with GPS data (simplified detection)
-                                            issues.photosWithGPS = postsData.filter(post => 
-                                                post.location && post.location.lat && post.location.lng
-                                            ).length;
-                                        }
-                                    } catch (parseError) {
-                                        console.error('Error parsing posts JSON:', parseError);
-                                        issues.processingErrors.push(`Posts data parsing error: ${parseError.message}`);
-                                    }
+                    // Count media files with better validation
+                    const mediaFiles = allFiles.filter(filename => {
+                        const lowerFilename = filename.toLowerCase();
+                        return lowerFilename.includes('.jpg') || 
+                               lowerFilename.includes('.jpeg') || 
+                               lowerFilename.includes('.png') || 
+                               lowerFilename.includes('.mp4') || 
+                               lowerFilename.includes('.mov');
+                    });
+                    
+                    // Count photos vs videos
+                    const photoFiles = mediaFiles.filter(filename => {
+                        const lowerFilename = filename.toLowerCase();
+                        return lowerFilename.includes('.jpg') || 
+                               lowerFilename.includes('.jpeg') || 
+                               lowerFilename.includes('.png');
+                    });
+                    
+                    const videoFiles = mediaFiles.filter(filename => {
+                        const lowerFilename = filename.toLowerCase();
+                        return lowerFilename.includes('.mp4') || 
+                               lowerFilename.includes('.mov');
+                    });
+                    
+                    issues.totalPhotos = photoFiles.length;
+                    issues.totalVideos = videoFiles.length;
+                    
+                    console.log('Found media files:', {
+                        photos: issues.totalPhotos,
+                        videos: issues.totalVideos,
+                        total: issues.totalPhotos + issues.totalVideos
+                    });
+                    
+                    // Analyze posts data if available
+                    const postsFile = zip.file('content/posts_1.json');
+                    if (postsFile) {
+                        try {
+                            const content = await postsFile.async('string');
+                            try {
+                                const postsData = JSON.parse(content);
+                                if (postsData && Array.isArray(postsData)) {
+                                    issues.totalPosts = postsData.length;
                                     
-                                    // Check for structure issues
-                                    const hasProperStructure = zip.file('content/') && zip.file('personal_information/');
-                                    issues.structureIssues = !hasProperStructure;
+                                    // Count posts with empty captions
+                                    issues.emptyCaptions = postsData.filter(post => 
+                                        !post.caption || post.caption.trim() === ''
+                                    ).length;
                                     
-                                    console.log('Archive analysis complete:', issues);
-                                    resolve(issues);
-                                })
-                                .catch(error => {
-                                    console.error('Error reading posts file:', error);
-                                    issues.processingErrors.push(`Posts file reading error: ${error.message}`);
-                                    
-                                    // Fallback to estimation
-                                    issues.totalPosts = Math.ceil((issues.totalPhotos + issues.totalVideos) / 1.5);
-                                    issues.emptyCaptions = Math.floor(issues.totalPosts * 0.1);
-                                    issues.photosWithGPS = Math.floor(issues.totalPhotos * 0.3);
-                                    issues.structureIssues = !zip.file('content/') || !zip.file('personal_information/');
-                                    
-                                    console.log('Archive analysis complete (with errors):', issues);
-                                    resolve(issues);
-                                });
-                        } else {
-                            // If no posts JSON, estimate based on media files
-                            console.log('No posts JSON found, using media file count');
-                            issues.totalPosts = Math.ceil((issues.totalPhotos + issues.totalVideos) / 1.5); // Estimate 1.5 media per post
-                            issues.emptyCaptions = Math.floor(issues.totalPosts * 0.1); // Estimate 10% empty captions
-                            issues.photosWithGPS = Math.floor(issues.totalPhotos * 0.3); // Estimate 30% with GPS
+                                    // Count posts with GPS data (simplified detection)
+                                    issues.photosWithGPS = postsData.filter(post => 
+                                        post.location && post.location.lat && post.location.lng
+                                    ).length;
+                                }
+                            } catch (parseError) {
+                                console.error('Error parsing posts JSON:', parseError);
+                                issues.processingErrors.push(`Posts data parsing error: ${parseError.message}`);
+                            }
+                            
+                            // Check for structure issues
+                            const hasProperStructure = zip.file('content/') && zip.file('personal_information/');
+                            issues.structureIssues = !hasProperStructure;
+                            
+                            console.log('Archive analysis complete:', issues);
+                            resolve(issues);
+                        } catch (error) {
+                            console.error('Error reading posts file:', error);
+                            issues.processingErrors.push(`Posts file reading error: ${error.message}`);
+                            
+                            // Fallback to estimation
+                            issues.totalPosts = Math.ceil((issues.totalPhotos + issues.totalVideos) / 1.5);
+                            issues.emptyCaptions = Math.floor(issues.totalPosts * 0.1);
+                            issues.photosWithGPS = Math.floor(issues.totalPhotos * 0.3);
                             issues.structureIssues = !zip.file('content/') || !zip.file('personal_information/');
                             
-                            console.log('Archive analysis complete (estimated):', issues);
+                            console.log('Archive analysis complete (with errors):', issues);
                             resolve(issues);
                         }
-                    } catch (error) {
-                        console.error('Error during archive analysis:', error);
-                        issues.processingErrors.push(`Analysis error: ${error.message}`);
+                    } else {
+                        // If no posts JSON, estimate based on media files
+                        console.log('No posts JSON found, using media file count');
+                        issues.totalPosts = Math.ceil((issues.totalPhotos + issues.totalVideos) / 1.5); // Estimate 1.5 media per post
+                        issues.emptyCaptions = Math.floor(issues.totalPosts * 0.1); // Estimate 10% empty captions
+                        issues.photosWithGPS = Math.floor(issues.totalPhotos * 0.3); // Estimate 30% with GPS
+                        issues.structureIssues = !zip.file('content/') || !zip.file('personal_information/');
+                        
+                        console.log('Archive analysis complete (estimated):', issues);
                         resolve(issues);
                     }
-                })
-                .catch(error => {
-                    console.error('Error analyzing archive:', error);
-                    reject(error);
-                });
+                } catch (error) {
+                    console.error('Error during archive analysis:', error);
+                    issues.processingErrors.push(`Analysis error: ${error.message}`);
+                    resolve(issues);
+                }
+            } catch (error) {
+                console.error('Error analyzing archive:', error);
+                reject(error);
+            }
         };
         
         reader.onerror = function() {
@@ -959,9 +998,11 @@ const accessibilityUtils = {
 
     // Update progress bar with ARIA attributes
     updateProgressBar: function(progressBar, value) {
-        progressBar.style.width = value + '%';
-        progressBar.setAttribute('aria-valuenow', value);
-        accessibilityUtils.announceToScreenReader(`Progress: ${value}%`);
+        if (progressBar) {
+            updateProgressBarValue(progressBar, value);
+            progressBar.setAttribute('aria-valuenow', value);
+            accessibilityUtils.announceToScreenReader(`Progress: ${value}%`);
+        }
     },
 
     // Focus management
@@ -1000,6 +1041,167 @@ const accessibilityUtils = {
     }
 };
 
+// Helper function to get shared components
+function getSharedComponent(name) {
+    if (window.SharedComponents && window.SharedComponents[name]) {
+        return window.SharedComponents[name];
+    }
+    console.warn(`Shared component ${name} not available yet`);
+    return null;
+}
+
+// Helper function to update ProgressBar value
+function updateProgressBarValue(container, value, max = 100) {
+    const progressFill = container.querySelector('.progress-fill');
+    if (progressFill) {
+        const percentage = Math.min(100, Math.max(0, (value / max) * 100));
+        progressFill.style.width = `${percentage}%`;
+        
+        // Update ARIA attributes on parent progress element
+        const progressElement = container.closest('[role="progressbar"]') || container.querySelector('.progress');
+        if (progressElement) {
+            progressElement.setAttribute('aria-valuenow', value);
+        }
+    }
+}
+
+// Helper function to create analysis progress bar
+function createAnalysisProgressBar() {
+    const container = document.getElementById('analysis-progress-container');
+    if (!container) return null;
+    
+    const ProgressBar = getSharedComponent('ProgressBar');
+    const ProgressContainer = getSharedComponent('ProgressContainer');
+    
+    if (ProgressBar && ProgressContainer) {
+        // Clear existing
+        container.innerHTML = '';
+        
+        const progressBar = ProgressBar({ value: 0, max: 100 });
+        const progressWrapper = ProgressContainer({ children: [progressBar] });
+        progressWrapper.className = 'progress';
+        progressWrapper.setAttribute('role', 'progressbar');
+        progressWrapper.setAttribute('aria-valuenow', '0');
+        progressWrapper.setAttribute('aria-valuemin', '0');
+        progressWrapper.setAttribute('aria-valuemax', '100');
+        progressWrapper.setAttribute('aria-label', 'Analysis progress');
+        
+        const statusDiv = document.createElement('div');
+        statusDiv.id = 'analysisStatus';
+        statusDiv.className = 'analysis-status';
+        statusDiv.setAttribute('aria-live', 'polite');
+        statusDiv.setAttribute('aria-atomic', 'true');
+        const statusMessage = document.createElement('div');
+        statusMessage.className = 'status-message';
+        statusMessage.textContent = 'Scanning content...';
+        statusDiv.appendChild(statusMessage);
+        
+        container.appendChild(progressWrapper);
+        container.appendChild(statusDiv);
+        
+        return progressWrapper.querySelector('.progress-fill') || progressWrapper.querySelector('.progress-bar');
+    }
+    
+    return null;
+}
+
+// Initialize shared components UI
+function initializeSharedComponents() {
+    // Create buttons for action buttons containers
+    const step1Container = document.getElementById('step1-action-buttons');
+    if (step1Container) {
+        const Button = getSharedComponent('Button');
+        if (Button) {
+            const btn = Button({
+                variant: 'primary',
+                children: 'Analyze Archive',
+                onClick: startAnalysis,
+                ariaLabel: 'Start analysis of selected archive'
+            });
+            step1Container.appendChild(btn);
+        }
+    }
+
+    const step2Container = document.getElementById('step2-action-buttons');
+    if (step2Container) {
+        const Button = getSharedComponent('Button');
+        if (Button) {
+            const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            icon.setAttribute('class', 'icon icon--settings');
+            icon.setAttribute('viewBox', '0 0 24 24');
+            icon.setAttribute('aria-hidden', 'true');
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', 'M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z');
+            icon.appendChild(path);
+            
+            const btn = Button({
+                variant: 'primary',
+                children: [icon, ' Configure Options'],
+                onClick: goToConfiguration,
+                ariaLabel: 'Go to configuration step'
+            });
+            step2Container.appendChild(btn);
+        }
+    }
+
+    const step3Container = document.getElementById('step3-action-buttons');
+    if (step3Container) {
+        const Button = getSharedComponent('Button');
+        if (Button) {
+            const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            icon.setAttribute('class', 'icon icon--convert');
+            icon.setAttribute('viewBox', '0 0 24 24');
+            icon.setAttribute('aria-hidden', 'true');
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z');
+            icon.appendChild(path);
+            
+            const btn = Button({
+                variant: 'primary',
+                children: [icon, ' Start Conversion'],
+                onClick: startConversion,
+                ariaLabel: 'Start conversion with selected options'
+            });
+            step3Container.appendChild(btn);
+        }
+    }
+
+    const step5Container = document.getElementById('step5-action-buttons');
+    if (step5Container) {
+        const Button = getSharedComponent('Button');
+        if (Button) {
+            const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            icon.setAttribute('class', 'icon icon--download');
+            icon.setAttribute('viewBox', '0 0 24 24');
+            icon.setAttribute('aria-hidden', 'true');
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', 'M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z');
+            icon.appendChild(path);
+            
+            const btn = Button({
+                variant: 'primary',
+                children: [icon, ' Download ZIP Archive'],
+                onClick: downloadArchive,
+                ariaLabel: 'Download converted Pixelfed archive as ZIP file'
+            });
+            step5Container.appendChild(btn);
+        }
+    }
+
+    const importGuideContainer = document.getElementById('import-guide-button-container');
+    if (importGuideContainer) {
+        const Button = getSharedComponent('Button');
+        if (Button) {
+            const btn = Button({
+                variant: 'secondary',
+                children: 'View Import Guide',
+                onClick: showImportGuide
+            });
+            importGuideContainer.appendChild(btn);
+        }
+    }
+}
+
 // Initialization
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM loaded, initializing application...');
@@ -1017,6 +1219,11 @@ document.addEventListener('DOMContentLoaded', function() {
         // Initialize option statuses
         OptionStatusManager.initializeStatuses();
         OptionStatusManager.setupEventListeners();
+        
+        // Initialize shared components (wait a bit more for components to load)
+        setTimeout(() => {
+            initializeSharedComponents();
+        }, 200);
         
         logMessage('Application initialized. Ready to process your Instagram archive.', 'analysisLog');
         accessibilityUtils.announceToScreenReader('InstaFed loaded. Ready to process Instagram archives.');
@@ -1044,12 +1251,12 @@ function startConversion() {
     // Simulate conversion process
     const step4 = document.getElementById('step4');
     const step5 = document.getElementById('step5');
-    const progressBar = document.getElementById('conversionProgress');
+    const progressContainer = document.getElementById('conversion-progress-container');
     const status = document.getElementById('conversionStatus');
     const fixesApplied = document.getElementById('fixesApplied');
     
-    if (!step4 || !step5 || !progressBar || !status) {
-        console.error('Required elements not found:', { step4, step5, progressBar, status });
+    if (!step4 || !step5 || !progressContainer || !status) {
+        console.error('Required elements not found:', { step4, step5, progressContainer, status });
         return;
     }
     
@@ -1060,14 +1267,40 @@ function startConversion() {
     step4.style.display = 'block';
     UIState.updateProgress(4);
     
+    // Create progress bar using shared component
+    const ProgressBar = getSharedComponent('ProgressBar');
+    const ProgressContainer = getSharedComponent('ProgressContainer');
+    let progressWrapper = null;
+    
+    if (ProgressBar && ProgressContainer) {
+        // Clear existing progress
+        const existingProgress = progressContainer.querySelector('.progress');
+        if (existingProgress) existingProgress.remove();
+        
+        const progressBar = ProgressBar({ value: 0, max: 100 });
+        progressWrapper = ProgressContainer({ children: [progressBar] });
+        progressWrapper.className = 'progress';
+        progressWrapper.setAttribute('role', 'progressbar');
+        progressWrapper.setAttribute('aria-valuenow', '0');
+        progressWrapper.setAttribute('aria-valuemin', '0');
+        progressWrapper.setAttribute('aria-valuemax', '100');
+        progressWrapper.setAttribute('aria-label', 'Conversion progress');
+        progressContainer.insertBefore(progressWrapper, status);
+    }
+    
+    if (!progressWrapper) {
+        console.error('Progress bar element not found');
+        return;
+    }
+    
     // Reset progress bar
-    progressBar.style.width = '0%';
+    updateProgressBarValue(progressWrapper, 0);
     
     // Simulate conversion progress
     let progress = 0;
     const interval = setInterval(() => {
         progress += 10;
-        progressBar.style.width = progress + '%';
+        updateProgressBarValue(progressWrapper, progress);
         
         if (progress <= 30) {
             status.textContent = 'Preparing files...';
@@ -1116,9 +1349,35 @@ function startConversion() {
     }, 200);
 }
 
+// Helper function to update progress by element ID
+function updateProgress(elementId, value) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        // Find the progress wrapper (from shared component or native)
+        const progressWrapper = element.querySelector('.progress') || 
+                               element.querySelector('.progress-container') ||
+                               element.closest('.progress') ||
+                               element;
+        updateProgressBarValue(progressWrapper, value);
+        // Update ARIA attributes
+        const progressContainer = progressWrapper.closest('.progress') || progressWrapper;
+        if (progressContainer) {
+            progressContainer.setAttribute('aria-valuenow', value);
+        }
+    }
+}
+
 async function simulateConversion() {
-    const progressBar = document.getElementById('conversionProgress');
+    const progressContainer = document.getElementById('conversion-progress-container');
     const status = document.getElementById('conversionStatus');
+    
+    // Find progress wrapper (from shared component or native)
+    let progressWrapper = null;
+    if (progressContainer) {
+        progressWrapper = progressContainer.querySelector('.progress') || 
+                         progressContainer.querySelector('.progress-container') ||
+                         progressContainer;
+    }
     
     const steps = [
         { progress: 10, message: 'Extracting and analyzing Instagram archive...' },
@@ -1154,8 +1413,15 @@ async function simulateConversion() {
     );
 
     for (const step of steps) {
-        updateProgress('conversionProgress', step.progress);
-        status.textContent = step.message;
+        if (progressWrapper) {
+            updateProgressBarValue(progressWrapper, step.progress);
+        } else {
+            // Fallback to old method
+            updateProgress('conversionProgress', step.progress);
+        }
+        if (status) {
+            status.textContent = step.message;
+        }
         await new Promise(resolve => setTimeout(resolve, 300));
     }
     
@@ -1199,7 +1465,7 @@ async function simulateConversion() {
     accessibilityUtils.announceToScreenReader('Conversion complete');
 }
 
-function downloadArchive() {
+async function downloadArchive() {
     try {
         // Create a sample JSON structure for Pixelfed import
         const pixelfedArchive = {
@@ -1240,8 +1506,8 @@ function downloadArchive() {
         const timestamp = new Date().toISOString().split('T')[0];
         zip.file(`pixelfed_archive_${timestamp}.json`, jsonContent);
     
-    // Add a README file with instructions
-    const readmeContent = `# Pixelfed Migration Archive
+        // Add a README file with instructions
+        const readmeContent = `# Pixelfed Migration Archive
 
 This archive was created by InstaFed to migrate your Instagram content to Pixelfed.
 
@@ -1263,12 +1529,13 @@ This archive was created by InstaFed to migrate your Instagram content to Pixelf
 
 For more information, visit: https://docs.pixelfed.org/user-guide/import/
 `;
-    
-    zip.file('README.md', readmeContent);
-    
-    // Generate the ZIP file with enhanced error handling
-    zip.generateAsync({type: 'blob'})
-        .then(function(content) {
+        
+        zip.file('README.md', readmeContent);
+        
+        // Generate the ZIP file with enhanced error handling
+        try {
+            const content = await zip.generateAsync({type: 'blob'});
+            
             // Create download link
             const url = window.URL.createObjectURL(content);
             const a = document.createElement('a');
@@ -1285,9 +1552,8 @@ For more information, visit: https://docs.pixelfed.org/user-guide/import/
             
             // Show success message
             showDownloadSuccess();
-        })
-        .catch(function(error) {
-            console.error('Error creating ZIP file:', error);
+        } catch (zipError) {
+            console.error('Error creating ZIP file:', zipError);
             // Fallback to JSON download if ZIP creation fails
             const blob = new Blob([jsonContent], { type: 'application/json' });
             const url = window.URL.createObjectURL(blob);
@@ -1299,7 +1565,7 @@ For more information, visit: https://docs.pixelfed.org/user-guide/import/
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
             showDownloadSuccess();
-        });
+        }
     } catch (error) {
         console.error('Error in downloadArchive:', error);
         logMessage(`Download failed: ${error.message}`, 'conversionLog', 'error');
@@ -1308,26 +1574,47 @@ For more information, visit: https://docs.pixelfed.org/user-guide/import/
 }
 
 function showDownloadSuccess() {
-    // Create a temporary success notification
-    const notification = document.createElement('div');
-    notification.className = 'download-success-notification';
-    notification.innerHTML = `
-        <div class="notification-content">
-            <svg class="icon icon--success" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-            </svg>
-            <span>ZIP archive downloaded successfully! Ready for Pixelfed import.</span>
-        </div>
-    `;
-    
-    document.body.appendChild(notification);
-    
-    // Remove notification after 3 seconds
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.parentNode.removeChild(notification);
-        }
-    }, 3000);
+    // Create a temporary success notification using Message component
+    const Message = getSharedComponent('Message');
+    if (Message) {
+        const notification = document.createElement('div');
+        notification.className = 'download-success-notification';
+        notification.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 1000;';
+        
+        const message = Message({
+            type: 'success',
+            children: 'ZIP archive downloaded successfully! Ready for Pixelfed import.'
+        });
+        message.style.cssText = 'padding: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1);';
+        notification.appendChild(message);
+        
+        document.body.appendChild(notification);
+        
+        // Remove notification after 3 seconds
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 3000);
+    } else {
+        // Fallback to old method
+        const notification = document.createElement('div');
+        notification.className = 'download-success-notification';
+        notification.innerHTML = `
+            <div class="notification-content">
+                <svg class="icon icon--success" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                <span>ZIP archive downloaded successfully! Ready for Pixelfed import.</span>
+            </div>
+        `;
+        document.body.appendChild(notification);
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 3000);
+    }
 }
 
 /* ===== SUPPRESSION DES FONCTIONS REDONDANTES ===== */
@@ -1593,163 +1880,157 @@ function scrollToTop() {
 
 // Open Pixelfed settings (helper function for direct links)
 function openPixelfedSettings() {
-    // Create a modal-like notification
-    const notification = document.createElement('div');
-    notification.className = 'pixelfed-help-modal';
-    notification.innerHTML = `
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4>📋 Pixelfed Settings Guide</h4>
-                <button onclick="this.parentElement.parentElement.parentElement.remove()" class="close-btn" aria-label="Close help">×</button>
-            </div>
-            <div class="modal-body">
-                <p><strong>To access Pixelfed settings:</strong></p>
-                <ol>
-                    <li>Log into your Pixelfed account</li>
-                    <li>Click on your profile picture</li>
-                    <li>Select 'Settings'</li>
-                    <li>Look for 'Import' or 'Data Import' section</li>
-                </ol>
-                <p><strong>Or visit the documentation for detailed instructions.</strong></p>
-                <div class="modal-actions">
-                    <a href="https://docs.pixelfed.org/user-guide/import/" target="_blank" rel="noopener" class="btn-base btn-primary">
-                        📖 Open Documentation
-                    </a>
+    const Modal = getSharedComponent('Modal');
+    const Button = getSharedComponent('Button');
+    
+    if (Modal && Button) {
+        const modalContent = document.createElement('div');
+        modalContent.innerHTML = `
+            <p><strong>To access Pixelfed settings:</strong></p>
+            <ol>
+                <li>Log into your Pixelfed account</li>
+                <li>Click on your profile picture</li>
+                <li>Select 'Settings'</li>
+                <li>Look for 'Import' or 'Data Import' section</li>
+            </ol>
+            <p><strong>Or visit the documentation for detailed instructions.</strong></p>
+        `;
+        
+        const docButton = Button({
+            variant: 'primary',
+            children: '📖 Open Documentation',
+            onClick: () => window.open('https://docs.pixelfed.org/user-guide/import/', '_blank', 'noopener')
+        });
+        docButton.style.cssText = 'margin-top: 1.5rem;';
+        
+        const actionsDiv = document.createElement('div');
+        actionsDiv.className = 'modal-actions';
+        actionsDiv.style.cssText = 'margin-top: 1.5rem; text-align: center;';
+        actionsDiv.appendChild(docButton);
+        modalContent.appendChild(actionsDiv);
+        
+        const modal = Modal({
+            open: true,
+            title: '📋 Pixelfed Settings Guide',
+            children: modalContent,
+            onClose: () => {
+                if (modal.parentNode) {
+                    modal.parentNode.removeChild(modal);
+                }
+            }
+        });
+        
+        document.body.appendChild(modal);
+        
+        if (window.accessibilityUtils) {
+            accessibilityUtils.announceToScreenReader('Opened Pixelfed settings help modal');
+        }
+    } else {
+        // Fallback to old method
+        const notification = document.createElement('div');
+        notification.className = 'pixelfed-help-modal';
+        notification.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>📋 Pixelfed Settings Guide</h4>
+                    <button onclick="this.parentElement.parentElement.parentElement.remove()" class="close-btn" aria-label="Close help">×</button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>To access Pixelfed settings:</strong></p>
+                    <ol>
+                        <li>Log into your Pixelfed account</li>
+                        <li>Click on your profile picture</li>
+                        <li>Select 'Settings'</li>
+                        <li>Look for 'Import' or 'Data Import' section</li>
+                    </ol>
+                    <p><strong>Or visit the documentation for detailed instructions.</strong></p>
+                    <div class="modal-actions">
+                        <a href="https://docs.pixelfed.org/user-guide/import/" target="_blank" rel="noopener" class="btn-base btn-primary">
+                            📖 Open Documentation
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
-    `;
-    
-    // Add styles
-    notification.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-        animation: fadeIn 0.3s ease;
-    `;
-    
-    const modalContent = notification.querySelector('.modal-content');
-    modalContent.style.cssText = `
-        background: white;
-        border-radius: 12px;
-        padding: 0;
-        max-width: 500px;
-        width: 90%;
-        max-height: 80vh;
-        overflow-y: auto;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        animation: slideIn 0.3s ease;
-    `;
-    
-    const modalHeader = notification.querySelector('.modal-header');
-    modalHeader.style.cssText = `
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1.5rem 1.5rem 1rem;
-        border-bottom: 1px solid #eee;
-    `;
-    
-    const modalBody = notification.querySelector('.modal-body');
-    modalBody.style.cssText = `
-        padding: 1.5rem;
-    `;
-    
-    const closeBtn = notification.querySelector('.close-btn');
-    closeBtn.style.cssText = `
-        background: none;
-        border: none;
-        font-size: 1.5rem;
-        cursor: pointer;
-        color: #666;
-        padding: 0.25rem;
-        border-radius: 4px;
-        transition: background 0.2s;
-    `;
-    
-    const modalActions = notification.querySelector('.modal-actions');
-    modalActions.style.cssText = `
-        margin-top: 1.5rem;
-        text-align: center;
-    `;
-    
-    // Add keyframes for animations
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes slideIn {
-            from { transform: translateY(-20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-    `;
-    document.head.appendChild(style);
-    
-    document.body.appendChild(notification);
-    
-    // Close on backdrop click
-    notification.addEventListener('click', (e) => {
-        if (e.target === notification) {
-            notification.remove();
-        }
-    });
-    
-    // Close on Escape key
-    document.addEventListener('keydown', function closeOnEscape(e) {
-        if (e.key === 'Escape') {
-            notification.remove();
-            document.removeEventListener('keydown', closeOnEscape);
-        }
-    });
-    
-    if (window.accessibilityUtils) {
-        accessibilityUtils.announceToScreenReader('Opened Pixelfed settings help modal');
+        `;
+        notification.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 1000;';
+        document.body.appendChild(notification);
+        notification.addEventListener('click', (e) => {
+            if (e.target === notification) {
+                notification.remove();
+            }
+        });
     }
 } 
 
 function showImportGuide() {
-    const modal = document.createElement('div');
-    modal.className = 'modal';
-    modal.innerHTML = `
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Import Guide</h3>
-                <button class="modal-close" onclick="this.parentElement.parentElement.parentElement.remove()">&times;</button>
+    const Modal = getSharedComponent('Modal');
+    
+    if (Modal) {
+        const modalContent = document.createElement('div');
+        modalContent.innerHTML = `
+            <h4>How to Import to Pixelfed</h4>
+            <ol>
+                <li>Log into your Pixelfed account</li>
+                <li>Go to Settings → Import</li>
+                <li>Upload the converted archive file</li>
+                <li>Review and confirm the import</li>
+                <li>Wait for processing to complete</li>
+            </ol>
+            <div class="import-links">
+                <h5>Helpful Links:</h5>
+                <ul>
+                    <li><a href="https://pixelfed.blog/p/2023/feature/introducing-import-from-instagram" target="_blank" rel="noopener">Pixelfed Import Feature Announcement</a></li>
+                    <li><a href="https://pixelfed.social/site/kb/import" target="_blank" rel="noopener">Import Documentation</a></li>
+                </ul>
             </div>
-            <div class="modal-body">
-                <h4>How to Import to Pixelfed</h4>
-                <ol>
-                    <li>Log into your Pixelfed account</li>
-                    <li>Go to Settings → Import</li>
-                    <li>Upload the converted archive file</li>
-                    <li>Review and confirm the import</li>
-                    <li>Wait for processing to complete</li>
-                </ol>
-                <div class="import-links">
-                    <h5>Helpful Links:</h5>
-                    <ul>
-                        <li><a href="https://pixelfed.blog/p/2023/feature/introducing-import-from-instagram" target="_blank" rel="noopener">Pixelfed Import Feature Announcement</a></li>
-                        <li><a href="https://pixelfed.social/site/kb/import" target="_blank" rel="noopener">Import Documentation</a></li>
-                    </ul>
+        `;
+        
+        const modal = Modal({
+            open: true,
+            title: 'Import Guide',
+            children: modalContent,
+            onClose: () => {
+                if (modal.parentNode) {
+                    modal.parentNode.removeChild(modal);
+                }
+            }
+        });
+        
+        document.body.appendChild(modal);
+    } else {
+        // Fallback to old method
+        const modal = document.createElement('div');
+        modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Import Guide</h3>
+                    <button class="modal-close" onclick="this.parentElement.parentElement.parentElement.remove()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <h4>How to Import to Pixelfed</h4>
+                    <ol>
+                        <li>Log into your Pixelfed account</li>
+                        <li>Go to Settings → Import</li>
+                        <li>Upload the converted archive file</li>
+                        <li>Review and confirm the import</li>
+                        <li>Wait for processing to complete</li>
+                    </ol>
+                    <div class="import-links">
+                        <h5>Helpful Links:</h5>
+                        <ul>
+                            <li><a href="https://pixelfed.blog/p/2023/feature/introducing-import-from-instagram" target="_blank" rel="noopener">Pixelfed Import Feature Announcement</a></li>
+                            <li><a href="https://pixelfed.social/site/kb/import" target="_blank" rel="noopener">Import Documentation</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
-    `;
-    document.body.appendChild(modal);
-    
-    // Close modal when clicking outside
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-            modal.remove();
-        }
-    });
+        `;
+        document.body.appendChild(modal);
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.remove();
+            }
+        });
+    }
 } 
