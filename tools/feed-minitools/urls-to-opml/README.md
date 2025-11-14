@@ -1,5 +1,7 @@
 # URLs to OPML
 
+![Favicon](./favicon.svg)
+
 Convert a list of website URLs to OPML format by automatically detecting their RSS/Atom feeds.
 
 **Note:** This is a client-side application that runs entirely in your browser. No data is sent to any server.

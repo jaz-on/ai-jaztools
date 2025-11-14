@@ -1,5 +1,7 @@
 # InstaFed
 
+![Favicon](./favicon.svg)
+
 A secure and fast tool to facilitate migration from Instagram to Pixelfed. All processing happens locally in your browser, ensuring complete privacy.
 
 ## Quick Start

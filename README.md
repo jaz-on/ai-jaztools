@@ -1,5 +1,7 @@
 # AI JazTools
 
+![Favicon](./shared/assets/favicon.svg)
+
 Collection de mini outils développés rapidement pour répondre à des besoins temporaires et ponctuels. Ces outils partagent une nomenclature commune, une cohérence de code/stack, CSS et nommage pour être maintenus en commun.
 
 ## Vue d'ensemble

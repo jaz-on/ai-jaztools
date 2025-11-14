@@ -1,5 +1,7 @@
 # Feed Minitools - Favorites Migrator
 
+![Favicon](./favicon.svg)
+
 Interface web moderne et sécurisée pour migrer vos favoris FreshRSS vers Feedbin.
 
 ## 🚀 Démarrage rapide

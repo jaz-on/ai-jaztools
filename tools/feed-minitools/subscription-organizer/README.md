@@ -1,5 +1,7 @@
 # Feed Subscription Organizer
 
+![Favicon](./favicon.svg)
+
 Découvrez vos patterns de lecture et optimisez votre organisation RSS avec cet outil d'analyse intelligent.
 
 ## 🎯 Objectif
