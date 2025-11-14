@@ -18,25 +18,25 @@ Tous les outils partagent :
 
 ## Outils disponibles
 
-### Feed Minitools
+### ![Feed Minitools](./tools/feed-minitools/favicon.svg) Feed Minitools
 Suite d'outils pour gérer, migrer et organiser vos flux RSS et favoris.
-- **Favorites Migrator** : Migration de favoris entre plateformes RSS
-- **Subscription Organizer** : Organisation et analyse d'abonnements RSS
-- **URLs to OPML** : Conversion d'URLs en fichier OPML avec détection automatique des flux
+- ![Favorites Migrator](./tools/feed-minitools/favorites-migrator/favicon.svg) **Favorites Migrator** : Migration de favoris entre plateformes RSS
+- ![Subscription Organizer](./tools/feed-minitools/subscription-organizer/favicon.svg) **Subscription Organizer** : Organisation et analyse d'abonnements RSS
+- ![URLs to OPML](./tools/feed-minitools/urls-to-opml/favicon.svg) **URLs to OPML** : Conversion d'URLs en fichier OPML avec détection automatique des flux
 
 [Accéder à Feed Minitools](./tools/feed-minitools/index.html)
 
-### InstaFed
+### ![InstaFed](./tools/instafed/favicon.svg) InstaFed
 Outil gratuit pour migrer vos photos Instagram vers Pixelfed. Conversion automatique et respect de la vie privée.
 
 [Accéder à InstaFed](./tools/instafed/index.html)
 
-### Podcast Analyzer
+### ![Podcast Analyzer](./tools/podcast-analyzer/favicon.svg) Podcast Analyzer
 Analyse automatique de podcasts WordPress avec IA. Extraction de points clés, citations et ressources.
 
 [Accéder à Podcast Analyzer](./tools/podcast-analyzer/index.html)
 
-### URLs to OPML
+### ![URLs to OPML](./tools/feed-minitools/urls-to-opml/favicon.svg) URLs to OPML
 Convertit une liste d'URLs de sites web en format OPML en détectant automatiquement leurs flux RSS/Atom.
 
 **Note** : Cet outil fait partie de la suite Feed Minitools.
