@@ -13,7 +13,7 @@ Ce guide explique comment déployer les outils du monorepo ai-jaztools sur votre
 Le monorepo contient plusieurs types d'outils :
 
 1. **Outils statiques** (HTML/CSS/JS) : `subscription-organizer`, `instafed`, `urls-to-opml`, `landing`
-2. **Outils Node.js** : `favorites-migrator`, `podcast-analyzer`
+2. **Outils Node.js** : `favorites-migrator`
 
 ## Déploiement des outils statiques
 
@@ -55,18 +55,6 @@ Le monorepo contient plusieurs types d'outils :
    - Variables spécifiques à l'application (voir README de l'outil)
 4. Déployez
 
-### Podcast Analyzer
-
-1. Créez un service Node.js dans Coolify
-2. Configurez le chemin : `tools/podcast-analyzer/`
-3. Variables d'environnement requises :
-   - `NODE_ENV=production`
-   - `PORT=8787` (ou le port configuré dans Coolify)
-   - `HOST=0.0.0.0`
-   - `ANTHROPIC_API_KEY=votre_clé_api` (obligatoire)
-4. Déployez
-
-
 ## Configuration des domaines
 
 Dans Coolify, configurez les domaines pour chaque service :
@@ -74,7 +62,6 @@ Dans Coolify, configurez les domaines pour chaque service :
 - Landing : `tools.votredomaine.com` (ou racine)
 - Feed Minitools : `feed-minitools.votredomaine.com` (inclut favorites-migrator, subscription-organizer, urls-to-opml)
 - InstaFed : `instafed.votredomaine.com`
-- Podcast Analyzer : `podcast-analyzer.votredomaine.com`
 
 ## Variables d'environnement communes
 

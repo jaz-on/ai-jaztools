@@ -335,7 +335,6 @@ tool-name/
 
 **Exemples de corrections nécessaires** :
 - ❌ `script.js` (instafed) → ✅ `app.js`
-- ❌ `server.mjs` (podcast-analyzer) → ✅ `server.js` (si Option B)
 - ❌ `style.css` → ✅ `styles.css`
 - ❌ `style-unified.css` → ✅ `styles.css` (unifier)
 - ❌ `styles-unified.css` → ✅ `styles.css` (unifier)

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template Accessible - WCAG 2.1 AA</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../shared/assets/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="../shared/assets/favicon.ico">
+    
+    <!-- Design System -->
+    <link rel="stylesheet" href="../shared/design-system/variables.css">
+    <link rel="stylesheet" href="../shared/design-system/base.css">
+    <link rel="stylesheet" href="../shared/design-system/components.css">
+    <link rel="stylesheet" href="../shared/design-system/utilities.css">
+    
+    <style>
+        /* Skip link pour navigation clavier */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--blue);
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            z-index: 1000;
+            border-radius: 0 0 4px 0;
+        }
+        .skip-link:focus {
+            top: 0;
+            outline: 3px solid var(--blue-dark);
+            outline-offset: 2px;
+        }
+        
+        /* Classe pour masquer visuellement mais garder accessible aux lecteurs d'écran */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+        
+        /* Focus visible amélioré */
+        *:focus {
+            outline: 3px solid var(--blue);
+            outline-offset: 2px;
+        }
+        
+        /* Respect de prefers-reduced-motion */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+        
+        /* Styles pour les messages d'erreur */
+        .error-message {
+            color: var(--error);
+            font-size: var(--font-size-sm);
+            margin-top: var(--space-xs);
+            display: block;
+        }
+        
+        .input-error {
+            border-color: var(--error);
+        }
+        
+        /* Indication champ obligatoire */
+        .required {
+            color: var(--error);
+            margin-left: var(--space-xs);
+        }
+        
+        /* Instructions pour les champs */
+        .instructions {
+            font-size: var(--font-size-sm);
+            color: var(--gray);
+            margin-top: var(--space-xs);
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip link pour navigation clavier -->
+    <a href="#main-content" class="skip-link">Aller au contenu principal</a>
+    
+    <!-- En-tête -->
+    <header role="banner">
+        <div class="container">
+            <h1>Titre principal de l'application</h1>
+            
+            <!-- Navigation principale -->
+            <nav role="navigation" aria-label="Navigation principale">
+                <ul>
+                    <li><a href="#section1">Section 1</a></li>
+                    <li><a href="#section2">Section 2</a></li>
+                    <li><a href="#section3">Section 3</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Contenu principal -->
+    <main id="main-content" role="main">
+        <div class="container">
+            <!-- Section 1 : Formulaire accessible -->
+            <section id="section1" aria-labelledby="section1-title">
+                <h2 id="section1-title">Formulaire accessible</h2>
+                
+                <form role="form" aria-label="Formulaire d'exemple">
+                    <!-- Exemple 1 : Input avec label explicite -->
+                    <div class="form-group">
+                        <label for="email">
+                            Adresse email
+                            <span class="required" aria-label="obligatoire">*</span>
+                        </label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email"
+                            required
+                            aria-required="true"
+                            aria-describedby="email-instructions"
+                            autocomplete="email"
+                        >
+                        <span id="email-instructions" class="instructions">
+                            Format attendu : exemple@domaine.com
+                        </span>
+                    </div>
+                    
+                    <!-- Exemple 2 : Input avec erreur -->
+                    <div class="form-group">
+                        <label for="password">
+                            Mot de passe
+                            <span class="required" aria-label="obligatoire">*</span>
+                        </label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password"
+                            required
+                            aria-required="true"
+                            aria-invalid="false"
+                            aria-describedby="password-instructions password-error"
+                            autocomplete="current-password"
+                        >
+                        <span id="password-instructions" class="instructions">
+                            Le mot de passe doit contenir au moins 8 caractères
+                        </span>
+                        <span id="password-error" class="error-message" role="alert" aria-live="polite"></span>
+                    </div>
+                    
+                    <!-- Exemple 3 : Textarea avec label -->
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea 
+                            id="message" 
+                            name="message"
+                            rows="4"
+                            aria-describedby="message-instructions"
+                        ></textarea>
+                        <span id="message-instructions" class="instructions">
+                            Maximum 500 caractères
+                        </span>
+                    </div>
+                    
+                    <!-- Exemple 4 : Select avec label -->
+                    <div class="form-group">
+                        <label for="country">Pays</label>
+                        <select id="country" name="country" aria-describedby="country-instructions">
+                            <option value="">Sélectionnez un pays</option>
+                            <option value="fr">France</option>
+                            <option value="be">Belgique</option>
+                            <option value="ch">Suisse</option>
+                        </select>
+                        <span id="country-instructions" class="instructions">
+                            Sélectionnez votre pays de résidence
+                        </span>
+                    </div>
+                    
+                    <!-- Exemple 5 : Checkbox avec label -->
+                    <div class="form-group">
+                        <label>
+                            <input 
+                                type="checkbox" 
+                                name="newsletter"
+                                aria-describedby="newsletter-instructions"
+                            >
+                            Je souhaite recevoir la newsletter
+                        </label>
+                        <span id="newsletter-instructions" class="instructions">
+                            Vous pourrez vous désabonner à tout moment
+                        </span>
+                    </div>
+                    
+                    <!-- Exemple 6 : Radio buttons avec fieldset -->
+                    <fieldset>
+                        <legend>Méthode de contact préférée</legend>
+                        <div class="form-group">
+                            <label>
+                                <input type="radio" name="contact" value="email" checked>
+                                Email
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="radio" name="contact" value="phone">
+                                Téléphone
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="radio" name="contact" value="postal">
+                                Courrier postal
+                            </label>
+                        </div>
+                    </fieldset>
+                    
+                    <!-- Bouton de soumission -->
+                    <button type="submit" class="btn btn-primary">
+                        Envoyer
+                    </button>
+                </form>
+            </section>
+            
+            <!-- Section 2 : Composants interactifs -->
+            <section id="section2" aria-labelledby="section2-title">
+                <h2 id="section2-title">Composants interactifs</h2>
+                
+                <!-- Exemple : Boutons avec aria-label -->
+                <div style="margin-bottom: var(--space-lg);">
+                    <h3>Boutons accessibles</h3>
+                    <button class="btn btn-primary" aria-label="Action principale">
+                        Action
+                    </button>
+                    <button class="btn btn-secondary" aria-label="Action secondaire">
+                        Annuler
+                    </button>
+                    <button class="btn" aria-label="Fermer la fenêtre">
+                        ×
+                    </button>
+                </div>
+                
+                <!-- Exemple : Zone de drop accessible -->
+                <div style="margin-bottom: var(--space-lg);">
+                    <h3>Zone de dépôt de fichiers</h3>
+                    <div 
+                        role="button" 
+                        tabindex="0"
+                        aria-label="Déposer un fichier ici ou cliquer pour parcourir"
+                        aria-describedby="dropzone-instructions"
+                        style="border: 2px dashed var(--gray-light); padding: var(--space-lg); text-align: center; cursor: pointer;"
+                        onkeydown="if(event.key === 'Enter' || event.key === ' ') { document.getElementById('file-input').click(); }"
+                    >
+                        <p id="dropzone-instructions">Déposez votre fichier ici ou cliquez pour parcourir</p>
+                        <input 
+                            type="file" 
+                            id="file-input" 
+                            style="display: none;"
+                            aria-label="Sélectionner un fichier"
+                        >
+                    </div>
+                </div>
+                
+                <!-- Exemple : Progress bar -->
+                <div style="margin-bottom: var(--space-lg);">
+                    <h3>Barre de progression</h3>
+                    <div 
+                        role="progressbar"
+                        aria-valuenow="50"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                        aria-label="Progression : 50%"
+                        style="width: 100%; height: 20px; background: var(--light); border-radius: var(--radius); overflow: hidden;"
+                    >
+                        <div style="width: 50%; height: 100%; background: var(--blue);"></div>
+                    </div>
+                    <span class="sr-only">50% complété</span>
+                </div>
+            </section>
+            
+            <!-- Section 3 : Images et médias -->
+            <section id="section3" aria-labelledby="section3-title">
+                <h2 id="section3-title">Images et médias</h2>
+                
+                <!-- Exemple : Image informative -->
+                <div style="margin-bottom: var(--space-lg);">
+                    <h3>Image informative</h3>
+                    <img 
+                        src="../shared/assets/favicon.svg" 
+                        alt="Logo de l'application"
+                        width="48"
+                        height="48"
+                    >
+                </div>
+                
+                <!-- Exemple : Image décorative -->
+                <div style="margin-bottom: var(--space-lg);">
+                    <h3>Image décorative</h3>
+                    <img 
+                        src="../shared/assets/favicon.svg" 
+                        alt=""
+                        width="48"
+                        height="48"
+                        aria-hidden="true"
+                    >
+                </div>
+                
+                <!-- Exemple : SVG avec aria-label -->
+                <div style="margin-bottom: var(--space-lg);">
+                    <h3>SVG accessible</h3>
+                    <svg 
+                        role="img" 
+                        aria-label="Icône de recherche"
+                        width="24" 
+                        height="24" 
+                        viewBox="0 0 24 24"
+                        fill="none" 
+                        stroke="currentColor" 
+                        stroke-width="2"
+                    >
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </div>
+                
+                <!-- Exemple : SVG décoratif -->
+                <div style="margin-bottom: var(--space-lg);">
+                    <h3>SVG décoratif</h3>
+                    <svg 
+                        aria-hidden="true"
+                        width="24" 
+                        height="24" 
+                        viewBox="0 0 24 24"
+                        fill="none" 
+                        stroke="currentColor" 
+                        stroke-width="2"
+                    >
+                        <circle cx="12" cy="12" r="10"></circle>
+                    </svg>
+                </div>
+            </section>
+            
+            <!-- Section 4 : Régions live -->
+            <section id="section4" aria-labelledby="section4-title">
+                <h2 id="section4-title">Annonces pour lecteurs d'écran</h2>
+                
+                <!-- Région live pour messages d'information -->
+                <div 
+                    id="live-region-polite" 
+                    aria-live="polite" 
+                    aria-atomic="true"
+                    class="sr-only"
+                >
+                    <!-- Contenu mis à jour dynamiquement -->
+                </div>
+                
+                <!-- Région live pour alertes urgentes -->
+                <div 
+                    id="live-region-assertive" 
+                    aria-live="assertive" 
+                    aria-atomic="true"
+                    class="sr-only"
+                >
+                    <!-- Contenu mis à jour dynamiquement -->
+                </div>
+                
+                <button 
+                    class="btn btn-primary"
+                    onclick="announceMessage('Message d\'information annoncé', 'polite')"
+                >
+                    Annoncer message (polite)
+                </button>
+                
+                <button 
+                    class="btn btn-secondary"
+                    onclick="announceMessage('Alerte urgente !', 'assertive')"
+                >
+                    Annoncer alerte (assertive)
+                </button>
+            </section>
+        </div>
+    </main>
+    
+    <!-- Pied de page -->
+    <footer role="contentinfo">
+        <div class="container">
+            <p>Template accessible conforme WCAG 2.1 niveau AA</p>
+            <p>
+                <a href="https://jasonrouet.com/" target="_blank" rel="noopener" aria-label="Site web de Jason Rouet (ouvre dans un nouvel onglet)">
+                    Un projet de Jason Rouet
+                </a>
+            </p>
+        </div>
+    </footer>
+    
+    <script>
+        // Fonction pour annoncer des messages aux lecteurs d'écran
+        function announceMessage(message, type = 'polite') {
+            const regionId = type === 'assertive' 
+                ? 'live-region-assertive' 
+                : 'live-region-polite';
+            const region = document.getElementById(regionId);
+            if (region) {
+                region.textContent = message;
+                // Réinitialiser après un court délai pour permettre la ré-annonce
+                setTimeout(() => {
+                    region.textContent = '';
+                }, 1000);
+            }
+        }
+        
+        // Exemple : Gestion des erreurs de formulaire
+        document.querySelector('form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const passwordInput = document.getElementById('password');
+            const passwordError = document.getElementById('password-error');
+            
+            // Validation simple
+            if (passwordInput.value.length < 8) {
+                passwordInput.setAttribute('aria-invalid', 'true');
+                passwordInput.classList.add('input-error');
+                passwordError.textContent = 'Le mot de passe doit contenir au moins 8 caractères';
+                passwordInput.focus();
+            } else {
+                passwordInput.setAttribute('aria-invalid', 'false');
+                passwordInput.classList.remove('input-error');
+                passwordError.textContent = '';
+                announceMessage('Formulaire soumis avec succès', 'polite');
+            }
+        });
+    </script>
+</body>
+</html>
+
