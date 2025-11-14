@@ -7,7 +7,7 @@
 .flex { display: flex !important; }
 .inline-flex { display: inline-flex !important; }
 .grid { display: grid !important; }
-.hidden { display: none !important; }
+/* Note: .hidden est défini dans base.css */
 
 /* ===== FLEXBOX ===== */
 .flex-row { flex-direction: row !important; }

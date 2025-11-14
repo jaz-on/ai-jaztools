@@ -1,9 +1,21 @@
-// components/Form/FormError.js
 /**
+ * @module components/Form/FormError
+ * 
  * Composant FormError réutilisable
- * @param {object} options
- * @param {string|Node|Array} options.children
- * @returns {HTMLDivElement}
+ * 
+ * Crée un message d'erreur pour les champs de formulaire.
+ */
+
+/**
+ * Crée un message d'erreur de formulaire réutilisable
+ * 
+ * @param {Object} options - Options de configuration
+ * @param {string|Node|Array} [options.children=''] - Message d'erreur
+ * @returns {HTMLDivElement} Élément message d'erreur créé
+ * @example
+ * const error = FormError({
+ *   children: 'Ce champ est obligatoire'
+ * });
  */
 export default function FormError({ children = '' } = {}) {
   const error = document.createElement('div');

@@ -1,10 +1,23 @@
-// components/Header/Header.js
 /**
+ * @module components/Header
+ * 
  * Composant Header réutilisable
- * @param {object} options
- * @param {string} options.title
- * @param {string} options.subtitle
- * @returns {HTMLElement}
+ * 
+ * Crée un en-tête avec titre et sous-titre.
+ */
+
+/**
+ * Crée un en-tête réutilisable
+ * 
+ * @param {Object} options - Options de configuration
+ * @param {string} [options.title=''] - Titre principal
+ * @param {string} [options.subtitle=''] - Sous-titre optionnel
+ * @returns {HTMLElement} Élément header créé
+ * @example
+ * const header = Header({
+ *   title: 'Mon Application',
+ *   subtitle: 'Description de l\'application'
+ * });
  */
 export default function Header({ title = '', subtitle = '' } = {}) {
   const header = document.createElement('header');

@@ -1,10 +1,23 @@
-// components/Message/Message.js
 /**
+ * @module components/Message
+ * 
  * Composant Message réutilisable
- * @param {object} options
- * @param {string} options.type
- * @param {string|Node|Array} options.children
- * @returns {HTMLDivElement}
+ * 
+ * Crée un message pour afficher des informations, avertissements ou erreurs.
+ */
+
+/**
+ * Crée un message réutilisable
+ * 
+ * @param {Object} options - Options de configuration
+ * @param {string} [options.type='info'] - Type de message (info, success, warning, error)
+ * @param {string|Node|Array} [options.children=''] - Contenu du message
+ * @returns {HTMLDivElement} Élément message créé
+ * @example
+ * const message = Message({
+ *   type: 'success',
+ *   children: 'Opération réussie !'
+ * });
  */
 export default function Message({ type = 'info', children = '' } = {}) {
   const msg = document.createElement('div');

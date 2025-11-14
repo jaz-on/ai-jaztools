@@ -1,10 +1,23 @@
-// components/Tabs/Tab.js
 /**
+ * @module components/Tabs/Tab
+ * 
  * Composant Tab réutilisable
- * @param {object} options
- * @param {string} options.label
- * @param {string|Node|Array} options.children
- * @returns {DocumentFragment}
+ * 
+ * Crée un onglet individuel pour être utilisé dans un composant Tabs.
+ */
+
+/**
+ * Crée un onglet réutilisable
+ * 
+ * @param {Object} options - Options de configuration
+ * @param {string} [options.label=''] - Label de l'onglet
+ * @param {string|Node|Array} [options.children=''] - Contenu de l'onglet
+ * @returns {DocumentFragment} Fragment contenant le bouton et le contenu de l'onglet
+ * @example
+ * const tab = Tab({
+ *   label: 'Onglet 1',
+ *   children: 'Contenu de l\'onglet'
+ * });
  */
 export default function Tab({ label = '', children = '' } = {}) {
   const frag = document.createDocumentFragment();

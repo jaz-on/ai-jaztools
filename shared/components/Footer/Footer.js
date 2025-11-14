@@ -1,9 +1,21 @@
-// components/Footer/Footer.js
 /**
+ * @module components/Footer
+ * 
  * Composant Footer réutilisable
- * @param {object} options
- * @param {string|Node|Array} options.children
- * @returns {HTMLElement}
+ * 
+ * Crée un pied de page pour l'application.
+ */
+
+/**
+ * Crée un pied de page réutilisable
+ * 
+ * @param {Object} options - Options de configuration
+ * @param {string|Node|Array} [options.children=''] - Contenu du footer
+ * @returns {HTMLElement} Élément footer créé
+ * @example
+ * const footer = Footer({
+ *   children: '© 2024 Mon Application'
+ * });
  */
 export default function Footer({ children = '' } = {}) {
   const footer = document.createElement('footer');

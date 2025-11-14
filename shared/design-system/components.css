@@ -63,8 +63,9 @@
 }
 
 .btn:focus {
-    outline: 2px solid var(--blue);
-    outline-offset: 2px;
+    outline: 3px solid var(--blue);
+    outline-offset: 3px;
+    box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.3);
 }
 
 /* Variantes de boutons */
@@ -159,18 +160,43 @@
 }
 
 .form-input:focus {
-    outline: none;
+    outline: 3px solid var(--blue);
+    outline-offset: 2px;
     border-color: var(--blue);
-    box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.1);
+    box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.2);
 }
 
-.form-input.error {
+.form-input.error,
+.form-input.input-error {
     border-color: var(--error);
+}
+
+.form-input.error:focus,
+.form-input.input-error:focus {
+    outline-color: var(--error);
+    box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.2);
 }
 
 .form-input:disabled {
     background: var(--light);
     cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Indication champ obligatoire */
+.form-label .required {
+    color: var(--error);
+    margin-left: var(--space-xs);
+    font-weight: var(--font-weight-bold);
+}
+
+/* Instructions pour les champs */
+.form-help,
+.instructions {
+    color: var(--gray);
+    font-size: var(--font-size-sm);
+    margin-top: var(--space-xs);
+    display: block;
 }
 
 .form-error {
@@ -356,6 +382,47 @@
     }
 }
 
+/* Respect de prefers-reduced-motion pour les animations */
+@media (prefers-reduced-motion: reduce) {
+    .btn,
+    .button,
+    .card,
+    .list-item,
+    .upload-zone {
+        transition: none !important;
+    }
+    
+    .btn:hover:not(:disabled),
+    .button:hover:not(:disabled) {
+        transform: none !important;
+    }
+    
+    .loading-spinner,
+    .progress-fill {
+        animation: none !important;
+    }
+    
+    .message {
+        animation: none !important;
+    }
+    
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(0deg); }
+    }
+    
+    @keyframes slideIn {
+        from {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}
+
 /* ===== LISTES ===== */
 .list {
     list-style: none;
@@ -426,16 +493,45 @@
 }
 
 /* Alias de compatibilité pour les anciens outils */
-.button { @apply btn btn-primary; }
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-sm) var(--space);
+    border-radius: var(--radius);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-sm);
+    border: 1px solid var(--blue);
+    cursor: pointer;
+    text-decoration: none;
+    transition: var(--transition);
+    white-space: nowrap;
+    user-select: none;
+    gap: var(--space-xs);
+    background: var(--blue);
+    color: var(--white);
+}
 
-/* Statistiques (déjà présentes, mais alias explicite) */
-.stat-card { @apply stat-card; }
-.stat-number { @apply stat-number; }
-.stat-label { @apply stat-label; }
+.button:hover:not(:disabled) {
+    background: var(--blue-dark);
+    border-color: var(--blue-dark);
+    transform: translateY(-1px);
+}
 
-/* Chargement */
-.loading { @apply loading; }
-.loading-spinner { @apply loading-spinner; }
+.button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.button:focus {
+    outline: 3px solid var(--blue);
+    outline-offset: 3px;
+    box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.3);
+}
+
+/* Note: Les classes .stat-card, .stat-number, .stat-label, .loading, et .loading-spinner 
+   sont déjà définies plus haut dans ce fichier, donc pas besoin d'alias */
 
 /* Listes sources/articles */
 .source-list, .article-list {

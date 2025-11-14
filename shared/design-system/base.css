@@ -126,9 +126,62 @@ pre code {
     border: 0; 
 }
 
-/* Focus visible pour l'accessibilité */
+/* Focus visible pour l'accessibilité - WCAG 2.1 AA */
 :focus {
-    outline: 2px solid var(--blue);
+    outline: 3px solid var(--blue);
+    outline-offset: 3px;
+    box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.3);
+}
+
+/* Focus visible amélioré pour les éléments interactifs */
+button:focus,
+input:focus,
+select:focus,
+textarea:focus,
+a:focus,
+[tabindex]:focus,
+[role="button"]:focus,
+[role="tab"]:focus {
+    outline: 3px solid var(--blue);
+    outline-offset: 3px;
+    box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.3);
+}
+
+/* Pas de focus sur les éléments non interactifs */
+:focus:not(:focus-visible) {
+    outline: none;
+    box-shadow: none;
+}
+
+/* Classe pour masquer visuellement mais garder accessible aux lecteurs d'écran */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* Skip link pour navigation clavier */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--blue);
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    z-index: 1000;
+    border-radius: 0 0 4px 0;
+}
+
+.skip-link:focus {
+    top: 0;
+    outline: 3px solid var(--blue-dark);
     outline-offset: 2px;
 }
 

@@ -1,9 +1,24 @@
-// components/Card/Card.js
 /**
+ * @module components/Card
+ * 
  * Composant Card réutilisable
- * @param {object} options
- * @param {string|Node|Array} options.children
- * @returns {HTMLDivElement}
+ * 
+ * Crée une carte conteneur pour organiser le contenu.
+ */
+
+/**
+ * Crée une carte réutilisable
+ * 
+ * @param {Object} options - Options de configuration
+ * @param {string|Node|Array} [options.children=''] - Contenu de la carte
+ * @returns {HTMLDivElement} Élément carte créé
+ * @example
+ * const card = Card({
+ *   children: [
+ *     Header({ title: 'Titre', subtitle: 'Sous-titre' }),
+ *     'Contenu de la carte'
+ *   ]
+ * });
  */
 export default function Card({ children = '' } = {}) {
   const card = document.createElement('div');

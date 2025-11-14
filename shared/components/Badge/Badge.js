@@ -1,10 +1,23 @@
-// components/Badge/Badge.js
 /**
+ * @module components/Badge
+ * 
  * Composant Badge réutilisable
- * @param {object} options
- * @param {string} options.variant
- * @param {string|Node|Array} options.children
- * @returns {HTMLSpanElement}
+ * 
+ * Crée un badge pour afficher des labels ou des statuts.
+ */
+
+/**
+ * Crée un badge réutilisable
+ * 
+ * @param {Object} options - Options de configuration
+ * @param {string} [options.variant='primary'] - Variante de style (primary, secondary, success, error, warning)
+ * @param {string|Node|Array} [options.children=''] - Contenu du badge
+ * @returns {HTMLSpanElement} Élément badge créé
+ * @example
+ * const badge = Badge({
+ *   variant: 'success',
+ *   children: 'Actif'
+ * });
  */
 export default function Badge({ variant = 'primary', children = '' } = {}) {
   const badge = document.createElement('span');

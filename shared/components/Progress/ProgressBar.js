@@ -1,10 +1,23 @@
-// components/Progress/ProgressBar.js
 /**
+ * @module components/Progress/ProgressBar
+ * 
  * Composant ProgressBar réutilisable
- * @param {object} options
- * @param {number} options.value
- * @param {number} options.max
- * @returns {HTMLDivElement}
+ * 
+ * Crée une barre de progression pour afficher l'avancement d'une tâche.
+ */
+
+/**
+ * Crée une barre de progression réutilisable
+ * 
+ * @param {Object} options - Options de configuration
+ * @param {number} [options.value=0] - Valeur actuelle de la progression
+ * @param {number} [options.max=100] - Valeur maximale
+ * @returns {HTMLDivElement} Élément barre de progression créé
+ * @example
+ * const progress = ProgressBar({
+ *   value: 50,
+ *   max: 100
+ * });
  */
 export default function ProgressBar({ value = 0, max = 100 } = {}) {
   const bar = document.createElement('div');

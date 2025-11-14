@@ -1,9 +1,21 @@
-// components/Loader/Loader.js
 /**
+ * @module components/Loader
+ * 
  * Composant Loader réutilisable
- * @param {object} options
- * @param {string} options.message
- * @returns {HTMLDivElement}
+ * 
+ * Crée un indicateur de chargement avec spinner et message optionnel.
+ */
+
+/**
+ * Crée un indicateur de chargement réutilisable
+ * 
+ * @param {Object} options - Options de configuration
+ * @param {string} [options.message='Chargement...'] - Message à afficher
+ * @returns {HTMLDivElement} Élément loader créé
+ * @example
+ * const loader = Loader({
+ *   message: 'Chargement des données...'
+ * });
  */
 export default function Loader({ message = 'Chargement...' } = {}) {
   const loading = document.createElement('div');
